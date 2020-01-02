@@ -1,6 +1,6 @@
 // Written by Dave Yonkers, 2019
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef EASYTIMER_H
+#define EASYTIMER_H
 
 #include "Arduino.h"
 
