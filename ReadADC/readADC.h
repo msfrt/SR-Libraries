@@ -1,7 +1,6 @@
 #ifndef READADC_H
-#define READACD_H
+#define READADC_H
 
-#include "Arduino.h"
 #include "SPI.h"
 
 
