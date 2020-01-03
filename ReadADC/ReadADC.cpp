@@ -1,4 +1,4 @@
-#include "readADC.h"
+#include "ReadADC.h"
 #include <SPI.h>
 
 
