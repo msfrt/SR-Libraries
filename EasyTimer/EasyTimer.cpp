@@ -1,16 +1,11 @@
-// Written by Dave Yonkers, 2019
+// Written by Dave Yonkers, 2020
 #include "Arduino.h"
 #include "EasyTimer.h"
 
+// creates a timer with the desired frequency.
 EasyTimer::EasyTimer(int freq){
-  // if frequency is <=0 (why??)
-  if (freq <= 0){
-    freq_ = 0;
-    ms_ = 4294967295; //max val of millis() - 32 bits unsigned int
-  } else {
-    freq_ = freq;
-    ms_ = 1000 / freq; // 1000 milliseconds in a second
-  }
+  freq_ = freq;
+  us_ = 1000000 / freq; // microseconds delay
 
   last_time_ = 0;
 }
@@ -18,8 +13,8 @@ EasyTimer::EasyTimer(int freq){
 
 // this function returns true if it is time, false if time has not been reached yet
 bool EasyTimer::check(){
-  if (millis() - last_time_ >= ms_){
-    last_time_ = millis(); // reset the timer
+  if (micros() - last_time_ >= us_){
+    last_time_ = micros(); // reset the timer
     return true;
   } else {
     return false;
@@ -28,8 +23,8 @@ bool EasyTimer::check(){
 
 // this function returns true if it is time, false if time has not been reached yet - same as check()
 bool EasyTimer::isup(){
-  if (millis() - last_time_ >= ms_){
-    last_time_ = millis(); // reset the timer
+  if (micros() - last_time_ >= us_){
+    last_time_ = micros(); // reset the timer
     return true;
   } else {
     return false;
@@ -38,23 +33,17 @@ bool EasyTimer::isup(){
 
 
 void EasyTimer::set_frequency(int freq){
-  // if frequency is <=0 (why??), it defaults to 1Hz
-  if (freq <= 0){
-    freq_ = 0;
-    ms_ = 4294967295; //max val of millis() - 32 bit unsigned int
-  } else {
-    freq_ = freq;
-    ms_ = 1000 / freq; // 1000 milliseconds in a second
-  }
+  freq_ = freq;
+  us_ = 1000000 / freq; // microseconds delay
 }
 
 
-void EasyTimer::set_delay(int ms){
-  if (ms <= 0){
-    freq_ = 0;
-    ms_ = 0; //max val of millis() - 32 bits
-  } else {
-    freq_ = 1000 / ms;
-    ms_ = ms; // 1000 milliseconds in a second
-  }
+void EasyTimer::set_delay_millis(int ms){
+  freq_ = 1000 / ms;
+  us_ = ms * 1000; // microseconds delay
+}
+
+void EasyTimer::set_delay_micros(int us){
+  freq_ = 1000000 / us;
+  us_ = us; // microseconds delay
 }
