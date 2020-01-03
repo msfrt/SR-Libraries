@@ -47,3 +47,7 @@ void EasyTimer::set_delay_micros(int us){
   freq_ = 1000000 / us;
   us_ = us; // microseconds delay
 }
+
+void EasyTimer::reset(){
+  last_time_ = micros(); // sets the last time to the current time
+}

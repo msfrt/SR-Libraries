@@ -18,7 +18,8 @@ class EasyTimer{
     bool isup(); // same as check()
     void set_frequency(int freq); // frequency in Hz.
     void set_delay_millis(int delay); // delay in milliseconds.
-    void set_delay_micros(int delay); // delay in microseconds. 
+    void set_delay_micros(int delay); // delay in microseconds.
+    void reset(); // resets a timer
 
   private:
     unsigned long freq_; // Hz
