@@ -23,10 +23,10 @@ The next step is to initialize the sensor and sensor pin. If I had a sensor obje
 
 ### Usage
 
-There are two main things you need to do to use this library. The first is to sample a sensor, and the second is to actually get a value returned from the sensor object. Lucky, I've made these both pretty easy.
+There are two main things you need to do to effectively use this library. The first is to sample a sensor, and the second is to actually get a value returned from the sensor object. Lucky, I've made these both pretty easy.
 
 #### Sampling
-Sampling of a sensor should happen at a much faster rate than what we care to send over CAN, in order to minimize loss of data in-between messages. To sample a sensor called `my_sensor`, I would simply write `my_sensor.sample()`.
+Sampling of a sensor should happen at a much faster rate than what we care to send over CAN in order to minimize loss of data in-between messages. To sample a sensor called `my_sensor`, I would simply write `my_sensor.sample()`.
 
 
 #### Reading a value
