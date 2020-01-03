@@ -22,6 +22,7 @@ ADCSensor::ADCSensor(int chip_select, int ADC_channel_number, int zero_mV,
   this->actual_avg_ = 0;
   this->actual_min_ = 0;
   this->actual_max_ = 0;
+  this->values_updated = false;
 }
 
 void ADCSensor::begin(){
@@ -71,6 +72,9 @@ void ADCSensor::sample(){
   // add the read value to the running total for average calculation and increment the read counter
   this->running_read_total_ += this->read_value_;
   this->running_read_count_++;
+
+  // there is at least one new sample since calculating the actual values, so set the values_updated bool to false
+  this->values_updated = false;
 }
 
 
@@ -83,15 +87,43 @@ void ADCSensor::reset(){
 }
 
 void ADCSensor::calculate(){
-  int sensor_read_avg = (this->running_read_total_) / (this->running_read_count_);
-  //this->actual_avg_ = analog_to_5V_sensor_val(sensor_read_avg , zero_mV_, mV_per_sensor_unit_);
-  //this->actual_min_ = analog_to_5V_sensor_val(read_min_, zero_mV_, mV_per_sensor_unit_);
-  //this->actual_max_ = analog_to_5V_sensor_val(read_max_, zero_mV_, mV_per_sensor_unit_);
 
-  double mV = (sensor_read_avg / 4095) * 5000; // read 0 = 0V, 4095 = 5V. 5000mV = 5V.
+  double mV = 0.00; // initialize a temp variable only once to save processing power
+
+  // calculate the average values
+  double sensor_read_avg = (this->running_read_total_) / (this->running_read_count_);
+  mV = (sensor_read_avg / 4095.0) * 5000; // read 0 = 0V, 4095 = 5V. 5000mV = 5V.
   this->actual_avg_ = (mV - this->zero_mV_) / this->mV_per_sensor_unit_; // calculates the sensor value
+
+  // calculate the min values
+  mV = (static_cast<double>(this->read_min_) / 4095.0) * 5000;
+  this->actual_min_ = (mV - this->zero_mV_) / this->mV_per_sensor_unit_;
+
+  // calculate the max values
+  mV = (static_cast<double>(this->read_max_) / 4095.0) * 5000;
+  this->actual_max_ = (mV - this->zero_mV_) / this->mV_per_sensor_unit_;
+
+  this->reset();
+  this->values_updated = true;
 }
 
 double ADCSensor::avg(){
+  if (!values_updated){ // if the values are not the most current, update them before returning the average!
+    this->calculate();
+  }
   return this->actual_avg_;
+}
+
+double ADCSensor::min(){
+  if (!values_updated){ // if the values are not the most current, update them before returning the average!
+    this->calculate();
+  }
+  return this->actual_min_;
+}
+
+double ADCSensor::max(){
+  if (!values_updated){ // if the values are not the most current, update them before returning the average!
+    this->calculate();
+  }
+  return this->actual_max_;
 }

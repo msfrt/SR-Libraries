@@ -20,12 +20,17 @@ void setup(){
 void loop(){
 
   if (sample_timer.isup()){
-    //my_sensor.sample();
-    Serial.println("what's good");
+    my_sensor.sample();
   }
 
   if (print_timer.isup()){
-    // etst
+    Serial.print("Average value: ");
+    Serial.println(my_sensor.avg());
+    Serial.print("Minumum value: ");
+    Serial.println(my_sensor.min());
+    Serial.print("Maximum value: ");
+    Serial.println(my_sensor.max());
+    Serial.println();
   }
 
 }

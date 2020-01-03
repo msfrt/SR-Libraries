@@ -22,22 +22,25 @@ class ADCSensor{
     double actual_avg_;
     double actual_min_;
     double actual_max_;
+    bool values_updated; // this is false when the actual values are not the most current (ex. the sensor has been sampled
+                  // since the last time the actual values were calculated)
+
+    void reset(); // reset the sample values
+    void calculate(); // turns the read values into legible sensor values
 
   public:
     // constructors
     ADCSensor() = delete; // delete the default constructor
     ADCSensor(int chip_select, int ADC_channel_number, int zero_mV, int mV_per_sensor_unit, int scale_fact);
 
-
+    // member-functions
     void begin(); // used to intilize the pin
     void sample(); // sample the ADC
-    void reset(); // reset the sample values
-    void calculate(); // turns the read values into legible sensor values
 
-    // getters - be sure to call calculate() prior to using a getter
-    double avg(); // get the sensor's avg value (in sensor units)
-    //double min(){return actual_min_;}
-    //double max(){return actual_max_;}
+    // getters (automatically calculate the real-life values if appropriate)
+    double avg();
+    double min();
+    double max();
     int sample_count(){return running_read_count_;}
 };
 
