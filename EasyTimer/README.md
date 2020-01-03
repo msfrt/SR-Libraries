@@ -48,9 +48,9 @@ if (my_timer.isup()){
 
 ### Dynamically changing the timer delay
 
-This is some pretty cool functionality that wasn't easily possible before. You can change the delay of a timer by assigning a new frequency with `set_frequency()` or a new delay in milliseconds with `set_delay` This automatically updates the statements that use `isup()` and `check()`.
+This is some pretty cool functionality that wasn't easily possible before. You can change the delay of a timer by assigning a new frequency with `set_frequency()`, a new delay in milliseconds with `set_delay_millis()`, or a new delay in microseconds with `set_delay_micros()`. This automatically updates the statements that use `isup()` and `check()`.
 
 ```cpp
 my_timer.set_frequency(100); // changes EasyTimer to 100Hz
-my_timer.set_delay(20); // sets delay to 20ms (equivalent to 50Hz)
+my_timer.set_delay_millis(20); // sets delay to 20ms (equivalent to 50Hz)
 ```
