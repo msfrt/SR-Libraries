@@ -36,7 +36,7 @@ For example, if I wanted to know the maximum value of the sensor, I would call `
 
 ## Full Example
 ```cpp
-#include "readADC.h"
+#include "ReadADC.h"
 #include <EasyTimer.h>
 
 // from left to right, 9 is the teensy pin connected to the ADC, 0 is the ADC pin that the sensor is on,
