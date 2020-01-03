@@ -2,13 +2,14 @@
 #include <SPI.h>
 
 
+
 // constructor
-ADCSensor::ADCSensor(int chip_select, int ADC_channel_number, int zero_milliVolt10,
-                     int milliVolt10_per_unit, int scale_fact){
+ADCSensor::ADCSensor(int chip_select, int ADC_channel_number, int zero_mV,
+                     int mV_per_sensor_unit, int scale_fact){
   this->chip_select_ = chip_select;
   this->ADC_channel_number_ = ADC_channel_number;
-  this->zero_milliVolt10_ = zero_milliVolt10;
-  this->milliVolt10_per_unit_ = milliVolt10_per_unit;
+  this->zero_mV_ = zero_mV;
+  this->mV_per_sensor_unit_ = mV_per_sensor_unit;
   this->CAN_scale_factor_ = scale_fact;
 
   this->read_value_ = 0;
@@ -18,11 +19,17 @@ ADCSensor::ADCSensor(int chip_select, int ADC_channel_number, int zero_milliVolt
   this->read_min_ = 4095; // max value of a read
   this->read_max_ = 0;
 
+  this->actual_avg_ = 0;
+  this->actual_min_ = 0;
+  this->actual_max_ = 0;
+}
+
+void ADCSensor::begin(){
   // set the chip select pin as an output:
-  pinMode(chip_select_, OUTPUT);
+  pinMode(this->chip_select_, OUTPUT);
 
   // set the chip select pin high
-  digitalWrite(chip_select_, HIGH);
+  digitalWrite(this->chip_select_, HIGH);
 }
 
 // sample the sensor
@@ -75,10 +82,16 @@ void ADCSensor::reset(){
   this->read_max_ = 0;
 }
 
-// slower, uses floating-point math to calculate average value
+void ADCSensor::calculate(){
+  int sensor_read_avg = (this->running_read_total_) / (this->running_read_count_);
+  //this->actual_avg_ = analog_to_5V_sensor_val(sensor_read_avg , zero_mV_, mV_per_sensor_unit_);
+  //this->actual_min_ = analog_to_5V_sensor_val(read_min_, zero_mV_, mV_per_sensor_unit_);
+  //this->actual_max_ = analog_to_5V_sensor_val(read_max_, zero_mV_, mV_per_sensor_unit_);
+
+  double mV = (sensor_read_avg / 4095) * 5000; // read 0 = 0V, 4095 = 5V. 5000mV = 5V.
+  this->actual_avg_ = (mV - this->zero_mV_) / this->mV_per_sensor_unit_; // calculates the sensor value
+}
+
 double ADCSensor::avg(){
-  double sensor_read_avg = static_cast<double>(this->running_read_total_) /
-                           static_cast<double>(this->running_read_count_);
-  double milli10voltage = (sensor_read_avg / 4095) * 50000; // read 0 = 0V, 4095 = 5V. 50000mV10 = 5V.
-  return (milli10voltage - this->zero_milliVolt10_) / this->milliVolt10_per_unit_;
+  return this->actual_avg_;
 }
