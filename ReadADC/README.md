@@ -3,7 +3,6 @@
 The ReadADC library allows you to easily sample sensors that are read through an external analog-to-digital converter.
 
 ## Usage
----
 
 ### Declarations
 Before the `setup()` and `loop()` functions, you should declare each sensor. You will do this using the one and only constructor for this class, with formatting as follows:
