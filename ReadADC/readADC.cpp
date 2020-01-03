@@ -4,13 +4,11 @@
 
 
 // constructor
-ADCSensor::ADCSensor(int chip_select, int ADC_channel_number, int zero_mV,
-                     int mV_per_sensor_unit, int scale_fact){
+ADCSensor::ADCSensor(int chip_select, int ADC_channel_number, int zero_mV, int mV_per_sensor_unit){
   this->chip_select_ = chip_select;
   this->ADC_channel_number_ = ADC_channel_number;
   this->zero_mV_ = zero_mV;
   this->mV_per_sensor_unit_ = mV_per_sensor_unit;
-  this->CAN_scale_factor_ = scale_fact;
 
   this->read_value_ = 0;
   this->read_voltage_ = 0;

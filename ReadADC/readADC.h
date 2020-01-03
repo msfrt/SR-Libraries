@@ -10,7 +10,6 @@ class ADCSensor{
     int ADC_channel_number_; // input number of the ADC which will be read (0-7)
     int zero_mV_; // the sensor zero voltage in milliVolts * 10
     int mV_per_sensor_unit_; // milliVolts * 10 per sensor unit
-    int CAN_scale_factor_; // inverse of what's in the DBC. example: 0.1 in DBC == 10 here.
 
     int read_value_; // 12-bit number (0V-5V) that is returned from the ADC
     int read_voltage_;
@@ -31,7 +30,7 @@ class ADCSensor{
   public:
     // constructors
     ADCSensor() = delete; // delete the default constructor
-    ADCSensor(int chip_select, int ADC_channel_number, int zero_mV, int mV_per_sensor_unit, int scale_fact);
+    ADCSensor(int chip_select, int ADC_channel_number, int zero_mV, int mV_per_sensor_unit);
 
     // member-functions
     void begin(); // used to intilize the pin
