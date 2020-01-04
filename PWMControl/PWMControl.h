@@ -11,7 +11,7 @@ class PwmDevice{
 
       const int pwm_pin_; // pin on the teensy which the device is connected to
 
-      LookupTable table_;
+      LookupTable table_; // this is the lookup table that holds D.C. information
 
       int pwm_min_dc_; // minimum duty cycle that the device should be pwmed
       int pwm_max_dc_; // maximum duty cycle that the device should be pwmed
