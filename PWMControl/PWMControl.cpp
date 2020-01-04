@@ -1,16 +1,6 @@
 #include "PWMControl.h"
 
-bool PwmDevice::soft_start_state(){
-  return device_soft_start_;
-}
 
-bool PwmDevice::device_state(){
-  return device_on_;
-}
-
-int PwmDevice::current_pwm(){
-  return pwm_actual_;
-}
 
 void PwmDevice::pwm_target(int xval, int yval){
   pwm_target_ = xval;

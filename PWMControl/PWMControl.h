@@ -54,9 +54,9 @@ class PwmDevice{
 
     // getters
 
-    bool soft_start_state(); // return the current state of the soft start function
-    bool device_state(); // return the current state of the device
-    int current_pwm(); // return the current pwm value of the device
+    bool soft_start_state(){return device_soft_start_;}
+    bool device_state(){return device_on_;}
+    int current_pwm(){return pwm_actual_;}
 
     // setters
 
