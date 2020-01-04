@@ -3,27 +3,23 @@
 
 #include "Arduino.h"
 #include "EasyTimer.h"
+#include "LookupTable.h"
 
 class PwmDevice{
 
   private:
 
-      int control_table_x_entries_; // number of entries in the x axis of the table
-      int control_table_y_entries_; // number of entries in the y axis of the table
+      LookupTable table_;
 
-      int pwm_min_val_; // minimum value that the device should be pwmed
-      int pwm_max_val_; // maximum value that the device should be pwmed
+      int pwm_min_dc_; // minimum duty cycle that the device should be pwmed
+      int pwm_max_dc_; // maximum duty cycle that the device should be pwmed
 
-      int pwm_soft_start_duration_; // length of the soft start function in ms
-      int pwm_shutdown_duration_; // length of the shutdown function in ms
-
-      int pwm_update_freq_; // frequency at which the control function is ran
-      int pwm_freq_; // the pwm frequency of the device under normal operation
+      int pwm_normal_freq_; // the pwm frequency of the device under normal operation
       int pwm_soft_start_freq_; // the pwm frequency of the device under the soft start function
 
       const int pwm_pin_; // pin on the teensy which the device is connected to
 
-      EasyTimer pwm_update_timer_ = 1; // timer to control the control function frequency
+      EasyTimer pwm_control_timer_ = 1; // timer to control the control function update frequency
       EasyTimer pwm_soft_start_timer_ = 1; // timer to control the soft start function
       EasyTimer pwm_shutdown_timer_ = 1; // timer to control the shutdown function
 
@@ -40,17 +36,8 @@ class PwmDevice{
 
   public:
     PwmDevice() = delete;
-    PwmDevice(int xe, int ye, int pmin, int pmax, int ssd, int sd, int uf, int pf, int ssf, int p) :
-              control_table_x_entries_(xe), control_table_y_entries_(ye), pwm_min_val_(pmin),
-              pwm_max_val_(pmax), pwm_soft_start_duration_(ssd), pwm_shutdown_duration_(sd), pwm_update_freq_(uf),
-              pwm_freq_(pf), pwm_soft_start_freq_(ssf), pwm_pin_(p)
-              {
-
-                pwm_update_timer_.set_frequency(uf); // set the freq of the control loop timer
-                pwm_soft_start_timer_.set_delay_millis(ssd); // set duration of the soft start timer function
-                pwm_shutdown_timer_.set_delay_millis(pwm_shutdown_duration_); // set the duration of the shutdown timer
-
-              }; // new constructor
+    PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur, int shutdown_dur,
+              int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq);
 
     // getters
 
