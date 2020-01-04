@@ -8,6 +8,9 @@ class LookupTable{
     int *table_;
     const int rows_;
     const int columns_;
+
+    // how to get the proper index for the table
+    int index(int row, int column);
   public:
     // constructors
     LookupTable() = delete;
@@ -17,9 +20,6 @@ class LookupTable{
 
     // destructor (remember to destroy dynamically allocated table array)
     ~LookupTable() {delete [] table_;}
-
-    // how to get the proper index for the table
-    int index(int row, int column);
 
     // getter - get the value at a certain index
     int at_index(int row, int column);
