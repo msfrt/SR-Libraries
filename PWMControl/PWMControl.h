@@ -9,6 +9,8 @@ class PwmDevice{
 
   private:
 
+      const int pwm_pin_; // pin on the teensy which the device is connected to
+
       LookupTable table_;
 
       int pwm_min_dc_; // minimum duty cycle that the device should be pwmed
@@ -17,9 +19,7 @@ class PwmDevice{
       int pwm_normal_freq_; // the pwm frequency of the device under normal operation
       int pwm_soft_start_freq_; // the pwm frequency of the device under the soft start function
 
-      const int pwm_pin_; // pin on the teensy which the device is connected to
-
-      EasyTimer pwm_control_timer_ = 1; // timer to control the control function update frequency
+      EasyTimer pwm_control_timer_; // timer to control the control function update frequency
       EasyTimer pwm_soft_start_timer_ = 1; // timer to control the soft start function
       EasyTimer pwm_shutdown_timer_ = 1; // timer to control the shutdown function
 
@@ -48,7 +48,7 @@ class PwmDevice{
 
     // control functions
 
-    void set_pwm(int, int, int); // set the pwm frequency of the device
+    //void set_pwm(int, int, int); // set the pwm frequency of the device
 
 
 
