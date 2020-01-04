@@ -30,7 +30,6 @@ class PwmDevice{
       int prev_eng_state = false; // engine state during the last control function loop (0=off;1=cranking;2=on)
       int current_eng_state_ = false; // engine state during the current control function loop (0=off;1=cranking;2=on)
 
-      void pwm_target(int, int); // calculate the target pwm value
       void pwm_actual(); // calculate the actual pwm value
 
 
