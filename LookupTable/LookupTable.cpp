@@ -1,4 +1,4 @@
-#include "tabletest.h"
+#include "LookupTable.h"
 
 int LookupTable::index(int row, int column){
   if (row < 0){row = 0;} // snap to row 0
