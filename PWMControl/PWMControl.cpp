@@ -20,9 +20,7 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state){
 
     // the engine is off
     case 0:
-
-
-      break;
+      // no break statement for fall-through behavior
 
     // the engine is cranking
     case 1:
