@@ -48,7 +48,7 @@ class PwmDevice{
 
     // control functions
 
-    //void set_pwm(int, int, int); // set the pwm frequency of the device
+    void set_pwm(int table_row_val, int table_col_val, int engine_state); // set the pwm frequency of the device
 
 
 

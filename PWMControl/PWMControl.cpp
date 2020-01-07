@@ -1,6 +1,6 @@
 #include "PWMControl.h"
 
-// constructor
+// constructor : uses initializer list
 PwmDevice::PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
                      int shutdown_dur, int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq) :
                      pwm_pin_(output_pin), table_(table_rows, table_columns), pwm_min_dc_(pwm_min),
