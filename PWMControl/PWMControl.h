@@ -26,6 +26,7 @@ class PwmDevice{
 
       int pwm_percent_actual_ = 0; // the current pwm percentage value of the device
       int pwm_percent_target_ = 0; // the target pwm percentage value of the device
+      // add pwm_percent_error_? for faster spool times when not in startup??
       int pwm_output_ = 0; // the actual PWM value that is being written
       bool device_on_ = false; // true when the device is on (pwm value > 0)
       bool device_soft_start_ = false; // true when the soft start function is active
@@ -54,15 +55,9 @@ class PwmDevice{
     int pwm_percent_actual(){return pwm_percent_actual_;}
     bool device_on(){return device_on_;}
 
-
-
     // setters
     // set the pwm frequency of the device. for override percent, -1 means no override;
     void set_pwm(int table_row_val, int table_col_val, int engine_state, int override_percent);
-
-
-
-
 
 };
 
