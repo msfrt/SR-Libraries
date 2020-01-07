@@ -10,7 +10,7 @@ PwmDevice::PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_
 
 
 
-void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state){
+void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, int override_percent){
 
   // update the engine state variable
   this->engine_state_ = engine_state;
@@ -38,6 +38,15 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state){
       break;
 
   } // end switch statement
+
+
+
+  // one last thing before writing the PWM... if there is an active override present, forget all of the calculations
+  // done above and set the pwm_percent_actual_ to the override_percent
+  if (override_percent >= 0 && override_percent <= 100){
+    this->pwm_percent_target_ = override_percent;
+    this->pwm_percent_actual_ = override_percent;
+  }
 
 
   write_pwm_duty_cycle(); // fucking send it
