@@ -24,7 +24,7 @@ class PwmDevice{
       EasyTimer pwm_control_timer_; // timer to control the control function update frequency
 
       unsigned long soft_start_until_time_ = 0; // whenever this time is greater than current micro time, it is in ss mode
-      unsigned long soft_start_duration_; // the duration in millis for the duration of soft start
+      int soft_start_duration_; // the duration in millis for the duration of soft start
 
       int pwm_percent_actual_ = 0; // the current pwm percentage value of the device
       int pwm_percent_target_ = 0; // the target pwm percentage value of the device
@@ -39,13 +39,11 @@ class PwmDevice{
 
   public:
     PwmDevice() = delete;
-    PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur, int shutdown_dur,
-              int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq);
+    PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
+                         int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq);
 
     // getters
-    bool soft_start_state(){return device_soft_start_;}
-    bool device_state(){return device_on_;}
-    int current_pwm(){return pwm_actual_;}
+
 
     // setters
     void set_pwm(int table_row_val, int table_col_val, int engine_state); // set the pwm frequency of the device
