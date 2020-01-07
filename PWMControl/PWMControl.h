@@ -15,8 +15,8 @@ class PwmDevice{
 
       int pwm_min_dc_; // minimum duty cycle that the device should be pwmed
       int pwm_max_dc_; // maximum duty cycle that the device should be pwmed
-      int pwm_write_resolution_min_ = 0;
-      int pwm_write_resolution_max_ = 255;
+      int pwm_write_resolution_min_ = 0; // minimum write resolution
+      int pwm_write_resolution_max_ = 255; // max write resolution (can be updated, google chart for Teensy)
 
       int pwm_normal_freq_; // the pwm frequency of the device under normal operation
       int pwm_soft_start_freq_; // the pwm frequency of the device under the soft start function
@@ -28,13 +28,15 @@ class PwmDevice{
 
       int pwm_percent_actual_ = 0; // the current pwm percentage value of the device
       int pwm_percent_target_ = 0; // the target pwm percentage value of the device
-      int pwm_output = 0; // the actual PWM value that is being written
+      int pwm_output_ = 0; // the actual PWM value that is being written
       bool device_on_ = false; // true when the device is on (pwm value > 0)
       bool device_soft_start_ = false; // true when the soft start function is active
       int eng_state_prev_ = false; // engine state during the last control function loop (0=off;1=crank;2=on;3=cooldown)
       int eng_state_ = false; // engine state during the current control function loop (0=off;1=crank;2=on;3=cooldown)
 
       void pwm_actual(); // calculate the actual pwm value
+
+      void write_pwm_duty_cycle(); // write the actual PWM duty cycle
 
 
   public:

@@ -12,12 +12,42 @@ PwmDevice::PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_
 
 void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state){
 
-  // first, look in the table to see what the target output percentage is for the device
-  this->pwm_percent_target_ = this->table_.find(table_col_val, table_col_val);
+  // update the engine state variable
+  this->engine_state_ = engine_state;
 
-  
+  // first, based upon the engine state, we need to determine a target PWM
+  switch (this->engine_state_) {
+
+    // the engine is off
+    case 0:
 
 
+      break;
+
+    // the engine is cranking
+    case 1:
+      // set target and actual PWM to zero immediately
+      this->pwm_percent_target_ = 0;
+      this->pwm_percent_actual_ = 0;
+      break;
+
+    // the engine is running
+    case 2:
+      break;
+
+  } // end switch statement
+
+
+  write_pwm_duty_cycle(); // fucking send it
+}
+
+
+
+// maps duty cycle percentage to min and max PWM duty cycle values, and then writes it to the pin
+void PwmDevice::write_pwm_duty_cycle(){
+  this->pwm_output_ = map(this->pwm_percent_actual_, 0, 100,
+                          this->pwm_write_resolution_min_, this->pwm_write_resolution_max_);
+  analogWrite(this->pwm_pin_, this->pwm_output_);
 }
 
 
