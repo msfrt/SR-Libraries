@@ -31,8 +31,8 @@ class PwmDevice{
       int pwm_output_ = 0; // the actual PWM value that is being written
       bool device_on_ = false; // true when the device is on (pwm value > 0)
       bool device_soft_start_ = false; // true when the soft start function is active
-      int eng_state_prev_ = false; // engine state during the last control function loop (0=off;1=crank;2=on;3=cooldown)
-      int eng_state_ = false; // engine state during the current control function loop (0=off;1=crank;2=on;3=cooldown)
+      int engine_state_prev_ = 0; // engine state during the last control function loop (0=off;1=crank;2=on;3=cooldown)
+      int engine_state_ = 0; // engine state during the current control function loop (0=off;1=crank;2=on;3=cooldown)
 
       void pwm_actual(); // calculate the actual pwm value
 

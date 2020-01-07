@@ -35,6 +35,10 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state){
     case 2:
       break;
 
+    // the engine is in a cool-down cycle
+    case 3:
+      break;
+
   } // end switch statement
 
 
