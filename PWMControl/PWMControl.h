@@ -22,7 +22,9 @@ class PwmDevice{
       int pwm_soft_start_freq_; // the pwm frequency of the device under the soft start function
 
       EasyTimer pwm_control_timer_; // timer to control the control function update frequency
-      EasyTimer pwm_soft_start_timer_ = 1; // timer to control the soft start function
+
+      unsigned long soft_start_until_time_ = 0; // whenever this time is greater than current micro time, it is in ss mode
+      unsigned long soft_start_duration_; // the duration in millis for the duration of soft start
 
       int pwm_percent_actual_ = 0; // the current pwm percentage value of the device
       int pwm_percent_target_ = 0; // the target pwm percentage value of the device
