@@ -15,6 +15,8 @@ class PwmDevice{
 
       int pwm_min_dc_; // minimum duty cycle that the device should be pwmed
       int pwm_max_dc_; // maximum duty cycle that the device should be pwmed
+      int pwm_write_resolution_min_ = 0;
+      int pwm_write_resolution_max_ = 255;
 
       int pwm_normal_freq_; // the pwm frequency of the device under normal operation
       int pwm_soft_start_freq_; // the pwm frequency of the device under the soft start function
@@ -39,16 +41,14 @@ class PwmDevice{
               int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq);
 
     // getters
-
     bool soft_start_state(){return device_soft_start_;}
     bool device_state(){return device_on_;}
     int current_pwm(){return pwm_actual_;}
 
     // setters
-
-    // control functions
-
     void set_pwm(int table_row_val, int table_col_val, int engine_state); // set the pwm frequency of the device
+
+
 
 
 
