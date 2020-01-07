@@ -22,14 +22,16 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
     case 0:
     // the engine is cranking
     case 1:
-      // set the override value to 0
+      // immediately set the output value to 0
       this->pwm_percent_target_ = 0;
       this->pwm_percent_actual_ = 0;
+      this->device_on_ = false;
       break;
 
     // the engine is running
     case 2:
-      determine_dynamic_pwm(); // this function has all of the conditions for dynamic control under normal operation
+      // this function has all of the conditions for dynamic control under normal operation
+      determine_dynamic_pwm(table_row_val, table_col_val);
       break;
 
     // the engine is in a cool-down cycle
@@ -48,20 +50,48 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
     this->pwm_percent_actual_ = override_percent;
   }
 
+  // before setting the PWM, set the appropriate frequency if necessary
+  write_pwm_frequency();
 
-  write_pwm_duty_cycle(); // fucking send it
+  // fucking send it
+  write_pwm_duty_cycle();
 }
 
 
-void PwmDevice::determine_dynamic_pwm(){
+
+
+void PwmDevice::determine_dynamic_pwm(int &table_row_val, int &table_col_val){
 
   // well, what does the fan table say?
+  this->pwm_percent_target_ = this->table_.find(table_row_val, table_col_val);
+
+  // check if we need to turn the device on and enable soft start
+  if (this->device_on_ == false && this->pwm_percent_target_ > 0){
+    this->soft_start_until_time_ = millis() + this->soft_start_duration_;
+    this->device_on_ = true;
+  }
+
+  // this next chunk does the increment/decrement of the fan PWM
+  if (this->pwm_percent_actual_ < this->pwm_percent_target_){this->pwm_percent_actual_++;}
+  if (this->pwm_percent_actual_ > this->pwm_percent_target_){this->pwm_percent_actual_--;}
+
+  // check one last time to see if the device status should be set to off
+  if (this->pwm_percent_actual_ < 1){this->device_on_ = false;}
 
 }
 
-void PwmDevice::determine_dynamic_pwm(){
 
-  // well, what does the fan table say?
+
+void PwmDevice::determine_cooldown_pwm(){
+  this->pwm_percent_target_ = 0; // eventually, we would like the fans to be off
+
+  // if actual pwm is more than target, decrement that bad boi
+  if (this->pwm_percent_actual_ > this->pwm_percent_target_){
+    this->pwm_percent_actual_--;
+  }
+
+  // if we've reached the point where the output is actualy 0, be sure to set the device state to off
+  if (this->pwm_percent_actual_ < 1){this->device_on_ = false;}
 
 }
 
@@ -73,6 +103,8 @@ void PwmDevice::write_pwm_duty_cycle(){
                           this->pwm_write_resolution_min_, this->pwm_write_resolution_max_);
   analogWrite(this->pwm_pin_, this->pwm_output_);
 }
+
+
 
 
 
