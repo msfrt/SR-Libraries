@@ -24,12 +24,13 @@ class PwmDevice{
       EasyTimer pwm_control_timer_; // timer to control the control function update frequency
       EasyTimer pwm_soft_start_timer_ = 1; // timer to control the soft start function
 
-      int pwm_actual_ = 0; // the current pwm value of the device
-      int pwm_target_ = 0; // the target pwm value of the device
+      int pwm_percent_actual_ = 0; // the current pwm percentage value of the device
+      int pwm_percent_target_ = 0; // the target pwm percentage value of the device
+      int pwm_output = 0; // the actual PWM value that is being written
       bool device_on_ = false; // true when the device is on (pwm value > 0)
       bool device_soft_start_ = false; // true when the soft start function is active
-      int prev_eng_state = false; // engine state during the last control function loop (0=off;1=cranking;2=on)
-      int current_eng_state_ = false; // engine state during the current control function loop (0=off;1=cranking;2=on)
+      int eng_state_prev_ = false; // engine state during the last control function loop (0=off;1=crank;2=on;3=cooldown)
+      int eng_state_ = false; // engine state during the current control function loop (0=off;1=crank;2=on;3=cooldown)
 
       void pwm_actual(); // calculate the actual pwm value
 

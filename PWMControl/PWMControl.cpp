@@ -12,7 +12,16 @@ PwmDevice::PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_
 
 
 
-PwmDevice::PwmDevice
+void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state){
+
+  // first, look in the table to see what the target output percentage is for the device
+  this->pwm_target_ = this->table_.find(table_col_val, table_col_val);
+
+  /
+
+}
+
+
 
 // void PwmDevice::pwm_actual(){
 //
