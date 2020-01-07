@@ -107,6 +107,17 @@ void PwmDevice::write_pwm_duty_cycle(){
 
 
 
+void PwmDevice::write_pwm_frequency(){
+
+  // if we are currently in a soft start period...
+  if (millis() < this->soft_start_until_time_){
+    analogWriteFrequency(this->pwm_pin_, this->pwm_soft_start_freq_);
+  } else { // normal frequency
+    analogWriteFrequency(this->pwm_pin_, this->pwm_normal_freq_);
+  }
+}
+
+
 
 // void PwmDevice::pwm_actual(){
 //
