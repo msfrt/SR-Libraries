@@ -15,7 +15,7 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
   // update the engine state variable
   this->engine_state_ = engine_state;
 
-  // first, based upon the engine state, we need to determine a target PWM
+  // first, based upon the engine state, we need to determine what exactly can and needs to be done
   switch (this->engine_state_) {
 
     // the engine is off
@@ -40,8 +40,6 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
       break;
 
   } // end switch statement
-
-
 
   // one last thing before writing the PWM... if there is an active override present, forget all of the calculations
   // done above and set the pwm_percent_actual_ to the override_percent
@@ -99,8 +97,7 @@ void PwmDevice::determine_cooldown_pwm(){
 
 // maps duty cycle percentage to min and max PWM duty cycle values, and then writes it to the pin
 void PwmDevice::write_pwm_duty_cycle(){
-  this->pwm_output_ = map(this->pwm_percent_actual_, 0, 100,
-                          this->pwm_write_resolution_min_, this->pwm_write_resolution_max_);
+  this->pwm_output_ = map(this->pwm_percent_actual_, 0, 100, this->pwm_min_dc_, this->pwm_max_dc_);
   analogWrite(this->pwm_pin_, this->pwm_output_);
 }
 
