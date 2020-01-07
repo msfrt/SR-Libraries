@@ -20,21 +20,21 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
 
     // the engine is off
     case 0:
-      // no break statement for fall-through behavior
-
     // the engine is cranking
     case 1:
-      // set target and actual PWM to zero immediately
+      // set the override value to 0
       this->pwm_percent_target_ = 0;
       this->pwm_percent_actual_ = 0;
       break;
 
     // the engine is running
     case 2:
+      determine_dynamic_pwm(); // this function has all of the conditions for dynamic control under normal operation
       break;
 
     // the engine is in a cool-down cycle
     case 3:
+      determine_cooldown_pwm();
       break;
 
   } // end switch statement
@@ -50,6 +50,19 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
 
 
   write_pwm_duty_cycle(); // fucking send it
+}
+
+
+void PwmDevice::determine_dynamic_pwm(){
+
+  // well, what does the fan table say?
+
+}
+
+void PwmDevice::determine_dynamic_pwm(){
+
+  // well, what does the fan table say?
+
 }
 
 
