@@ -50,6 +50,10 @@ class PwmDevice{
                          int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq);
 
     // getters
+    int pwm_percent_target(){return pwm_percent_target_;}
+    int pwm_percent_actual(){return pwm_percent_actual_;}
+    bool device_on(){return device_on_;}
+
 
 
     // setters
