@@ -7,11 +7,12 @@ PwmDevice::PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_
                      pwm_max_dc_(pwm_max), pwm_normal_freq_(pwm_normal_freq), pwm_soft_start_freq_(pwm_soft_start_freq),
                      pwm_control_timer_(pwm_control_freq){
                        pwm_soft_start_timer_.set_delay_millis(soft_start_dur); // set duration of the soft start timer function
-                       pwm_shutdown_timer_.set_delay_millis(shutdown_dur); // set the duration of the shutdown timer
                      };
 
 
 
+
+PwmDevice::PwmDevice
 
 // void PwmDevice::pwm_actual(){
 //

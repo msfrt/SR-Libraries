@@ -23,7 +23,6 @@ class PwmDevice{
 
       EasyTimer pwm_control_timer_; // timer to control the control function update frequency
       EasyTimer pwm_soft_start_timer_ = 1; // timer to control the soft start function
-      EasyTimer pwm_shutdown_timer_ = 1; // timer to control the shutdown function
 
       int pwm_actual_ = 0; // the current pwm value of the device
       int pwm_target_ = 0; // the target pwm value of the device
