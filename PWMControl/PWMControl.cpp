@@ -12,47 +12,52 @@ PwmDevice::PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_
 
 void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, int override_percent){
 
-  // update the engine state variable
-  this->engine_state_ = engine_state;
+  // encapsulate everything in the PWM update timer.
+  if (pwm_control_timer_.isup()){
 
-  // first, based upon the engine state, we need to determine what exactly can and needs to be done
-  switch (this->engine_state_) {
+    // update the engine state variable
+    this->engine_state_ = engine_state;
 
-    // the engine is off
-    case 0:
-    // the engine is cranking
-    case 1:
-      // immediately set the output value to 0
-      this->pwm_percent_target_ = 0;
-      this->pwm_percent_actual_ = 0;
-      this->device_on_ = false;
-      break;
+    // first, based upon the engine state, we need to determine what exactly can and needs to be done
+    switch (this->engine_state_) {
 
-    // the engine is running
-    case 2:
-      // this function has all of the conditions for dynamic control under normal operation
-      determine_dynamic_pwm(table_row_val, table_col_val);
-      break;
+      // the engine is off
+      case 0:
+      // the engine is cranking
+      case 1:
+        // immediately set the output value to 0
+        this->pwm_percent_target_ = 0;
+        this->pwm_percent_actual_ = 0;
+        this->device_on_ = false;
+        break;
 
-    // the engine is in a cool-down cycle
-    case 3:
-      determine_cooldown_pwm();
-      break;
+      // the engine is running
+      case 2:
+        // this function has all of the conditions for dynamic control under normal operation
+        determine_dynamic_pwm(table_row_val, table_col_val);
+        break;
 
-  } // end switch statement
+      // the engine is in a cool-down cycle
+      case 3:
+        determine_cooldown_pwm();
+        break;
 
-  // one last thing before writing the PWM... if there is an active override present, forget all of the calculations
-  // done above and set the pwm_percent_actual_ to the override_percent
-  if (override_percent >= 0 && override_percent <= 100){
-    this->pwm_percent_target_ = override_percent;
-    this->pwm_percent_actual_ = override_percent;
-  }
+    } // end switch statement
 
-  // before setting the PWM, set the appropriate frequency if necessary
-  write_pwm_frequency();
+    // one last thing before writing the PWM... if there is an active override present, forget all of the calculations
+    // done above and set the pwm_percent_actual_ to the override_percent
+    if (override_percent >= 0 && override_percent <= 100){
+      this->pwm_percent_target_ = override_percent;
+      this->pwm_percent_actual_ = override_percent;
+    }
 
-  // fucking send it
-  write_pwm_duty_cycle();
+    // before setting the PWM, set the appropriate frequency if necessary
+    write_pwm_frequency();
+
+    // fucking send it
+    write_pwm_duty_cycle();
+    
+  } // end timer
 }
 
 
