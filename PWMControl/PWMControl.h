@@ -34,10 +34,11 @@ class PwmDevice{
       int engine_state_prev_ = 0; // engine state during the last control function loop (0=off;1=crank;2=on;3=cooldown)
       int engine_state_ = 0; // engine state during the current control function loop (0=off;1=crank;2=on;3=cooldown)
 
-      void pwm_actual(); // calculate the actual pwm value
+      // the following is called when the engine is running or in cool-down, and fans are not set to 0
+      void determine_dynamic_pwm_output();
 
-      void write_pwm_duty_cycle(); // write the actual PWM duty cycle
-
+      // write the actual PWM duty cycle
+      void write_pwm_duty_cycle();
 
   public:
     PwmDevice() = delete;
