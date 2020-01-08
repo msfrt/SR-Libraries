@@ -59,6 +59,11 @@ class PwmDevice{
     // set the pwm frequency of the device. for override percent, -1 means no override;
     void set_pwm(int table_row_val, int table_col_val, int engine_state, int override_percent);
 
+    void set_table(int table[]){
+
 };
+
+void PwmDevice::set_table(int table[]){
+}
 
 #endif
