@@ -35,7 +35,7 @@ class LookupTable{
     void print();
 
     // this takes a pointer to the first element of the 2d array
-    void fill_table(int *table);
+    void fill_table(int *first_element);
 };
 
 
