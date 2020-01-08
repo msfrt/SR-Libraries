@@ -11,7 +11,9 @@ Unfortunately, you must still define an old and slow 2d array that has the conte
 ```cpp
 //    rows: temp in degrees celcius * 10
 // columns: battery voltage in mV * 10
-int right_fan_array[12][14] =
+const int right_fan_num_rows = 12;
+const int right_fan_num_cols = 14;
+int right_fan_array[right_fan_num_rows][right_fan_num_cols] =
 {
   {    0, 80000, 90000, 100000, 105000, 110000, 119000, 120000, 130000, 137000, 138000, 139000, 142000, 145000},
   {    0,     0,     0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0},
@@ -32,17 +34,20 @@ You can define this array as a global variable, but understand that it will take
 Okay, now that you've made a 2d array, we need to create a LookupTable object. You need to have the same number of rows and columns as your 2d-array as defined above.
 
 ```cpp
-// 12 is for the number of rows, 14 is for the number of columns.
-LookupTable fanr_table(12, 14);
+// we need to tell the LookupTable object how big it will be!
+LookupTable fanr_table(right_fan_num_rows, right_fan_num_cols);
 ```
 
 ### Initialization
 
-Okay, technically our LookupTable is already initialized, however it doesn't have the values that we want to use. We need to fill our LookupTable with the 2d array that was created earlier.
+Okay, technically our LookupTable is already initialized, however it doesn't have the values that we want to use. We need to fill our LookupTable with the 2d array that was created earlier. C++ is kinda stupid in that you can't pass an array into a function. It gets even worse when we try to pass in a 2d array. However, since our LookupTable object already has the size information, we're almost there. We simply need to feed it a pointer to the first row of the 2d array, which is technically a pointer to an array of ints. The `fill_table()` function does the rest!
 
 ```cpp
+// create a pointer to the first row of data in the table
+int *right_fan_array_row_zero_ptr = right_fan_array[0];
+
 // copy the contents of the array into the lookup table
-fanr_table.fill_table(right_fan_array);
+fanr_table.fill_table(right_fan_array_row_zero_ptr);
 ```
 ### Usage
 
