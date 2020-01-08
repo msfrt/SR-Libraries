@@ -30,6 +30,7 @@ void LookupTable::fill_table(int *row_zero_ptr){
       // this next line is a little fucked, but essentially we had to pass in a pointer to the first array of pointers,
       // and now we're incrementing it by the width of previous rows (the number of columns_ times previous rows),
       // and then adding the next column index that we want
+      Serial.println((row_zero_ptr)[row * columns_ + column]);
       this->set_index(row, column, (row_zero_ptr)[row * columns_ + column]);
     }
   }

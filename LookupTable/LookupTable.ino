@@ -17,29 +17,32 @@ int right_fan_array[num_rows][num_columns] =
   { 1001,   100,   100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100},
   { 1500,   100,   100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100}
 };
-
 LookupTable fanr_table(num_rows, num_columns);
+int *right_fan_array_row_zero_ptr = right_fan_array[0];
 
-int *row_zero = right_fan_array[0];
 
 void setup() {
 
 
   Serial.begin(9600);
+  delay(2000);
+  Serial.println("test");
+
+
+  fanr_table.fill_table(right_fan_array_row_zero_ptr);
+
 
 }
 
-int main() {
+void loop() {
 
-  delay(2000);
+
+
 
   Serial.println("yessir");
 
-  delay(500);
+  delay(2000);
 
-  fanr_table.fill_table(row_zero);
-
-  delay(500);
 
   Serial.println("donzo");
 
