@@ -73,14 +73,14 @@ Getter - this returns the value in a table at a certain index. You shouldn't rea
 #### `LookupTable::set_index(int row_index, int column_index, int value)`
 Setter - given a table index, this functions updates the value at that index.
 
-### [EXAMPLE] Declaration and Initialization
+### Declaration and Initialization
 
 ```cpp
 #include "LookupTable.h"
 
-const int num_rows = 12;
-const int num_columns = 14;
-LookupTable fanr_table(num_rows, num_columns);
+const int num_rows = 12; // define row count
+const int num_columns = 14; // define column count
+LookupTable fanr_table(num_rows, num_columns); // create a LookupTable with the number of rows and columns
 int right_fan_array[num_rows][num_columns] =
 {
   {    0, 80000, 90000, 100000, 105000, 110000, 119000, 120000, 130000, 137000, 138000, 139000, 142000, 145000},
@@ -96,7 +96,9 @@ int right_fan_array[num_rows][num_columns] =
   { 1001,   100,   100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100},
   { 1500,   100,   100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100}
 };
-int *right_fan_array_row_zero_ptr = right_fan_array[0];
+int *right_fan_array_row_zero_ptr = right_fan_array[0]; // create a pointer to the first row
 
-
+void setup(){
+  fanr_table.fill_table(right_fan_array_row_zero_ptr); // fill the LookupTable object table
+}
 ```

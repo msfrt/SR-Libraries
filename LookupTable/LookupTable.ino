@@ -39,20 +39,13 @@ void loop() {
 
 
 
-  Serial.println("yessir");
+  Serial.println(fanr_table.find(930, 119000));
+  Serial.println(fanr_table.find(0, 110000));
+  Serial.println(fanr_table.find(0, 0));
+  Serial.println(fanr_table.find(1000, 500));
+  Serial.println();
 
   delay(2000);
 
-
-  Serial.println("donzo");
-
-  fanr_table.print();
-
-  Serial.println("printzo donzo");
-
-  int my_value = fanr_table.find(930, 119000);
-
-  Serial.print("(930, 119000)");
-  Serial.println(my_value);
 
 }
