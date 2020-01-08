@@ -1,6 +1,8 @@
 #include "LookupTable.h"
 
-int right_fan_array[12][14] =
+const int num_rows = 12;
+const int num_columns = 14;
+int right_fan_array[num_rows][num_columns] =
 {
   {    0, 80000, 90000, 100000, 105000, 110000, 119000, 120000, 130000, 137000, 138000, 139000, 142000, 145000},
   {    0,     0,     0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0},
@@ -16,20 +18,38 @@ int right_fan_array[12][14] =
   { 1500,   100,   100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100}
 };
 
-LookupTable fanr_table(12, 14);
+LookupTable fanr_table(num_rows, num_columns);
+
+int *row_zero = right_fan_array[0];
 
 void setup() {
 
+
   Serial.begin(9600);
-
-  fanr_table.fill_table(right_fan_array);
-
-  Delay(500);
-
-  Serial.print(fanr_table.find(1000, 119000))
 
 }
 
 int main() {
+
+  delay(2000);
+
+  Serial.println("yessir");
+
+  delay(500);
+
+  fanr_table.fill_table(row_zero);
+
+  delay(500);
+
+  Serial.println("donzo");
+
+  fanr_table.print();
+
+  Serial.println("printzo donzo");
+
+  int my_value = fanr_table.find(930, 119000);
+
+  Serial.print("(930, 119000)");
+  Serial.println(my_value);
 
 }

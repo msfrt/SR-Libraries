@@ -34,17 +34,9 @@ class LookupTable{
     // you can print the table for debugging purposes
     void print();
 
-    template<typename Type, size_t Size> // this is needed so we don't have to pass the size of the array in manually
-    void fill_table(const Type(&table)[Size]);
+    // this takes a pointer to the first element of the 2d array
+    void fill_table(int *table);
 };
 
-template<typename Type, size_t Size> // this is templated, so we've gotta keep it in the header file
-void LookupTable::fill_table(const Type(&table)[Size]){
-  for (int row = 0; row < this->rows_; ++row){ // iterate through the rows of the lookup table
-    for (int column = 0; column < this->columns_; ++column){ // iterate through the columns of the lookup table
-      this->set_index(row, column, table[row][column]);
-    }
-  }
-}
 
 #endif

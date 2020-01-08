@@ -20,6 +20,23 @@ int LookupTable::set_index(int row, int column, int value){
   return value;
 }
 
+
+void LookupTable::fill_table(int *row_zero_ptr){
+  Serial.println(this->rows_);
+  Serial.println(this->columns_);
+  Serial.println("-----");
+  for (int row = 0; row < this->rows_; ++row){ // iterate through the rows of the lookup table
+    for (int column = 0; column < this->columns_; ++column){ // iterate through the columns of the lookup table
+      // this next line is a little fucked, but essentially we had to pass in a pointer to the first array of pointers,
+      // and now we're incrementing it by the width of previous rows (the number of columns_ times previous rows),
+      // and then adding the next column index that we want
+      this->set_index(row, column, (row_zero_ptr)[row * columns_ + column]);
+    }
+  }
+}
+
+
+
 // iterates through the table and prints it
 void LookupTable::print(){
   for (int row = 0; row < this->rows_; ++row){
@@ -93,10 +110,10 @@ int LookupTable::find(int find_row_val, int find_col_val){
     }
   }
 
-  Serial.println(row_lesser);
-  Serial.println(row_greater);
-  Serial.println(col_lesser);
-  Serial.println(col_greater);
+  // Serial.println(row_lesser);
+  // Serial.println(row_greater);
+  // Serial.println(col_lesser);
+  // Serial.println(col_greater);
 
 
   // now that we have the greater and lesser values, we need to do the mapping.
