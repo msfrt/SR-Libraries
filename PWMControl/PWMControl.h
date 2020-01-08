@@ -59,7 +59,9 @@ class PwmDevice{
     // set the pwm frequency of the device. for override percent, -1 means no override;
     void set_pwm(int table_row_val, int table_col_val, int engine_state, int override_percent);
 
-    void set_table(int table[]){
+    // this simply just passes the table information through to the LookupTable object.
+    // Look at LookupTable README for documentation if needed
+    void set_table(int *first_element);
 
 };
 

@@ -1,10 +1,8 @@
 #include "PWMControl.h"
 
-// PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
-// int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq)
-PwmDevice test_device(1, 12, 14, 0, 255, 2500, 10, 40, 100);
-
-int fan_table[12][14] =
+const int num_rows = 12
+const int num_cols = 14
+int fan_table[num_rows][num_cols] =
 {
  {    0, 80000, 90000, 100000, 105000, 110000, 119000, 120000, 130000, 137000, 138000, 139000, 142000, 145000},
  {    0,     0,     0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0},
@@ -19,6 +17,10 @@ int fan_table[12][14] =
  { 1001,   100,   100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100},
  { 1500,   100,   100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100,    100},
 };
+
+// PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
+// int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq)
+PwmDevice test_device(1, num_rows, num_cols, 0, 255, 2500, 10, 40, 100);
 
 void setup()
 {

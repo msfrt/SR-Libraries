@@ -56,8 +56,14 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
 
     // fucking send it
     write_pwm_duty_cycle();
-    
+
   } // end timer
+}
+
+
+
+void set_table(int *first_element){
+  this->table_.fill_table(first_element);
 }
 
 
