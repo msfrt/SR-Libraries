@@ -18,8 +18,12 @@ class LookupTable{
     // but it will require that the user indexes the table using an indexing function
     LookupTable(int rows, int columns) : rows_(rows), columns_(columns) { table_ = new int[rows_ * columns_];}
 
+    // RULE OF THREE:
     // destructor (remember to destroy dynamically allocated table array)
     ~LookupTable() {delete [] table_;}
+    // copy and copy-assignment constructor
+    LookupTable(const LookupTable &old_table) = delete; // don't EVER copy unless implementing this function.
+    LookupTable& operator=(const LookupTable& old_table) = delete; // same here, DON'T COPY!
 
     // getter - get the value at a certain index
     int at_index(int row, int column);
