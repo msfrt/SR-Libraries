@@ -57,6 +57,10 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
     // fucking send it
     write_pwm_duty_cycle();
 
+    Serial.print("   Target: "); Serial.println(pwm_percent_target_);
+    Serial.print("   Actual: "); Serial.println(pwm_percent_actual_);
+    Serial.print("Frequency: "); Serial.println(pwm_actual_freq_);
+
   } // end timer
 }
 
@@ -119,10 +123,13 @@ void PwmDevice::write_pwm_frequency(){
 
   // if we are currently in a soft start period...
   if (millis() < this->soft_start_until_time_){
-    analogWriteFrequency(this->pwm_pin_, this->pwm_soft_start_freq_);
+    this->pwm_actual_freq_ = this->pwm_soft_start_freq_;
   } else { // normal frequency
-    analogWriteFrequency(this->pwm_pin_, this->pwm_normal_freq_);
+    this->pwm_actual_freq_ = this->pwm_normal_freq_;
   }
+
+  // write the frequency
+  analogWriteFrequency(this->pwm_pin_, this->pwm_actual_freq_);
 }
 
 

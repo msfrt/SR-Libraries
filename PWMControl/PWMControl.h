@@ -18,6 +18,7 @@ class PwmDevice{
 
       int pwm_normal_freq_; // the pwm frequency of the device under normal operation
       int pwm_soft_start_freq_; // the pwm frequency of the device under the soft start function
+      int pwm_actual_freq_;
 
       EasyTimer pwm_control_timer_; // timer to control the control function update frequency
 
@@ -57,7 +58,7 @@ class PwmDevice{
     LookupTable &table(){return table_;}
 
     // setters
-    // set the pwm frequency of the device. for override percent, -1 means no override;
+    // set the pwm of the device. for override percent, -1 means no override;
     void set_pwm(int table_row_val, int table_col_val, int engine_state, int override_percent);
 
     // this simply just passes the table information through to the LookupTable object.

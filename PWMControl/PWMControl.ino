@@ -5,10 +5,18 @@ const int num_cols = 14;
 
 // PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
 // int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq)
-PwmDevice test_device(1, num_rows, num_cols, 0, 255, 2500, 10, 40, 100);
+PwmDevice test_device(5, num_rows, num_cols, 0, 255, 2500, 10, 40, 100);
 
 LEDBlink onboard_led(13, 10);
-EasyTimer print_timer(1);
+EasyTimer print_timer(10);
+EasyTimer read_timer(1);
+
+int engine_temp_row = 0; // pot value
+int battery_mv10_column = 0; // pot value
+
+int engine_mode = 0; //engine state
+unsigned long engine_mode_timer = 0;
+
 
 void setup()
 {
@@ -31,13 +39,63 @@ void setup()
   };
   int *fan_table_ptr = fan_table[0];
   test_device.fill_table(fan_table_ptr);
+
+  pinMode(23, INPUT); //pot1
+  pinMode(22, INPUT); //pot2
+
+  pinMode(18, INPUT_PULLUP); //buddon
 }
 
 void loop()
 {
-  onboard_led.run();
+  onboard_led.run();//led blink
+
+  // read the button, and go through engine state cycle
+  if (!digitalRead(18)){
+    engine_mode_timer = millis();
+  }
+  if (millis() - engine_mode_timer > 20000){
+    engine_mode = 0; // off
+  } else if (millis() - engine_mode_timer > 15000) {
+    engine_mode = 3; // cooldown
+  } else if (millis() - engine_mode_timer > 100){
+    engine_mode = 2; // running
+  } else {
+    engine_mode = 1; //cranking
+  }
+
+
+  //read dem bois
+  if (read_timer.isup()){
+    engine_temp_row = map(analogRead(23), 0, 1023, 800, 1000);
+    battery_mv10_column = map(analogRead(22), 0, 1023, 80000, 145000);
+  }
 
   if (print_timer.isup()){
-    test_device.table().print();
+    Serial.println();
+    Serial.println();
+    Serial.println();
+    Serial.println();
+    Serial.println();
+    Serial.println();
+    Serial.print(" Engine temp: "); Serial.println(engine_temp_row);
+    Serial.print("Battery volt: "); Serial.println(battery_mv10_column);
+
+    switch (engine_mode) {
+      case 0:
+        Serial.println("      Engine: OFF");
+        break;
+      case 1:
+        Serial.println("      Engine: CRANKING");
+        break;
+      case 2:
+        Serial.println("      Engine: ON");
+        break;
+      case 3:
+        Serial.println("      Engine: COOLDOWN");
+        break;
+    }
   }
+
+  test_device.set_pwm(engine_temp_row, battery_mv10_column, engine_mode, -1);
 }
