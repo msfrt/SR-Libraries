@@ -27,4 +27,17 @@ class EasyTimer{
     unsigned long us_; // microseconds
 };
 
+class LEDBlink{
+  public:
+    LEDBlink(int pin, int freq); // constructor
+    void run(); // call this every loop to check for LED
+    void set_frequency(int freq); // frequency in Hz.
+  private:
+    int led_pin_;
+    bool led_on_;
+    unsigned long freq_;
+    unsigned long last_time_; // in microseconds
+    unsigned long us_; // microseconds delay
+};
+
 #endif
