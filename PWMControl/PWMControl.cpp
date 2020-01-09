@@ -62,7 +62,7 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
 
 
 // sauce it into the table's function
-void fill_table(int *first_element){
+void PwmDevice::fill_table(int *first_element){
   this->table_.fill_table(first_element);
 }
 

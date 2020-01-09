@@ -54,6 +54,7 @@ class PwmDevice{
     int pwm_percent_target(){return pwm_percent_target_;}
     int pwm_percent_actual(){return pwm_percent_actual_;}
     bool device_on(){return device_on_;}
+    LookupTable &table(){return table_;}
 
     // setters
     // set the pwm frequency of the device. for override percent, -1 means no override;
@@ -64,8 +65,5 @@ class PwmDevice{
     void fill_table(int *first_element);
 
 };
-
-void PwmDevice::set_table(int table[]){
-}
 
 #endif
