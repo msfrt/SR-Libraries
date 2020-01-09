@@ -61,7 +61,7 @@ class PwmDevice{
 
     // this simply just passes the table information through to the LookupTable object.
     // Look at LookupTable README for documentation if needed
-    void set_table(int *first_element);
+    void fill_table(int *first_element);
 
 };
 
