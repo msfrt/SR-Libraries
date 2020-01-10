@@ -3,9 +3,9 @@
 const int num_rows = 12;
 const int num_cols = 14;
 
-// PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
-// int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq)
-PwmDevice test_device(5, num_rows, num_cols, 0, 255, 2500, 10, 40, 100);
+// PWMDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
+//           int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq)
+PWMDevice test_device(5, num_rows, num_cols, 0, 255, 7500, 10, 40, 420);
 
 LEDBlink onboard_led(13, 10);
 EasyTimer print_timer(10);
@@ -16,6 +16,7 @@ int battery_mv10_column = 0; // pot value
 
 int engine_mode = 0; //engine state
 unsigned long engine_mode_timer = 0;
+int pwm_override = -1;
 
 
 void setup()
@@ -44,19 +45,28 @@ void setup()
   pinMode(22, INPUT); //pot2
 
   pinMode(18, INPUT_PULLUP); //buddon
+  pinMode(16, INPUT_PULLUP); //buddon 2
 }
 
 void loop()
 {
   onboard_led.run();//led blink
 
-  // read the button, and go through engine state cycle
+
+  if (!digitalRead(16)){
+    pwm_override = 100;
+  } else {
+    pwm_override = -1;
+  }
+
+
+  // read the engine button, and go through engine state cycle
   if (!digitalRead(18)){
     engine_mode_timer = millis();
   }
-  if (millis() - engine_mode_timer > 20000){
+  if (millis() - engine_mode_timer > 15000){
     engine_mode = 0; // off
-  } else if (millis() - engine_mode_timer > 15000) {
+  } else if (millis() - engine_mode_timer > 5000) {
     engine_mode = 3; // cooldown
   } else if (millis() - engine_mode_timer > 100){
     engine_mode = 2; // running
@@ -97,5 +107,5 @@ void loop()
     }
   }
 
-  test_device.set_pwm(engine_temp_row, battery_mv10_column, engine_mode, -1);
+  test_device.set_pwm(engine_temp_row, battery_mv10_column, engine_mode, pwm_override);
 }

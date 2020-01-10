@@ -5,7 +5,7 @@
 #include "EasyTimer.h"
 #include "LookupTable.h"
 
-class PwmDevice{
+class PWMDevice{
 
   private:
 
@@ -47,8 +47,8 @@ class PwmDevice{
       void write_pwm_frequency();
 
   public:
-    PwmDevice() = delete;
-    PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
+    PWMDevice() = delete;
+    PWMDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
                          int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq);
 
     // getters

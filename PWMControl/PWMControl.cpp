@@ -1,7 +1,7 @@
 #include "PWMControl.h"
 
 // constructor : uses initializer list
-PwmDevice::PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
+PWMDevice::PWMDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
                      int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq) :
                      pwm_pin_(output_pin), table_(table_rows, table_columns), pwm_min_dc_(pwm_min),
                      pwm_max_dc_(pwm_max), pwm_normal_freq_(pwm_normal_freq), pwm_soft_start_freq_(pwm_soft_start_freq),
@@ -10,7 +10,7 @@ PwmDevice::PwmDevice(int output_pin, int table_rows, int table_columns, int pwm_
 
 
 
-void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, int override_percent){
+void PWMDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, int override_percent){
 
   // encapsulate everything in the PWM update timer.
   if (pwm_control_timer_.isup()){
@@ -44,9 +44,9 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
 
     } // end switch statement
 
-    // one last thing before writing the PWM... if there is an active override present, forget all of the calculations
-    // done above and set the pwm_percent_actual_ to the override_percent
-    if (override_percent >= 0 && override_percent <= 100){
+    // one last thing before writing the PWM... if there is an active override present, and the engine is NOT cranking,
+    // forget all of the calculations done above and set the pwm_percent_actual_ to the override_percent
+    if (override_percent >= 0 && override_percent <= 100 && engine_state_ != 1){
       this->pwm_percent_target_ = override_percent;
       this->pwm_percent_actual_ = override_percent;
     }
@@ -66,14 +66,14 @@ void PwmDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
 
 
 // sauce it into the table's function
-void PwmDevice::fill_table(int *first_element){
+void PWMDevice::fill_table(int *first_element){
   this->table_.fill_table(first_element);
 }
 
 
 
 
-void PwmDevice::determine_dynamic_pwm(int &table_row_val, int &table_col_val){
+void PWMDevice::determine_dynamic_pwm(int &table_row_val, int &table_col_val){
 
   // well, what does the fan table say?
   this->pwm_percent_target_ = this->table_.find(table_row_val, table_col_val);
@@ -95,7 +95,7 @@ void PwmDevice::determine_dynamic_pwm(int &table_row_val, int &table_col_val){
 
 
 
-void PwmDevice::determine_cooldown_pwm(){
+void PWMDevice::determine_cooldown_pwm(){
   this->pwm_percent_target_ = 0; // eventually, we would like the fans to be off
 
   // if actual pwm is more than target, decrement that bad boi
@@ -111,7 +111,7 @@ void PwmDevice::determine_cooldown_pwm(){
 
 
 // maps duty cycle percentage to min and max PWM duty cycle values, and then writes it to the pin
-void PwmDevice::write_pwm_duty_cycle(){
+void PWMDevice::write_pwm_duty_cycle(){
   this->pwm_output_ = map(this->pwm_percent_actual_, 0, 100, this->pwm_min_dc_, this->pwm_max_dc_);
   analogWrite(this->pwm_pin_, this->pwm_output_);
 }
@@ -119,7 +119,7 @@ void PwmDevice::write_pwm_duty_cycle(){
 
 
 
-void PwmDevice::write_pwm_frequency(){
+void PWMDevice::write_pwm_frequency(){
 
   // if we are currently in a soft start period...
   if (millis() < this->soft_start_until_time_){
@@ -134,7 +134,7 @@ void PwmDevice::write_pwm_frequency(){
 
 
 
-// void PwmDevice::pwm_actual(){
+// void PWMDevice::pwm_actual(){
 //
 //
 //   if (pwm_actual_ == 0){ // if the pwm value is 0, change the device to the off position
@@ -202,7 +202,7 @@ void PwmDevice::write_pwm_frequency(){
 // }
 //
 //
-// void PwmDevice::set_pwm(int xval, int yval, int engState){
+// void PWMDevice::set_pwm(int xval, int yval, int engState){
 //
 //   if (pwm_update_timer_.isup() || engState == 1){
 //
