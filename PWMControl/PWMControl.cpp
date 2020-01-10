@@ -57,10 +57,6 @@ void PWMDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
     // fucking send it
     write_pwm_duty_cycle();
 
-    Serial.print("   Target: "); Serial.println(pwm_percent_target_);
-    Serial.print("   Actual: "); Serial.println(pwm_percent_actual_);
-    Serial.print("Frequency: "); Serial.println(pwm_actual_freq_);
-
   } // end timer
 }
 

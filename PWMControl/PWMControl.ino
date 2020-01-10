@@ -1,3 +1,5 @@
+// ino file for testing PWMControl library :-)
+
 #include "PWMControl.h"
 
 const int num_rows = 12;
