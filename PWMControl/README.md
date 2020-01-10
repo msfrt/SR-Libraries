@@ -102,6 +102,6 @@ There are 4 engine modes that this library accepts. They are integers 0-3, and h
 
 #### LookupTable Usage
 
-This library makes extensive use of the LookupTable library. If you do not have that installed, you should do that. It is also located in the [SR-Libraries repository](..).
+This library makes extensive use of the LookupTable library. If you do not have that installed, you should do that. It is also located in the [SR-Libraries repository](https://github.com/msfrt/SR-Libraries).
 
-If you are interested in reading the LookupTable documentation and how values are mapped in-between defined values, you can do so [here](../LookupTable/).
+If you are interested in reading the LookupTable documentation and how values are mapped in-between defined values, you can do so [here](https://github.com/msfrt/SR-Libraries/LookupTable).
