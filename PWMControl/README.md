@@ -33,6 +33,7 @@ int fan_table[num_rows][num_cols] =
 There are a few things to notice here. First, look at how I defined the number of rows and the number of columns as a `const int` before defining the table. Not only did I use those in the table definition itself, but they will be __crucial__ when defining our `PWMDevice`. Second, notice how the rows and columns are some funky units. In this example, rows are Cº × 10 and columns are battery mV × 10. Your row and column values can be whatever the frick you want, but they need to be of the type `int`!
 
 ---
+
 #### Step 2 - defining your PWMDevice:
 
 This is where is gets a little funky, and it might be easy to mess up. We now need to define our PWMDevice, as well as initialize most of the variables within it. Here's an example of doing so:
@@ -58,7 +59,7 @@ Yeah, so there's a lot to unpack there. Here's a little more info on each parame
 * _`device_update_frequency`_ - is the frequency at which the device should be updated. Broadly speaking, this is the frequency at which the PWM value should be changed. It should be an integer value ≥ 1.
 * _`pwm_frequency_normal`_ - the frequency of PWM under normal operation.
 * _`pwm_frequency_soft_start`_ - the frequency of PWM output during soft start. This is typically much higher than the normal frequency, but hey, if you want to set it lower, you do you.
-
+---
 #### Step 3 - Populating your PWMDevice table:
 
 So if you noticed above, we never linked our `PWMDevice` to our lookup table. This is something that has to be done during runtime, because of the way I manipulate the table into a faster `LookupTable` object. Also, the way that you move 2d arrays around in C++ is kinda wack.
@@ -73,6 +74,8 @@ test_device.fill_table(fan_table_ptr); // pass the table ptr into the test_devic
 Essentially, we're creating a pointer to an int, which is the first row of the table. That's fine, because the compiler makes the array sequentially, and the `test_device` already knows the size. It's important that you denote the first row of the table by indexing `[0]`. If you don't do that, the function will improperly copy the contents of the table, and your code may crash.
 
 You should write those lines of code in the `setup()`.
+
+---
 
 #### Step 4 - Use the PWMDevice
 
