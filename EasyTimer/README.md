@@ -54,3 +54,21 @@ This is some pretty cool functionality that wasn't easily possible before. You c
 my_timer.set_frequency(100); // changes EasyTimer to 100Hz
 my_timer.set_delay_millis(20); // sets delay to 20ms (equivalent to 50Hz)
 ```
+
+---
+
+## Blinking LED
+C'mon, we all love a blinking LED. Making a blinking LED is super simple, here's how:
+
+#### Step 1: define your LED object
+```cpp
+LEDBlink my_led(int teensy_pin, int frequency);
+```
+
+#### Step 2: Use your LED object!
+
+in the `loop()` function, simply put `my_led.run()`. It's as simple as that!
+
+#### Step 3: Update the frequency (optional)
+
+Just like an EasyTimer, you can update the frequency. To do so, it would look something like `my_timer.set_frequency(int freq)`.
