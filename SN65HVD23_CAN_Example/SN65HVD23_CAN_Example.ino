@@ -10,9 +10,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 //include these libraries in order to get the FlexCAN_T4 library. You can find this in the GitHub.
-#include <circular_buffer.h>
 #include <FlexCAN_T4.h>
-#include <imxrt_flexcan.h>
 
 
 
@@ -38,8 +36,8 @@ void setup()
   Serial.begin(112500);
 
   //initialize the CAN Bus and set its baud rate to 1M
-  Can0.begin();
-  Can0.setBaudRate(1000000);
+  Can1.begin();
+  Can1.setBaudRate(1000000);
 
 }
 
@@ -90,7 +88,7 @@ void sendCAN(int id, int len, int busNo)
 
 
 
-readCAN()
+void readCAN()
 {
 
   if (Can1.read(rxmsg)) // make sure there's a message available to read
