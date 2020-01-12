@@ -6,8 +6,10 @@
 
 class StateSignal{
   private:
+    int bit_length_ = 16;
     unsigned long last_recieve_ = 0; // last recieved message (is applicable) in milliseconds
     float value_ = 0.00; // the actual, real value of the signal
+    bool signed_ = true;
     const int inverse_factor_ = 1; // if the factor is 0.1 in the DBC, it should be 10 here. 0.01 -> 100
     const int offset_ = 0; // offset as in DBC
     int lower_bound_ = 0; // for bounds check
@@ -18,8 +20,8 @@ class StateSignal{
   public:
     //constructors
     StateSignal() = delete;
-    StateSignal(int f, int o, int lb, int ub, float sv) : inverse_factor_(f), offset_(o),
-                lower_bound_(lb), upper_bound_(ub), secondary_value_(sv) {};
+    StateSignal(int bl, bool s, int f, int o, int lb, int ub, float sv) : bit_length_(bl), signed_(s),
+                inverse_factor_(f), offset_(o), lower_bound_(lb), upper_bound_(ub), secondary_value_(sv) {};
 
     // getters
     float value() const; // returns real value
