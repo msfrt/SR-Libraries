@@ -42,4 +42,6 @@ class StateSignal{
     operator float() const { return value_; }
 };
 
+
+
 #endif

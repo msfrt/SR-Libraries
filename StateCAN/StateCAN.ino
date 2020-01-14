@@ -2,9 +2,12 @@
 #include <FlexCAN_T4.h>
 #include "StateCAN.h"
 
+// file containing the message and signal definitions
+#include "SigsInside.hpp"
+
 LEDBlink onboard_led(13, 2);
 
-CAN_message_t msg;
+CAN_message_t cigs_inside;
 StateSignal test_sig(4, false, 1, 0, 0, 0, -12);
 
 void setup(){
