@@ -8,7 +8,7 @@ CAN_message_t msg;
 StateSignal test_sig(4, false, 1, 0, 0, 0, -12);
 
 void setup(){
-  test_sig = 10;
+  test_sig = 17;
 
   Serial.begin(115200);
   delay(1000);

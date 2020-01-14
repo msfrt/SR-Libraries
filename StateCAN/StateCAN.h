@@ -1,13 +1,13 @@
 #ifndef STATE_CAN_H
 #define STATE_CAN_H
 
-//#include <FlexCAN_T4.h> // this gives the error.
+#include <FlexCAN_T4.h> // this gives the error.
 
 
 class StateSignal{
   private:
     int bit_length_ = 16;
-    unsigned long last_recieve_ = 0; // last recieved message (is applicable) in milliseconds
+    unsigned long last_recieve_ = 0; // last recieved message (if applicable) in milliseconds
     float value_ = 0.00; // the actual, real value of the signal
     bool signed_ = true;
     const int inverse_factor_ = 1; // if the factor is 0.1 in the DBC, it should be 10 here. 0.01 -> 100
