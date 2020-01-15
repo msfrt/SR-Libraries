@@ -46,8 +46,8 @@ int soft_start_duration = 5000;
 int device_update_frequency = 10;
 int pwm_frequency_normal = 40;
 int pwm_frequency_soft_start = 420;
-PWMDevice test_device(teensy_pwm_pin, num_rows, num_cols, row_scale_fact, col_scale_fact, row_signal, col_signal,
-                      minimum_pwm, maximum_pwm, soft_start_duration, device_update_frequency,
+PWMDevice test_device(teensy_pwm_pin, num_rows, num_cols, row_scale_fact, col_scale_fact, row_signal,
+                      col_signal, minimum_pwm, maximum_pwm, soft_start_duration, device_update_frequency,
                       pwm_frequency_normal, pwm_frequency_soft_start);
 ```
 
