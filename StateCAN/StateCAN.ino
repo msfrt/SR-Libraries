@@ -1,3 +1,5 @@
+// a sketch for testing StateCAN signals
+
 #include "EasyTimer.h"
 #include <FlexCAN_T4.h>
 #include "StateCAN.h"
