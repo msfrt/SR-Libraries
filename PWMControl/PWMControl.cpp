@@ -1,16 +1,18 @@
 #include "PWMControl.h"
+#include "StateCAN.h"
 
 // constructor : uses initializer list
-PWMDevice::PWMDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
+PWMDevice::PWMDevice(int output_pin, int table_rows, int table_columns, int table_row_sf, int table_col_sf,
+                     StateSignal &row_signal, StateSignal &col_signal, int pwm_min, int pwm_max, int soft_start_dur,
                      int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq) :
-                     pwm_pin_(output_pin), table_(table_rows, table_columns), pwm_min_dc_(pwm_min),
-                     pwm_max_dc_(pwm_max), pwm_normal_freq_(pwm_normal_freq), pwm_soft_start_freq_(pwm_soft_start_freq),
+                     pwm_pin_(output_pin), table_(table_rows, table_columns), table_row_scale_fact_(table_row_sf),
+                     table_col_scale_fact_(table_col_sf), row_signal_(row_signal), col_signal_(col_signal),
+                     pwm_min_dc_(pwm_min), pwm_max_dc_(pwm_max), pwm_normal_freq_(pwm_normal_freq),
+                     pwm_soft_start_freq_(pwm_soft_start_freq),
                      pwm_control_timer_(pwm_control_freq), soft_start_duration_(soft_start_dur) {};
 
 
-
-
-void PWMDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, int override_percent){
+bool PWMDevice::set_pwm(int engine_state, int override_percent){
 
   // encapsulate everything in the PWM update timer.
   if (pwm_control_timer_.isup()){
@@ -34,7 +36,7 @@ void PWMDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
       // the engine is running
       case 2:
         // this function has all of the conditions for dynamic control under normal operation
-        determine_dynamic_pwm(table_row_val, table_col_val);
+        determine_dynamic_pwm();
         break;
 
       // the engine is in a cool-down cycle
@@ -57,7 +59,11 @@ void PWMDevice::set_pwm(int table_row_val, int table_col_val, int engine_state, 
     // fucking send it
     write_pwm_duty_cycle();
 
-  } // end timer
+    return true;
+
+  } else {
+    return false;
+  }// end timer
 }
 
 
@@ -69,10 +75,13 @@ void PWMDevice::fill_table(int *first_element){
 
 
 
-void PWMDevice::determine_dynamic_pwm(int &table_row_val, int &table_col_val){
+void PWMDevice::determine_dynamic_pwm(){
+
+  int row_val = row_signal_.value() * table_row_scale_fact_;
+  int col_val = col_signal_.value() * table_col_scale_fact_;
 
   // well, what does the fan table say?
-  this->pwm_percent_target_ = this->table_.find(table_row_val, table_col_val);
+  this->pwm_percent_target_ = this->table_.find(row_val, col_val);
 
   // check if we need to turn the device on and enable soft start
   if (this->device_on_ == false && this->pwm_percent_target_ > 0){
