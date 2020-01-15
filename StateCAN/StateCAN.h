@@ -24,8 +24,9 @@ class StateSignal{
                 inverse_factor_(f), offset_(o), lower_bound_(lb), upper_bound_(ub), secondary_value_(sv) {};
 
     // getters
-    float value() const; // returns real value
+    float value() const; // returns value (takes validity into account)
     int can_value() const; // returns an integer value ready to send over CAN
+    float real_value() const {return value_;} // always returns the normal value (don't use)
 
     // setters
     void set_can_value(int incoming); // used when an incoming CAN value is read and you finna update the real value.

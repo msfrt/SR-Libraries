@@ -77,6 +77,7 @@ void PWMDevice::fill_table(int *first_element){
 
 void PWMDevice::determine_dynamic_pwm(){
 
+  // determine what value to use depending on if the signal is valid or not
   int row_val = row_signal_.value() * table_row_scale_fact_;
   int col_val = col_signal_.value() * table_col_scale_fact_;
 

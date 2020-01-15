@@ -3,7 +3,7 @@
 #include "PWMControl.h"
 #include "StateCAN.h"
 
-StateSignal test_row_sig(16, false, 1, 0, 0, 0, -12);
+StateSignal test_row_sig(16, false, 1, 0, 0, 0, 100);
 StateSignal test_col_sig(16, false, 1, 0, 0, 0, -12);
 
 const int num_rows = 12;
@@ -70,9 +70,9 @@ void loop()
     Serial.print("   ENG: "); Serial.println(engine_mode);
   }
 
-  // engine temp to 105C
+  // engine temp to 100C
   if (millis() > 15000 && millis() < 15020){
-    test_row_sig = 105;
+    test_row_sig.set_validity(false);
   }
 
 
