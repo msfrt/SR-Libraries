@@ -1,13 +1,17 @@
 // ino file for testing PWMControl library :-)
 
 #include "PWMControl.h"
+#include "StateCAN.h"
+
+StateSignal test_row_sig(16, false, 1, 0, 0, 0, 100);
+StateSignal test_col_sig(16, false, 1, 0, 0, 0, -12);
 
 const int num_rows = 12;
 const int num_cols = 14;
 
 // PWMDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
 //           int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq)
-PWMDevice test_device(5, num_rows, num_cols, 0, 255, 7500, 10, 40, 420);
+PWMDevice test_device(5, num_rows, num_cols, 10, 10000, test_row_sig, test_col_sig, 0, 255, 2500, 10, 40, 420);
 
 LEDBlink onboard_led(13, 10);
 EasyTimer print_timer(10);
@@ -16,7 +20,7 @@ EasyTimer read_timer(1);
 int engine_temp_row = 0; // pot value
 int battery_mv10_column = 0; // pot value
 
-int engine_mode = 0; //engine state
+int engine_mode = 2; //engine state
 unsigned long engine_mode_timer = 0;
 int pwm_override = -1;
 
@@ -43,6 +47,9 @@ void setup()
   int *fan_table_ptr = fan_table[0];
   test_device.fill_table(fan_table_ptr);
 
+  test_row_sig = 95.0;
+  test_col_sig = 13.5;
+
   pinMode(23, INPUT); //pot1
   pinMode(22, INPUT); //pot2
 
@@ -55,59 +62,29 @@ void loop()
   onboard_led.run();//led blink
 
 
-  if (!digitalRead(16)){
-    pwm_override = 100;
-  } else {
-    pwm_override = -1;
+  if(test_device.set_pwm(engine_mode, -1)){
+    Serial.println();
+    Serial.print("Target: "); Serial.println(test_device.target());
+    Serial.print("Actual: "); Serial.println(test_device.actual());
+    Serial.print("  Freq: "); Serial.println(test_device.freq());
+    Serial.print("   ENG: "); Serial.println(engine_mode);
+  }
+
+  // engine temp to 100C
+  if (millis() > 15000 && millis() < 15020){
+    test_row_sig.set_validity(false);
   }
 
 
-  // read the engine button, and go through engine state cycle
-  if (!digitalRead(18)){
-    engine_mode_timer = millis();
+  // go into cooldown
+  if (millis() > 20000 && millis() < 20100){
+    engine_mode = 3;
   }
-  if (millis() - engine_mode_timer > 15000){
-    engine_mode = 0; // off
-  } else if (millis() - engine_mode_timer > 5000) {
-    engine_mode = 3; // cooldown
-  } else if (millis() - engine_mode_timer > 100){
-    engine_mode = 2; // running
-  } else {
-    engine_mode = 1; //cranking
+
+  // shut engine off
+  if (millis() > 23000 && millis() < 23100){
+    engine_mode = 0;
   }
 
 
-  //read dem bois
-  if (read_timer.isup()){
-    engine_temp_row = map(analogRead(23), 0, 1023, 800, 1000);
-    battery_mv10_column = map(analogRead(22), 0, 1023, 80000, 145000);
-  }
-
-  if (print_timer.isup()){
-    Serial.println();
-    Serial.println();
-    Serial.println();
-    Serial.println();
-    Serial.println();
-    Serial.println();
-    Serial.print(" Engine temp: "); Serial.println(engine_temp_row);
-    Serial.print("Battery volt: "); Serial.println(battery_mv10_column);
-
-    switch (engine_mode) {
-      case 0:
-        Serial.println("      Engine: OFF");
-        break;
-      case 1:
-        Serial.println("      Engine: CRANKING");
-        break;
-      case 2:
-        Serial.println("      Engine: ON");
-        break;
-      case 3:
-        Serial.println("      Engine: COOLDOWN");
-        break;
-    }
-  }
-
-  test_device.set_pwm(engine_temp_row, battery_mv10_column, engine_mode, pwm_override);
 }

@@ -46,13 +46,17 @@ int soft_start_duration = 5000;
 int device_update_frequency = 10;
 int pwm_frequency_normal = 40;
 int pwm_frequency_soft_start = 420;
-PWMDevice test_device(teensy_pwm_pin, num_rows, num_cols, minimum_pwm, maximum_pwm, soft_start_duration, device_update_frequency, pwm_frequency_normal, pwm_frequency_soft_start);
+PWMDevice test_device(teensy_pwm_pin, num_rows, num_cols, row_scale_fact, col_scale_fact, row_signal, col_signal,
+                      minimum_pwm, maximum_pwm, soft_start_duration, device_update_frequency,
+                      pwm_frequency_normal, pwm_frequency_soft_start);
 ```
 
 Yeah, so there's a lot to unpack there. Here's a little more info on each parameter.
 
 * _`teensy_pwm_pin`_ - the pin on the microcontroller that will output the PWM
 * _`num_rows`_ & _`num_cols`_ - remember these from above? Yeah, these are the same as what you should've constructed the table with.
+* _`row_scale_fact`_ & _`col_scale_fact`_ - Since the table has integer values multiplied by some scalar, this is that scalar. For example, the table above has 950 in the rows column, which really means 95.0ºC. Therefore, `row_scale_fact = 10`.
+* _`row_signal`_ & _`col_signal`_ - are references to signals that have been previously defined with the `StateSignal` type included in the [StateCAN](https://github.com/msfrt/SR-Libraries/tree/master/StateCAN) library. They correspond to the table rows and columns, respectively.
 * _`minimum_pwm`_ - this is the minimum PWM that the device will run. Essentially, when the output percentage is 1%, this is the PWM duty cycle that will be written
 * _`maximum_pwm`_ - similarly to `minimum_pwm`, this is the output PWM that will be written at 100%. Normally, the maximum duty cycle that you can write on an Arduino-type microcontroller is 255 (the range is 0-255), however, on a Teensy, you can change this via the `analogWriteResolution()` function. If you decide to update the write resolution, you must also remember to calculate the maximum output PWM duty cycle, and use it as your `maximum_pwm` variable.
 * _`soft_start_duration`_ - this is the duration in milliseconds for the soft-start mode. Soft start changes the write frequency of the PWM pin for a specified duration after the device turns on.
