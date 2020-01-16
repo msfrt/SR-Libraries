@@ -19,6 +19,7 @@ class PWMDevice{
 
       StateSignal &row_signal_;
       StateSignal &col_signal_;
+      StateSignal &override_signal_;
 
       int pwm_min_dc_; // minimum duty cycle that the device should be pwmed
       int pwm_max_dc_; // maximum duty cycle that the device should be pwmed
@@ -56,8 +57,8 @@ class PWMDevice{
   public:
     PWMDevice() = delete;
     PWMDevice(int output_pin, int table_rows, int table_columns, int table_row_scale_fact, int table_col_scale_fact,
-              StateSignal &row_signal, StateSignal &col_signal, int pwm_min, int pwm_max, int soft_start_dur,
-              int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq);
+              StateSignal &row_signal, StateSignal &col_signal, StateSignal &override_sig, int pwm_min, int pwm_max,
+              int soft_start_dur, int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq);
 
     // getters
     int target(){return pwm_percent_target_;}
@@ -68,7 +69,7 @@ class PWMDevice{
 
     // setters
     // set the pwm of the device. for override percent, -1 means no override;
-    bool set_pwm(int engine_state, int override_percent);
+    bool set_pwm(int engine_state);
 
     // this simply just passes the table information through to the LookupTable object.
     // Look at LookupTable README for documentation if needed

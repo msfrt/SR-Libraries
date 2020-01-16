@@ -4,8 +4,6 @@
 #include <FlexCAN_T4.h>
 #include "StateCAN.h"
 
-// file containing the message and signal definitions
-#include "SigsInside.hpp"
 
 LEDBlink onboard_led(13, 2);
 
