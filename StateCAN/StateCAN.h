@@ -16,12 +16,16 @@ class StateSignal{
     int upper_bound_ = 0; // for bounds check
     bool valid_ = true; // if the sensor is considered valid
     float secondary_value_ = 0.00; // secondary_value_ replaces value_ when this signal is not considered valid
+    int timeout_delay_ = -1; // milliseconds delay before signal should become invalid. -1 means disabled
+
+    bool timeout_check(); // helper function to check for timeout-based validity;
 
   public:
     //constructors
     StateSignal() = delete;
-    StateSignal(int bl, bool s, int f, int o, int lb, int ub, float sv) : bit_length_(bl), signed_(s),
-                inverse_factor_(f), offset_(o), lower_bound_(lb), upper_bound_(ub), secondary_value_(sv) {};
+    StateSignal(int bl, bool s, int f, int o, int lb, int ub, float sv, int td = -1) : bit_length_(bl), signed_(s),
+                inverse_factor_(f), offset_(o), lower_bound_(lb), upper_bound_(ub),
+                secondary_value_(sv), timeout_delay_(td) {};
 
     // getters
     float value() const; // returns value (takes validity into account)

@@ -1,23 +1,40 @@
 #include "StateCAN.h"
 #include "Arduino.h"
 
+// check for timeout validity (utilizes short-circuting)
+bool timeout_check(){
+  if (this->timeout_delay_ != -1 && (millis() - this->last_recieve_ >= this->timeout_delay_)){
+    this->valid_ = false;
+  } else {
+    this->valid_ = true;
+  }
+  return this->valid_;
+}
+
 const int StateSignal::operator=(int new_value){
   this->value_ = new_value;
+  this->last_recieve_ = millis();
   return value_;
 }
 
 const int StateSignal::operator=(float new_value){
   this->value_ = new_value;
+  this->last_recieve_ = millis();
   return value_;
 }
 
 const int StateSignal::operator=(double new_value){
   this->value_ = new_value;
+  this->last_recieve_ = millis();
   return value_;
 }
 
+
 // getters that take into account faults
 float StateSignal::value() const{
+
+  this->timeout_check();
+
   if (this->valid_) {
     return this->value_;
   } else {
@@ -146,6 +163,7 @@ int StateSignal::can_value() const{
 void StateSignal::set_can_value(int incoming_value){
   // we need to cast to floats here so integer math doesn't remove precision
   this->value_ = static_cast<float>(incoming_value) / this->inverse_factor_;
+  this->last_recieve_ = millis();
 }
 
 void StateSignal::set_validity(bool valid){
