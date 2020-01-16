@@ -28,9 +28,9 @@ class StateSignal{
                 secondary_value_(sv), timeout_delay_(td) {};
 
     // getters
-    float value() const; // returns value (takes validity into account)
-    int can_value() const; // returns an integer value ready to send over CAN
-    float real_value() const {return value_;} // always returns the normal value (don't use)
+    float value(); // returns value (takes validity into account)
+    int can_value(); // returns an integer value ready to send over CAN
+    float real_value(){return value_;} // always returns the normal value (don't use)
 
     // setters
     void set_can_value(int incoming); // used when an incoming CAN value is read and you finna update the real value.
