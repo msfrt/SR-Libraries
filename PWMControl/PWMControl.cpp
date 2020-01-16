@@ -3,16 +3,17 @@
 
 // constructor : uses initializer list
 PWMDevice::PWMDevice(int output_pin, int table_rows, int table_columns, int table_row_sf, int table_col_sf,
-                     StateSignal &row_signal, StateSignal &col_signal, int pwm_min, int pwm_max, int soft_start_dur,
-                     int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq) :
+                     StateSignal &row_signal, StateSignal &col_signal, StateSignal &override_sig, int pwm_min, int pwm_max,
+                     int soft_start_dur, int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq) :
                      pwm_pin_(output_pin), table_(table_rows, table_columns), table_row_scale_fact_(table_row_sf),
                      table_col_scale_fact_(table_col_sf), row_signal_(row_signal), col_signal_(col_signal),
+                     override_signal_(override_sig),
                      pwm_min_dc_(pwm_min), pwm_max_dc_(pwm_max), pwm_normal_freq_(pwm_normal_freq),
                      pwm_soft_start_freq_(pwm_soft_start_freq),
                      pwm_control_timer_(pwm_control_freq), soft_start_duration_(soft_start_dur) {};
 
 
-bool PWMDevice::set_pwm(int engine_state, int override_percent){
+bool PWMDevice::set_pwm(int engine_state){
 
   // encapsulate everything in the PWM update timer.
   if (pwm_control_timer_.isup()){
@@ -48,9 +49,9 @@ bool PWMDevice::set_pwm(int engine_state, int override_percent){
 
     // one last thing before writing the PWM... if there is an active override present, and the engine is NOT cranking,
     // forget all of the calculations done above and set the pwm_percent_actual_ to the override_percent
-    if (override_percent >= 0 && override_percent <= 100 && engine_state_ != 1){
-      this->pwm_percent_target_ = override_percent;
-      this->pwm_percent_actual_ = override_percent;
+    if (override_signal_.value() >= 0 && override_signal_.value() <= 100 && engine_state_ != 1){
+      this->pwm_percent_target_ = override_signal_.value();
+      this->pwm_percent_actual_ = override_signal_.value();
     }
 
     // before setting the PWM, set the appropriate frequency if necessary

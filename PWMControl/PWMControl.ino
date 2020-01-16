@@ -5,13 +5,14 @@
 
 StateSignal test_row_sig(16, false, 1, 0, 0, 0, 100);
 StateSignal test_col_sig(16, false, 1, 0, 0, 0, -12);
+StateSignal test_override(16, false, 1, 0, 0, 0, -1, 1500);
 
 const int num_rows = 12;
 const int num_cols = 14;
 
 // PWMDevice(int output_pin, int table_rows, int table_columns, int pwm_min, int pwm_max, int soft_start_dur,
 //           int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq)
-PWMDevice test_device(5, num_rows, num_cols, 10, 10000, test_row_sig, test_col_sig, 0, 255, 2500, 10, 40, 420);
+PWMDevice test_device(5, num_rows, num_cols, 10, 10000, test_row_sig, test_col_sig, test_override, 0, 255, 2500, 10, 40, 420);
 
 LEDBlink onboard_led(13, 10);
 EasyTimer print_timer(10);
@@ -49,6 +50,7 @@ void setup()
 
   test_row_sig = 95.0;
   test_col_sig = 13.5;
+  test_override = -1;
 
   pinMode(23, INPUT); //pot1
   pinMode(22, INPUT); //pot2
@@ -62,7 +64,7 @@ void loop()
   onboard_led.run();//led blink
 
 
-  if(test_device.set_pwm(engine_mode, -1)){
+  if(test_device.set_pwm(engine_mode)){
     Serial.println();
     Serial.print("Target: "); Serial.println(test_device.target());
     Serial.print("Actual: "); Serial.println(test_device.actual());
@@ -70,21 +72,11 @@ void loop()
     Serial.print("   ENG: "); Serial.println(engine_mode);
   }
 
-  // engine temp to 100C
-  if (millis() > 15000 && millis() < 15020){
-    test_row_sig.set_validity(false);
+  if (millis() > 10000 && millis() < 10020){
+    test_override = 69;
   }
 
-
-  // go into cooldown
-  if (millis() > 20000 && millis() < 20100){
-    engine_mode = 3;
-  }
-
-  // shut engine off
-  if (millis() > 23000 && millis() < 23100){
-    engine_mode = 0;
-  }
+  test_override.timeout_check();
 
 
 }

@@ -3,7 +3,8 @@
 
 // check for timeout validity (utilizes short-circuting)
 bool StateSignal::timeout_check(){
-  if (this->timeout_delay_ <= -1 &&
+  if ((this->timeout_delay_ >= 0) && // if the timeout delay isn't disabled
+     (millis() >= static_cast<unsigned int>(timeout_delay_)) && // this is so valid_ isn't set to true upon startup
      (millis() - this->last_recieve_ >= static_cast<unsigned int>(this->timeout_delay_))){
     this->set_validity(false);
   } else {
@@ -33,8 +34,6 @@ const int StateSignal::operator=(double new_value){
 
 // getters that take into account faults
 float StateSignal::value(){
-
-  this->timeout_check();
 
   if (this->valid_) {
     return this->value_;

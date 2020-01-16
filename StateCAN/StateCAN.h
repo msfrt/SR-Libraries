@@ -14,11 +14,10 @@ class StateSignal{
     const int offset_ = 0; // offset as in DBC
     int lower_bound_ = 0; // for bounds check
     int upper_bound_ = 0; // for bounds check
-    bool valid_ = true; // if the sensor is considered valid
+    bool valid_ = true; // if the signal is considered valid
     float secondary_value_ = 0.00; // secondary_value_ replaces value_ when this signal is not considered valid
     int timeout_delay_ = -1; // milliseconds delay before signal should become invalid. -1 means disabled
 
-    bool timeout_check(); // helper function to check for timeout-based validity;
 
   public:
     //constructors
@@ -30,11 +29,14 @@ class StateSignal{
     // getters
     float value(); // returns value (takes validity into account)
     int can_value(); // returns an integer value ready to send over CAN
-    float real_value(){return value_;} // always returns the normal value (don't use)
+    float real_value(){return value_;} // always returns the normal value (don't use probably)
 
     // setters
     void set_can_value(int incoming); // used when an incoming CAN value is read and you finna update the real value.
     void set_validity(bool valid); // update the sensor's validity
+
+    // helper function to check for timeout-based validity;
+    bool timeout_check();
 
     // allow us to use the = operator to assign values to the Signal
     const int operator=(int);
