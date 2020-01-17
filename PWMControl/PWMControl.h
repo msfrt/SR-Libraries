@@ -69,7 +69,7 @@ class PWMDevice{
 
     // setters
     // set the pwm of the device. for override percent, -1 means no override;
-    bool set_pwm(int engine_state);
+    bool set_pwm(const int &engine_state);
 
     // this simply just passes the table information through to the LookupTable object.
     // Look at LookupTable README for documentation if needed
