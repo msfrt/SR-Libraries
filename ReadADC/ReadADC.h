@@ -18,9 +18,9 @@ class ADCSensor{
     int read_min_;
     int read_max_;
 
-    double actual_avg_;
-    double actual_min_;
-    double actual_max_;
+    float actual_avg_;
+    float actual_min_;
+    float actual_max_;
     bool values_updated; // this is false when the actual values are not the most current (ex. the sensor has been sampled
                   // since the last time the actual values were calculated)
 
@@ -37,9 +37,9 @@ class ADCSensor{
     void sample(); // sample the ADC
 
     // getters (automatically calculate the real-life values if appropriate)
-    double avg();
-    double min();
-    double max();
+    float avg();
+    float min();
+    float max();
     int sample_count(){return running_read_count_;}
 };
 

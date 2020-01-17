@@ -32,7 +32,7 @@ Sampling of a sensor should happen at a much faster rate than what we care to se
 #### Reading a value
 To read a value from the sensor, you have your choice of three member functions, `avg()`, `min()`, and `max()`. You can read one, two, or all three of them if you'd like. The sample values are automatically turned into sensor values, so no need to worry about confusing conversions. The average, minimum, and maximum values are the result of samples since the last time any of the `avg()`, `min()`, or `max()` member-functions were called. After they are called, the running-tally of samples is automatically reset.
 
-For example, if I wanted to know the maximum value of the sensor, I would call `my_sensor.max()`. The return type is double.
+For example, if I wanted to know the maximum value of the sensor, I would call `my_sensor.max()`. The return type is float.
 
 ## Full Example
 ```cpp
