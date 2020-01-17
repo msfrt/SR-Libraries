@@ -10,9 +10,9 @@ int offset = 0; // offset like in the DBC (currently not enabled)
 int min = -5; // minimum value (used for external checks if applicable)
 int max = 100; // maximum value (used for external checks if applicable)
 int secondary = -1; // secondary value (returned from value() when signal is invalid))
-int timeout = 1000; // timeout delay in milliseconds (used for checks if applicable)
+int timeout = 1000; // timeout delay in milliseconds (used for checks if applicable) (optional parameter)
 
-StateSignal StateSignal USER_fanOverride(bitl, signed, fact, offset, -5, 100, -1, 1000);
+StateSignal StateSignal USER_fanOverride(bitl, signed, fact, offset, min, max, secondary, timeout);
 ```
 
 ## How to assign a value to the signal
