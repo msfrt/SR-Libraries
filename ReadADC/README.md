@@ -71,6 +71,8 @@ void loop(){
     Serial.print("Maximum value: ");
     Serial.println(my_sensor.max());
     Serial.println();
+    
+    my_sensor.reset(); // resets the min, max, and average values
   }
 
 }
