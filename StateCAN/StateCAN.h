@@ -6,7 +6,7 @@
 class StateCounter{
   private:
     unsigned int num_positions_ = 16; // the maximum number of positions to be sent, including 0, excluding the max.
-    unsigned int current_position_ = 0;
+    unsigned int current_position_ = 4294967294; // max value of unsigned int
   public:
     StateCounter() = default;
     StateCounter(unsigned int positions) : num_positions_(positions) {};

@@ -45,4 +45,42 @@ Use this to assign the signal an incoming value from CAN.
 
 Manually set the validity with the `new_validity` parameter.
 
+## Define a `StateCounter`
 
+When sending can messages, a simple counter can help nodes on the network understand if they are receiving all intended messages. Or, perhaps, there could be a bug on the sending-end. Either way, you can define a counter by using `StateCounter my_counter(256)`. In this instance, `my_counter` is incrementally counts within 8 bits. A counter is initialized by default to have 16 positions and return the values 0-15.
+
+To get the value of a counter, simply use `my_counter.value()`. This will increment the counter by one and return the new value - no need to increment on your own. Once it reaches the number before the maximum, it resets to 0.
+
+For example, if I had code that looked like this...
+
+```cpp
+StateCounter my_counter;
+
+while (true){
+  Serial.println(my_counter.value());
+}
+```
+The output would look like this...
+```
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+0
+1
+2
+3
+... // you get the point
+```
