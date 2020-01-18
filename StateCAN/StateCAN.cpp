@@ -1,6 +1,17 @@
 #include "StateCAN.h"
 #include "Arduino.h"
 
+
+unsigned int StateCounter::value(){
+  if (this->current_position_ < (this->num_positions_ - 1)){
+    this->current_position_++;
+  } else {
+    this->current_position_ = 0;
+  }
+  return this->current_position_;
+}
+
+
 // check for timeout validity (utilizes short-circuting)
 bool StateSignal::timeout_check(){
   if ((this->timeout_delay_ >= 0) && // if the timeout delay isn't disabled

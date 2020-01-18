@@ -3,6 +3,23 @@
 
 #include <FlexCAN_T4.h> // this gives the error.
 
+class StateCounter{
+  private:
+    unsigned int num_positions_ = 16; // the maximum number of positions to be sent, including 0, excluding the max.
+    unsigned int current_position_ = 0;
+  public:
+    StateCounter() = default;
+    StateCounter(unsigned int positions) : num_positions_(positions) {};
+
+    // getter
+    unsigned int value(); // returns the current value of the counter and increments
+    unsigned int value_ghost(){return current_position_;} // returns the current value but does not increment
+
+    // setter
+    void set_max(unsigned int new_max){num_positions_ = new_max;}
+    void increment(int positions){current_position_ += positions;} // why would you ever need this
+};
+
 
 class StateSignal{
   private:
