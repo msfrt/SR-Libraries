@@ -40,6 +40,7 @@ class ADCSensor{
     float avg();
     float min();
     float max();
+    float last_calc_avg() {return actual_avg_;} // does no calculation
     int sample_count(){return running_read_count_;}
 };
 
