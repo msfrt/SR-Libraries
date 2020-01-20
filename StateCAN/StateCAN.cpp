@@ -172,8 +172,30 @@ int StateSignal::can_value(){
 
 // setters
 void StateSignal::set_can_value(int incoming_value){
-  // we need to cast to floats here so integer math doesn't remove precision
-  this->value_ = static_cast<float>(incoming_value) / this->inverse_factor_;
+  // we need to cast to floats here so integer math doesn't remove precision.
+  // also, if the value is signed, we need to do some funky stuff to fill the rest of the value
+  if (this->signed_){
+    // first we need to cast the unsigned CAN data into a signed integer type of the appropriate size (which is why
+    // setting the bit-length is important in the signal definitions page)
+    // second, we cast that signed value to a float, and then after that we take take of the factor
+    switch (this->bit_length_) {
+      case 16: // most common, so up at the top
+        this->value_ = static_cast<float>(static_cast<int16_t>(incoming_value)) / this->inverse_factor_;
+        break;
+      case 8:
+        this->value_ = static_cast<float>(static_cast<int8_t>(incoming_value)) / this->inverse_factor_;
+        break;
+      case 32:
+        this->value_ = static_cast<float>(static_cast<int32_t>(incoming_value)) / this->inverse_factor_;
+        break;
+      case 64:
+        this->value_ = static_cast<float>(static_cast<int64_t>(incoming_value)) / this->inverse_factor_;
+        break;
+    }
+
+  } else {
+    this->value_ = static_cast<float>(incoming_value) / this->inverse_factor_;
+  }
   this->last_recieve_ = millis();
 }
 
