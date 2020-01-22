@@ -1,5 +1,5 @@
 # StateCAN Library
-This library provides an easy way to define and use signals that can be easily identified and used between modules. All signals that are present in the DBC can be loaded into a `StateSignal`, which provides useful functionality for sending over can, performing time-out operations, validity checks, and more. Additionally, a `StateCounter` may also be defined, which allows us to easily see lapses in data transmission.
+This library provides an easy way to define and use signals that can be easily identified and used between modules. All signals that are present in the DBC can be loaded into a `StateSignal`, which provides useful functionality for sending over can, performing time-out operations, validity checks, and more. Additionally, a `StateCounter` may also be defined, which allows us to easily see lapses in data transmission externally.
 
 
 ## Define a Signal
