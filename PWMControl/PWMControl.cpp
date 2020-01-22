@@ -15,15 +15,9 @@ PWMDevice::PWMDevice(int output_pin, int table_rows, int table_columns, int tabl
 
 bool PWMDevice::set_pwm(const int &engine_state){
 
-  // engine is cranking, don't wait for the timer. shut everything off rn
-  if (engine_state == 1){
-    // immediately set the output value to 0
-    this->pwm_percent_target_ = 0;
-    this->pwm_percent_actual_ = 0;
-    this->device_on_ = false;
 
-  // encapsulate other calculations and writing in the PWM update timer.
-  } else if (pwm_control_timer_.isup()){
+  // encapsulate other calculations and writing in the PWM update timer (has engine cranking override)
+  if (pwm_control_timer_.isup() || engine_state == 1){
 
     // update the engine state variable
     this->engine_state_ = engine_state;

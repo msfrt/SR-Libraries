@@ -63,8 +63,8 @@ void loop()
 {
   onboard_led.run();//led blink
 
-
-  if(test_device.set_pwm(engine_mode)){
+  static EasyTimer debug_timer(10);
+  if (debug_timer.isup()){
     Serial.println();
     Serial.print("Target: "); Serial.println(test_device.target());
     Serial.print("Actual: "); Serial.println(test_device.actual());
@@ -72,8 +72,27 @@ void loop()
     Serial.print("   ENG: "); Serial.println(engine_mode);
   }
 
-  if (millis() > 10000 && millis() < 10020){
-    test_override = 69;
+
+  test_device.set_pwm(engine_mode);
+
+  if (millis() < 5000) {
+    engine_mode = 0;
+  } else if (millis() < 10000) {
+    engine_mode = 1;
+  } else if (millis() < 15000) {
+    engine_mode = 2;
+  } else if (millis() < 20000) {
+    engine_mode = 3;
+  } else if (millis() < 25000) {
+    engine_mode = 0;
+  } else if (millis() < 30000) {
+    engine_mode = 1;
+  } else if (millis() < 35000) {
+    engine_mode = 2;
+  } else if (millis() < 36000) {
+    engine_mode = 3;
+  } else if (millis() < 40000) {
+    engine_mode = 1;
   }
 
   test_override.timeout_check();
