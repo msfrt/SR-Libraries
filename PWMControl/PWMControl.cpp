@@ -16,8 +16,9 @@ PWMDevice::PWMDevice(int output_pin, int table_rows, int table_columns, int tabl
 bool PWMDevice::set_pwm(const int &engine_state){
 
 
-  // encapsulate other calculations and writing in the PWM update timer (has engine cranking override)
-  if (pwm_control_timer_.isup() || engine_state == 1){
+  // encapsulate other calculations and writing in the PWM update timer. The PWM updates are only ran from within
+  // this function. The function is also ran when the engine state changes
+  if (pwm_control_timer_.isup() || (this->engine_state_ != engine_state)){
 
     // update the engine state variable
     this->engine_state_ = engine_state;
