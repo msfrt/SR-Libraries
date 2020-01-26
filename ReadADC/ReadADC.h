@@ -7,7 +7,7 @@
 class ADCSensor{
   private:
     int chip_select_;
-    int ADC_channel_number_; // input number of the ADC which will be read (0-7)
+    uint16_t ADC_channel_number_; // input number of the ADC which will be read (0-7)
     int zero_mV_; // the sensor zero voltage in milliVolts * 10
     int mV_per_sensor_unit_; // milliVolts * 10 per sensor unit
 
@@ -30,7 +30,7 @@ class ADCSensor{
   public:
     // constructors
     ADCSensor() = delete; // delete the default constructor
-    ADCSensor(int chip_select, int ADC_channel_number, int zero_mV, int mV_per_sensor_unit);
+    ADCSensor(int chip_select, uint16_t ADC_channel_number, int zero_mV, int mV_per_sensor_unit);
 
     // member-functions
     void begin(); // used to intilize the pin
