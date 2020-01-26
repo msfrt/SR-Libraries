@@ -40,6 +40,8 @@ class ADCSensor{
     float avg();
     float min();
     float max();
+    int read_value() const {return read_value_;}
+    int read_voltage() const {return read_voltage_;}
     float last_calc_avg() {return actual_avg_;} // does no calculation
     int sample_count(){return running_read_count_;}
 };
