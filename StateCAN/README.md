@@ -37,7 +37,7 @@ Always returns the real value. Disregards the secondary value. You probably shou
 
 ### timeout_check()
 
-If you would like to check for time-based validity, call this function. It will update the validity parameter to false if the timeout period has been expired, or keep it true otherwise. IF YOU PERFORM OTHER OBD FUNCTIONS THAT MODIFY VALIDITY, DO NOT USE THIS FUNCTION IN CONJUNCTION.
+If you would like to check for time-based validity, call this function. It will update the validity parameter to false if the timeout period has been expired, or keep it true otherwise. Furthermore, the validity boolean is returned. IF YOU PERFORM OTHER OBD FUNCTIONS THAT MODIFY VALIDITY, DO NOT USE THIS FUNCTION IN CONJUNCTION.
 
 ### set_can_value(int value)
 
