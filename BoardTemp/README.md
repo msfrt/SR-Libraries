@@ -21,7 +21,7 @@ You can sample the board temp diode with `.sample()`, and get the average value 
 
 By default, the temperature calculations are done off of a max reading of 3300mV. If you are using a 5V microcontroller, you will want to also update that voltage. You can do so by using `set_uC_mV()`. For example, if I were to use a 5V microcontroller with a sensor called `board_temp`, I'd call `board_temp.set_uC_mV(5000)`.
 
-## Complete example
+## Complete code example
 
 ```cpp
 #include <BoardTemp.h>
