@@ -47,6 +47,10 @@ Use this to assign the signal an incoming value from CAN.
 
 Manually set the validity with the `new_validity` parameter.
 
+### is_valid()
+
+Returns true if the signal is currently valid, false otherwise.
+
 ## Define a `StateCounter`
 
 When sending can messages, a simple counter can help nodes on the network understand if they are receiving all intended messages. Or, perhaps, there could be a bug on the sending-end. Either way, you can define a counter by using `StateCounter my_counter(256)`. In this instance, `my_counter` is incrementally counts within 8 bits. A counter is initialized by default to have 16 positions and return the values 0-15.
