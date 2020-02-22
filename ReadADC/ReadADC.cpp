@@ -94,7 +94,7 @@ void ADCSensor::calculate(){
   this->actual_avg_ = (mV - this->zero_mV_) / this->mV_per_sensor_unit_; // calculates the sensor value
 
   // set the last calculated mv average to the mv getter variable
-  this->read_mvoltage = mV;
+  this->read_mvoltage_ = mV;
 
   // calculate the min values
   mV = (static_cast<float>(this->read_min_) / 4095.0) * 5000;
