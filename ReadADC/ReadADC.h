@@ -12,7 +12,7 @@ class ADCSensor{
     int mV_per_sensor_unit_; // milliVolts * 10 per sensor unit
 
     int read_value_; // 12-bit number (0V-5V) that is returned from the ADC
-    int read_voltage_;
+    float read_mvoltage_;
     unsigned long running_read_total_; // used to store values for an average calculation
     int running_read_count_;
     int read_min_;
@@ -41,7 +41,7 @@ class ADCSensor{
     float min();
     float max();
     int read_value() const {return read_value_;}
-    int read_voltage() const {return read_voltage_;}
+    float read_mvoltage() const {return read_mvoltage_;} // returns the last calculated average millivolt reading
     float last_calc_avg() {return actual_avg_;} // does no calculation
     int sample_count(){return running_read_count_;}
 };
