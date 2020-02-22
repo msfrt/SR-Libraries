@@ -20,7 +20,7 @@ ADCSensor::ADCSensor(int chip_select, uint16_t ADC_channel_number, int zero_mV, 
   this->actual_avg_ = 0;
   this->actual_min_ = 0;
   this->actual_max_ = 0;
-  this->values_updated = false;
+  this->values_updated_ = false;
 }
 
 void ADCSensor::begin(){
@@ -71,8 +71,32 @@ void ADCSensor::sample(){
   this->running_read_total_ += this->read_value_;
   this->running_read_count_++;
 
-  // there is at least one new sample since calculating the actual values, so set the values_updated bool to false
-  this->values_updated = false;
+  // there is at least one new sample since calculating the actual values, so set the values_updated_ bool to false
+  this->values_updated_ = false;
+}
+
+
+// sample the sensor n-times before using the sample value
+void ADCSensor::sample_n(uint8_t sample_count){
+
+  SPI.beginTransaction(SPISettings(3200000, MSBFIRST, SPI_MODE0));
+
+  digitalWrite(this->chip_select_, LOW);
+
+  // sample n-times
+  for (int n = 0; n < sample_count; n++){
+    this->read_value_ = SPI.transfer16(this->ADC_channel_number_ << 11);
+  }
+
+  digitalWrite(this->chip_select_,HIGH);
+
+  SPI.endTransaction();
+
+  if (this->read_value_ < this->read_min_){this->read_min_ = this->read_value_;}
+  if (this->read_value_ > this->read_max_){this->read_max_ = this->read_value_;}
+  this->running_read_total_ += this->read_value_;
+  this->running_read_count_++;
+  this->values_updated_ = false;
 }
 
 
@@ -105,25 +129,25 @@ void ADCSensor::calculate(){
   this->actual_max_ = (mV - this->zero_mV_) / this->mV_per_sensor_unit_;
 
   this->reset();
-  this->values_updated = true;
+  this->values_updated_ = true;
 }
 
 float ADCSensor::avg(){
-  if (!values_updated){ // if the values are not the most current, update them before returning the average!
+  if (!values_updated_){ // if the values are not the most current, update them before returning the average!
     this->calculate();
   }
   return this->actual_avg_;
 }
 
 float ADCSensor::min(){
-  if (!values_updated){ // if the values are not the most current, update them before returning the average!
+  if (!values_updated_){ // if the values are not the most current, update them before returning the average!
     this->calculate();
   }
   return this->actual_min_;
 }
 
 float ADCSensor::max(){
-  if (!values_updated){ // if the values are not the most current, update them before returning the average!
+  if (!values_updated_){ // if the values are not the most current, update them before returning the average!
     this->calculate();
   }
   return this->actual_max_;

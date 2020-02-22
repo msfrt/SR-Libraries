@@ -21,7 +21,7 @@ class ADCSensor{
     float actual_avg_;
     float actual_min_;
     float actual_max_;
-    bool values_updated; // this is false when the actual values are not the most current (ex. the sensor has been sampled
+    bool values_updated_; // this is false when the actual values are not the most current (ex. the sensor has been sampled
                   // since the last time the actual values were calculated)
 
     void reset(); // reset the sample values
@@ -35,6 +35,7 @@ class ADCSensor{
     // member-functions
     void begin(); // used to intilize the pin
     void sample(); // sample the ADC
+    void sample_n(uint8_t number_of_samples); // sample the ADC n-times before recording the nth sample as the read value
 
     // getters (automatically calculate the real-life values if appropriate)
     float avg();
