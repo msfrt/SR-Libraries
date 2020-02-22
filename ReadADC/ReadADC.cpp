@@ -11,7 +11,7 @@ ADCSensor::ADCSensor(int chip_select, uint16_t ADC_channel_number, int zero_mV, 
   this->mV_per_sensor_unit_ = mV_per_sensor_unit;
 
   this->read_value_ = 0;
-  this->read_voltage_ = 0;
+  this->read_mvoltage_ = 0;
   this->running_read_total_ = 0; // used to store values for an average calculation
   this->running_read_count_ = 0;
   this->read_min_ = 4095; // max value of a read
