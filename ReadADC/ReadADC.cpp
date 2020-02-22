@@ -54,6 +54,10 @@ void ADCSensor::sample(){
 
   // send the channel number for the ADC to read
   this->read_value_ = SPI.transfer16(this->ADC_channel_number_ << 11);
+  this->read_value_ = SPI.transfer16(this->ADC_channel_number_ << 11);
+  this->read_value_ = SPI.transfer16(this->ADC_channel_number_ << 11);
+  this->read_value_ = SPI.transfer16(this->ADC_channel_number_ << 11);
+  this->read_value_ = SPI.transfer16(this->ADC_channel_number_ << 11);
 
   // set the CS pin high to de-select the chip:
   digitalWrite(this->chip_select_,HIGH);
