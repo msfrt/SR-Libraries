@@ -47,6 +47,10 @@ Use this to assign the signal an incoming value from CAN.
 
 Manually set the validity with the `new_validity` parameter.
 
+### set_secondary_value(float new_value)
+
+Updates the secondary value.
+
 ### is_valid()
 
 Returns true if the signal is currently valid, false otherwise.
