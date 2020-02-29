@@ -54,7 +54,8 @@ class StateSignal{
     // setters
     void set_can_value(int incoming); // used when an incoming CAN value is read and you finna update the real value.
     void set_validity(bool valid); // update the sensor's validity
-
+    void set_secondary_value(float new_val){secondary_value_ = new_val;} // set the secondary value
+  
     // helper function to check for timeout-based validity;
     bool timeout_check();
 
