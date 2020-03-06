@@ -35,7 +35,7 @@ class PWMDevice{
 
       int pwm_percent_actual_ = 0; // the current pwm percentage value of the device
       int pwm_percent_target_ = 0; // the target pwm percentage value of the device
-      int pwm_percent_cooldown_minimum_ = 20; // if the device was above 'X' percent, it will decrease until it hits 'X'
+      int pwm_percent_cooldown_minimum_ = 50; // if the device was above 'X' percent, it will decrease until it hits 'X'
       // add pwm_percent_error_? for faster spool times when not in startup??
       int pwm_output_ = 0; // the actual PWM value that is being written
       bool device_on_ = false; // true when the device is on (pwm value > 0)
