@@ -105,7 +105,11 @@ void PWMDevice::determine_dynamic_pwm(){
 
 
 void PWMDevice::determine_cooldown_pwm(){
-  this->pwm_percent_target_ = 0; // eventually, we would like the fans to be off
+
+  // if the target is above the minimum, set the new target to the minimum. target is unchanged otherwise
+  if (this->pwm_percent_target_ > this->pwm_percent_cooldown_minimum_){
+    this->pwm_percent_target_ = this->pwm_percent_cooldown_minimum_;
+  }
 
   // if actual pwm is more than target, decrement that bad boi
   if (this->pwm_percent_actual_ > this->pwm_percent_target_){
