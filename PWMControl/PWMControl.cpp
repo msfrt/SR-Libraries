@@ -26,9 +26,13 @@ bool PWMDevice::set_pwm(const int &engine_state){
     // first, based upon the engine state, we need to determine what exactly can and needs to be done
     switch (this->engine_state_) {
 
-      // the engine is off (fall-through behavior & redundancy. Cranking mode isn't really needed here)
+      // the engine is off
       case 0:
-      // the engine is cranking
+        // decrements current value until off
+        turn_device_off_pwm();
+        break;
+
+      // cranking is also handled her for redundancy
       case 1:
         // immediately set the output value to 0
         this->pwm_percent_target_ = 0;
@@ -59,7 +63,7 @@ bool PWMDevice::set_pwm(const int &engine_state){
     // before setting the PWM, set the appropriate frequency if necessary
     write_pwm_frequency();
 
-    // fucking send it
+    // send it
     write_pwm_duty_cycle();
 
     return true;
@@ -106,9 +110,9 @@ void PWMDevice::determine_dynamic_pwm(){
 
 void PWMDevice::determine_cooldown_pwm(){
 
-  // if the target is above the minimum, set the new target to the minimum. target is unchanged otherwise
-  if (this->pwm_percent_target_ > this->pwm_percent_cooldown_minimum_){
-    this->pwm_percent_target_ = this->pwm_percent_cooldown_minimum_;
+  // if the target is above the cooldown target, set the new target to the minimum. target is unchanged otherwise
+  if (this->pwm_percent_target_ > this->pwm_percent_cooldown_target_){
+    this->pwm_percent_target_ = this->pwm_percent_cooldown_target_;
   }
 
   // if actual pwm is more than target, decrement that bad boi
@@ -117,6 +121,23 @@ void PWMDevice::determine_cooldown_pwm(){
   }
 
   // if we've reached the point where the output is actualy 0, be sure to set the device state to off
+  if (this->pwm_percent_actual_ < 1){this->device_on_ = false;}
+
+}
+
+
+
+void PWMDevice::turn_device_off_pwm(){
+
+  // set the target 0
+  this->pwm_percent_target_ = 0;
+
+  // decrement
+  if (this->pwm_percent_actual_ > this->pwm_percent_target_){
+    this->pwm_percent_actual_--;
+  }
+
+  // turn status off if need be
   if (this->pwm_percent_actual_ < 1){this->device_on_ = false;}
 
 }
