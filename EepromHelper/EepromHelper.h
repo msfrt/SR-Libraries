@@ -66,18 +66,18 @@ class EEPROM_25LC128{
 
     // used for writing EEPROM_Values
     template <class T1>
-    bool write(EEPROM_Value<T1> eeprom_value);
+    bool write(EEPROM_Value<T1> &eeprom_value);
 
     // used for reading EEPROM_Values
     template <class T2>
-    T2 read(EEPROM_Value<T2> eeprom_value);
+    T2 read(EEPROM_Value<T2> &eeprom_value);
 
 };
 
 
 // templated. keep in this file.
 template <class T1>
-bool EEPROM_25LC128::write(EEPROM_Value<T1> eeprom_value){
+bool EEPROM_25LC128::write(EEPROM_Value<T1> &eeprom_value){
 
   // used to store the current byte that will be written
   uint8_t write_byte = 0;
@@ -104,7 +104,7 @@ bool EEPROM_25LC128::write(EEPROM_Value<T1> eeprom_value){
 
 // templated. keep in this file.
 template <class T2>
-T2 EEPROM_25LC128::read(EEPROM_Value<T2> eeprom_value){
+T2 EEPROM_25LC128::read(EEPROM_Value<T2> &eeprom_value){
 
   uint8_t read_byte = 0;
 
