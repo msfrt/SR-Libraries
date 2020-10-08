@@ -4,6 +4,7 @@ import pandas as pd
 
 data_file = "sim_data.txt"
 column_labels = ["xtime", "enginespeed"]
+num_points = 100
 
 
 def load_windarab_log(path, column_labels):
@@ -30,12 +31,12 @@ df = load_windarab_log(data_file, column_labels)
 df = df.set_index("xtime")
 array = df[column_labels[1]].to_numpy()
 
-output_str = "float data[] = ["
+output_str = "float data[{}] = {{".format(num_points)
 
-for val in array:
+for val in array[0:num_points]:
     output_str += "{}, ".format(val)
 
 output_str = output_str[0:-2]
-output_str += ']'
+output_str += '};'
 
 print(output_str)
