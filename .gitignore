@@ -1,3 +1,7 @@
 .DS_Store
 *.ini
 ~$*.xls*
+
+StateCAN/dbctocpp/venv/
+
+StateCAN/dbctocpp/.idea/

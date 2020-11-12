@@ -2,12 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="842e0db8-cdf9-44b4-b7e9-0e04cd1664e6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/DarabToArduino/DarabToArduino.py" beforeDir="false" afterPath="$PROJECT_DIR$/DarabToArduino/DarabToArduino.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StateCAN/dbctocpp/dbctocpp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -24,12 +33,21 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/StateCAN" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="DarabToArduino" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SR-Libraries" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/DarabToArduino" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -84,10 +102,17 @@
       <option name="presentableId" value="Default" />
       <updated>1596911351573</updated>
       <workItem from="1596911361527" duration="1694000" />
+      <workItem from="1605142094006" duration="140000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="341" y="144" key="SettingsEditor" timestamp="1605142226188">
+      <screen x="0" y="23" width="1680" height="965" />
+    </state>
+    <state x="341" y="144" key="SettingsEditor/0.23.1680.965@0.23.1680.965" timestamp="1605142226188" />
   </component>
 </project>
