@@ -11,97 +11,161 @@
 #ifndef OUTPUT_HPP
 #define OUTPUT_HPP
 
+#include <FlexCAN_T4.h>
 #include <StateCAN.h>
 
-// Message: TCGPS_11 [0xa1]
-StateSignal TCGPS_laptrigger(8, true, 1, 0, None, None, 0, 0);
+// Message: PDM_09 [0x103]
+StateSignal PDM_OBD_oilPressure(1, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_OBD_oilTemp(1, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_OBD_fuelPressure(1, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_engineState(8, true, 1, 0.0, 0, 3, 0.0, 0);
 
-// Message: MM5_02 [0x17c]
-StateSignal MM5_Az(16, false, -7849, -4.1745795, None, None, 0, 0);
+// Message: PDM_25 [0x113]
+StateSignal PDM_counterMsg275(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_carMiles(16, true, 10, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_engineHours(16, true, 1, 0.0, -32768, 32767, 0.0, 0);
+StateSignal PDM_engineMinutes(16, true, 1, 0.0, -32768, 32767, 0.0, 0);
 
-// Message: MM5_01 [0x178]
-StateSignal MM5_rollRate(16, false, -200, 163.9, None, None, 0, 0);
-StateSignal MM5_Ax(16, false, -7849, 4.1745795, None, None, 0, 0);
+// Message: PDM_31 [0x119]
+StateSignal PDM_driverDisplayLEDs(8, true, 1, 0.0, -128, 127, 0.0, 0);
 
-// Message: MM5_00 [0x174]
-StateSignal MM5_yawRate(16, false, 200, -163.9, None, None, 0, 0);
-StateSignal MM5_Ay(16, false, -7849, 4.1745795, None, None, 0, 0);
+// Message: PDM_24 [0x112]
+StateSignal PDM_counterMsg274(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_fanLeftPWM(8, false, 1, 0.0, 0, 255, 0.0, 0);
+StateSignal PDM_fanRightPWM(8, false, 1, 0.0, 0, 255, 0.0, 0);
+StateSignal PDM_wpPWM(8, false, 1, 0.0, 0, 255, 0.0, 0);
+StateSignal PDM_teensyTemp(16, true, 10, 0.0, -3276, 3276, 0.0, 0);
 
-// Message: M400_dataSet2 [0x65]
-StateSignal M400_oilTemp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_la1LongTermTrim(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ignEtComp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ignBaseAdvance(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ign3Advance(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelUsed(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_fuelPressure(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelInjDutyCycle(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelEtComp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelAtComp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuel3IndivTrim(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_exhaustGasTemp4(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_exhaustGasTemp1(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_ecuCpuUsage(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_auxOut7DutyCycle(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_auxOut4DutyCycle(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_auxOut1DutyCycle(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_manifoldPressure(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ignMapComp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ignComp1(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ign4Advance(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ign1Advance(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelStartingComp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelLambdaComp(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_fuelFpComp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelComp1(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuel4IndivTrim(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_fuel1IndivTrim(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_exhaustGasTemp2(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_ecuInternalTemp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_auxOut8DutyCycle(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_auxOut5DutyCycle(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_auxOut2DutyCycle(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_oilPressure(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_inletAirTemp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ignComp2(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ignAtComp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_ign2Advance(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelTemp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelMapComp(16, true, 10, 0, None, None, 0, 0);
-StateSignal M400_fuelFtComp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelComp2(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_fuelActualPulseW(16, true, 500, 0, -65.536, 65.534, 0, 0);
-StateSignal M400_fuel2IndivTrim(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_exhaustGasTemp3(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_engineTemp(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_batteryVoltage(16, true, 100, 0, -327.68, 327.67, 0, 0);
-StateSignal M400_auxOut6DutyCycle(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_auxOut3DutyCycle(16, true, 1, 0, -32768, 32767, 0, 0);
+// Message: TCGPS_10 [0xa0]
+StateSignal TCGPS_counterMsg160(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal TCGPS_boardTemp(16, true, 10, 0.0, 0, 150, 0.0, 0);
+StateSignal TCGPS_teensyTemp(16, true, 10, 0.0, 0, 150, 0.0, 0);
 
-// Message: M400_dataSet1 [0x64]
-StateSignal M400_la1AimValue(16, true, 1000, 0, -32.768, 32.767, 0, 0);
-StateSignal M400_fuelCutLevelTotal(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_gear(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_ignCutLevelTotal(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_tcSlipAimError(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_tcIgnretard(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_groundSpeed(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_driveSpeed(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_la1ShortTermTrim(16, true, 100, 0, -327.68, 327.67, 0, 0);
-StateSignal M400_fuelOverallTrim(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_gearDet(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_rpm(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_tcSlipAimValue(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_tcLaunchAimRPM(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_groundSpeedLeft(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_driveSpeedLeft(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_lambda1(16, true, 1000, 0, -32.768, 32.767, 0, 0);
-StateSignal M400_ignOverallTrim(16, true, 1, 0, -32768, 32767, 0, 0);
-StateSignal M400_gearSensorVoltage(16, true, 1000, 0, -32.768, 32.767, 0, 0);
-StateSignal M400_throttlePosition(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_wheelSlip(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_tcPowerReduction(16, true, 10, 0, 0, 75, 0, 0);
-StateSignal M400_groundSpeedRight(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
-StateSignal M400_driveSpeedRight(16, true, 10, 0, -3276.8, 3276.7, 0, 0);
+// Message: DD_10 [0xd2]
+StateSignal DD_counterMsg210(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal DD_boardTemp(16, true, 10, 0.0, 0, 150, 0.0, 0);
+StateSignal DD_teensyTemp(16, true, 10, 0.0, 0, 150, 0.0, 0);
+StateSignal DD_requestDRS(16, true, 1, 0.0, 0, 5, 0.0, 0);
 
-#endif
+// Message: USER_12 [0x2c8]
+StateSignal USER_driverMessageChar0(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar1(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar2(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar3(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar4(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar5(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar6(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar7(8, false, 1, 0.0, 0, 0, 0.0, 0);
+
+// Message: USER_11 [0x2c7]
+StateSignal USER_driverSignal(8, true, 1, 0.0, -128, 127, 0.0, 0);
+
+// Message: ATCCF_15 [0x19f]
+StateSignal ATCCF_counterMsg415(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal ATCCF_boardTemp(16, true, 10, 0.0, -3276, 3276, 0.0, 0);
+StateSignal ATCCF_teensyTemp(16, true, 10, 0.0, -3276, 3276, 0.0, 0);
+
+// Message: USER_10 [0x2c6]
+StateSignal USER_fanLeftOverride(8, true, 1, 0.0, -128, 127, 0.0, 0);
+StateSignal USER_fanRightOverride(8, true, 1, 0.0, -128, 127, 0.0, 0);
+StateSignal USER_wpOverride(8, true, 1, 0.0, -128, 127, 0.0, 0);
+StateSignal USER_brakeLightOverride(8, true, 1, 0.0, -128, 127, 0.0, 0);
+
+// Message: PDM_30 [0x118]
+StateSignal USER_driverMessageChar0(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar1(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar2(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar3(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar4(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar5(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar6(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal USER_driverMessageChar7(8, false, 1, 0.0, 0, 0, 0.0, 0);
+
+// Message: PDM_23 [0x111]
+StateSignal PDM_counterMsg273(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_boardTemp(16, true, 10, 0.0, -3276, 3276, 0.0, 0);
+StateSignal PDM_brakelightVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_starterRelayVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+
+// Message: PDM_22 [0x110]
+StateSignal PDM_counterMsg272(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_keepAliveVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_keepAliveVoltMax(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_keepAliveVoltMin(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+
+// Message: PDM_21 [0x10f]
+StateSignal PDM_counterMsg271(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_dataVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_dataVoltMax(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_dataVoltMin(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+
+// Message: PDM_20 [0x10e]
+StateSignal PDM_counterMsg270(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_mainVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_mainVoltMax(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_mainVoltMin(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+
+// Message: PDM_19 [0x10d]
+StateSignal PDM_counterMsg269(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_fuelVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_fuelVoltMax(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_fuelVoltMin(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+
+// Message: PDM_18 [0x10c]
+StateSignal PDM_counterMsg268(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_fuelCurrentAvg(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_fuelCurrentMax(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_fuelCurrentMin(16, true, 100, 0.0, -327, 327, 0.0, 0);
+
+// Message: PDM_17 [0x10b]
+StateSignal PDM_counterMsg267(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_wpVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_wpVoltMax(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_wpVoltMin(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+
+// Message: PDM_16 [0x10a]
+StateSignal PDM_counterMsg266(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_wpCurrentAvg(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_wpCurrentMax(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_wpCurrentMin(16, true, 100, 0.0, -327, 327, 0.0, 0);
+
+// Message: PDM_15 [0x109]
+StateSignal PDM_counterMsg265(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_fanLeftVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_fanLeftVoltMax(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_fanLeftVoltMin(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+
+// Message: PDM_14 [0x108]
+StateSignal PDM_counterMsg264(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_fanLeftCurrentAvg(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_fanLeftCurrentMax(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_fanLeftCurrentMin(16, true, 100, 0.0, -327, 327, 0.0, 0);
+
+// Message: PDM_11 [0x105]
+StateSignal PDM_counterMsg261(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_pdmVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_pdmVoltMax(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_pdmVoltMin(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+
+// Message: PDM_13 [0x107]
+StateSignal PDM_counterMsg263(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_fanRightVoltAvg(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_fanRightVoltMax(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+StateSignal PDM_fanRightVoltMin(16, true, 1000, 0.0, -32, 32, 0.0, 0);
+
+// Message: PDM_12 [0x106]
+StateSignal PDM_counterMsg262(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_fanRightCurrentAvg(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_fanRightCurrentMax(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_fanRightCurrentMin(16, true, 100, 0.0, -327, 327, 0.0, 0);
+
+// Message: PDM_10 [0x104]
+StateSignal PDM_counterMsg260(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal PDM_dataLog(1, false, 1, 0.0, 0, 1, 0.0, 0);
+StateSignal PDM_pdmCurrentAvg(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_pdmCurrentMax(16, true, 100, 0.0, -327, 327, 0.0, 0);
+StateSignal PDM_pdmCurrentMin(16, true, 100, 0.0, -327, 327, 0.0, 0);
+
+// Message: ATCCR_14 [0x1d0]
+StateSignal ATCCR_counterMsg464(4, false, 1, 0.0, 0, 15, 0.0, 0);
+StateSignal ATCCR_tireTempRRI(16, true, 10, 0.0, -3276, 3276, 0.0, 0);

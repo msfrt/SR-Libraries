@@ -31,15 +31,31 @@ class StateSignal:
         :param timeout_delay: The timeout delay for the signal in milliseconds
         """
 
-        self._name = name
-        self._bit_length = bit_length
-        self._signed = signed
-        self._factor = factor
-        self._offset = offset
-        self._lower_bound = lower_bound
-        self._upper_bound = upper_bound
-        self._secondary_value = secondary_value
-        self._timeout_delay = timeout_delay
+        self._name = str(name)
+        self._bit_length = int(bit_length)
+        self._signed = bool(signed)
+        self._factor = float(factor)
+        self._offset = float(offset)
+
+        try:
+            self._lower_bound = int(lower_bound)
+        except TypeError:
+            self._lower_bound = 0
+
+        try:
+            self._upper_bound = int(upper_bound)
+        except TypeError:
+            self._upper_bound = 0
+
+        try:
+            self._secondary_value = float(secondary_value)
+        except TypeError:
+            self._secondary_value = 0.0
+
+        try:
+            self._timeout_delay = int(timeout_delay)
+        except TypeError:
+            self._timeout_delay = 0
 
     def __str__(self):
         return "StateSignal {}({}, {}, {}, {}, {}, {}, {}, {})".format(self._name, self._bit_length,
@@ -81,12 +97,14 @@ def dbctocpp(input_file, output_file):
 #ifndef {}
 #define {}
 
+#include <FlexCAN_T4.h>
 #include <StateCAN.h>
 
 """.format(header_guard, header_guard)
 
     fp_out.write(header)
 
+    # signal definitions
     for msg in db.messages:
         fp_out.write("// Message: {} [0x{:x}]\n".format(msg.name, msg.frame_id))
         for sig in msg.signals:
@@ -95,10 +113,34 @@ def dbctocpp(input_file, output_file):
                 fp_out.write("{};\n".format(ssig))
         fp_out.write("\n")
 
+    # message definitions
+    for msg in db.messages:
+
+        fp_out.write("\nvoid read_{}(CAN_message_t &imsg) {{\n".format(msg.name))
+
+        # is this message multiplexed? (it will have a signal tree)
+        try:
+            for mult_sig_name, mult_msg in msg.signal_tree[0].items():
+                # multiplexed message processing here
+                pass
+
+        # message is not multiplexed
+        except AttributeError:
+            for sig in msg.signals:
+                start_byte = sig.start % 8
+                start_byte_offset = sig.start // 8
+                num_bytes = sig.length % 8
+                num_bytes_bit_extension = sig.length // 8
+
+        fp_out.write("}\n")
+
+
+
+
 
 
     # end of header guards and close the file
-    fp_out.write("#endif\n")
+    fp_out.write("\n\n#endif\n")
     fp_out.close()
 
 
