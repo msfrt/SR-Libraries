@@ -113,10 +113,21 @@ def dbctocpp(input_file, output_file):
                 fp_out.write("{};\n".format(ssig))
         fp_out.write("\n")
 
+
+    fp_out.write("""\n\n\n/************************************************************************************
+    
+    Incoming CAN frame decoding functions
+
+************************************************************************************/\n\n\n""")
+
+
     # message definitions
     for msg in db.messages:
 
-        fp_out.write("\nvoid read_{}(CAN_message_t &imsg) {{\n".format(msg.name))
+        # function header
+        fp_out.write("/*\n * Decode a CAN frame for the message {}\n * \\param imsg A reference to the incoming CAN message frame\n */".format(msg.name))
+
+        fp_out.write("\nvoid read_{}(CAN_message_t &imsg) {{\n\n".format(msg.name))
 
         # is this message multiplexed? (it will have a signal tree)
         try:
@@ -127,21 +138,96 @@ def dbctocpp(input_file, output_file):
         # message is not multiplexed
         except AttributeError:
             for sig in msg.signals:
-                start_byte = sig.start % 8
-                start_byte_offset = sig.start // 8
-                num_bytes = sig.length % 8
-                num_bytes_bit_extension = sig.length // 8
 
-        fp_out.write("}\n")
+                if sig.byte_order == 'little_endian':
+
+                    start_byte = sig.start // 8
+                    start_byte_offset = sig.start % 8
+                    num_bytes = sig.length // 8
+                    num_bytes_bit_extension = sig.length % 8
+
+                    end_byte = start_byte + num_bytes
+                    if num_bytes_bit_extension > 0:
+                        end_byte += 1
+
+                    fp_out.write("\t{}.set_can_value(".format(sig.name))
+
+                    # if we will have to shift everything at the end, we need another open parenthesis
+                    # start_byte_offset (part 1)
+                    if start_byte_offset > 0:
+                        fp_out.write("(")
+
+                    bit_shift = 0
+                    for byte_i in range(start_byte, end_byte):
+
+                        # if the last byte is not a complete byte (part 1)
+                        if (byte_i == (end_byte - 1)) and (num_bytes_bit_extension > 0):
+                            fp_out.write("(")
+
+                        fp_out.write("(imsg.buf[{}]".format(byte_i))
+
+                        # if the last byte is not a complete byte (part 2)
+                        if (byte_i == (end_byte - 1)) and (num_bytes_bit_extension > 0):
+                            mask = construct_byte_mask(0, num_bytes_bit_extension)
+                            fp_out.write(" && 0b{}) >> {}".format(mask, 8 - num_bytes_bit_extension))
+
+                        # if there was start_byte_offset, we need to shift everything temporarily (part 2)
+                        if (byte_i == start_byte) and (start_byte_offset > 0):
+                            fp_out.write(") << {}".format(start_byte_offset))
+
+                        # shift by the number of bits in the byte (for bytes after byte 0 only)
+                        if byte_i != start_byte:
+                            fp_out.write(" << {}".format(bit_shift))
+                        bit_shift += 8
+
+                        # done with the masking and shifting by this point
+                        fp_out.write(")")
+
+                        # there are more bytes to add, so bitwise OR
+                        if byte_i != (end_byte - 1):
+                            fp_out.write(" | ")
+
+                    # if there was start_byte_offset, we need to shift everything (part 3)
+                    if start_byte_offset > 0:
+                        fp_out.write(") >> {}".format(start_byte_offset))
+
+                    # okay, now we're done here :)
+                    fp_out.write(");\n")
+
+                    # print("sig.start: {}".format(sig.start))
+                    # print("sig.length: {}".format(sig.length))
+                    # print("start_byte = {}".format(sig.start // 8))
+                    # print("start_byte_offset = {}".format(sig.start % 8))
+                    # print("num_bytes = {}".format(sig.length // 8))
+                    # print("num_bytes_bit_extension = {}".format(sig.length % 8))
 
 
 
-
+        fp_out.write("\n}\n\n")
 
 
     # end of header guards and close the file
     fp_out.write("\n\n#endif\n")
     fp_out.close()
+
+
+
+def construct_byte_mask(start_bit = 0, num_bits = 8):
+    """
+    Constructs a mask for end bytes that are not full bytes
+    :param start_bit: The starting bit to KEEP
+    :param num_bits: The number of bits to keep
+    :return: a string representing the 8-bit mask
+    """
+    mask = ''
+    for i in range(start_bit):
+        mask += '0'
+    for i in range(num_bits):
+        mask += '1'
+    for i in range(8 - (start_bit + num_bits)):
+        mask += '0'
+
+    return mask
 
 
 
