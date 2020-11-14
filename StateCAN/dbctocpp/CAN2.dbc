@@ -40,6 +40,24 @@ BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
  SG_ PDM_driverDisplayMessage : 0|64@1+ (1,0) [0|1.84467440737096E+019] "char" Vector__XXX
  SG_ ATCCR_counterMsg465 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
 
+BO_ 421 TEST_2: 8 Vector__XXX
+ SG_ TEST_24bit1 : 40|24@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_10bit2 : 0|10@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_10bit1 : 19|10@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 420 TEST_1: 8 Vector__XXX
+ SG_ TEST_7bit3 : 52|7@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_7bit2 : 40|7@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_7bit1 : 33|7@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool5 : 0|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool4 : 7|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool3 : 5|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool2 : 2|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool1 : 1|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit3 : 12|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit2 : 17|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit1 : 22|4@1- (1,0) [0|0] "" Vector__XXX
+
 BO_ 259 PDM_09: 8 Vector__XXX
  SG_ PDM_engineState : 56|8@1- (1,0) [0|3] "int" Vector__XXX
  SG_ PDM_OBD_oilTemp : 8|1@1+ (1,0) [0|0] "bool" Vector__XXX
