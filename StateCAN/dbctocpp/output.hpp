@@ -14,6 +14,24 @@
 #include <FlexCAN_T4.h>
 #include <StateCAN.h>
 
+// Message: TEST_2 [0x1a5]
+StateSignal TEST_10bit2(10, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_10bit1(10, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_24bit1(24, true, 1, 0.0, 0, 0, 0.0, 0);
+
+// Message: TEST_1 [0x1a4]
+StateSignal TEST_bool5(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_bool4(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_bool3(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_bool2(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_bool1(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_4bit1(4, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_4bit2(4, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_4bit3(4, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_7bit1(7, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_7bit2(7, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_7bit3(7, true, 1, 0.0, 0, 0, 0.0, 0);
+
 // Message: PDM_09 [0x103]
 StateSignal PDM_OBD_oilPressure(1, false, 1, 0.0, 0, 0, 0.0, 0);
 StateSignal PDM_OBD_oilTemp(1, false, 1, 0.0, 0, 0, 0.0, 0);
@@ -72,14 +90,14 @@ StateSignal USER_wpOverride(8, true, 1, 0.0, -128, 127, 0.0, 0);
 StateSignal USER_brakeLightOverride(8, true, 1, 0.0, -128, 127, 0.0, 0);
 
 // Message: PDM_30 [0x118]
-StateSignal USER_driverMessageChar0(8, false, 1, 0.0, 0, 0, 0.0, 0);
-StateSignal USER_driverMessageChar1(8, false, 1, 0.0, 0, 0, 0.0, 0);
-StateSignal USER_driverMessageChar2(8, false, 1, 0.0, 0, 0, 0.0, 0);
-StateSignal USER_driverMessageChar3(8, false, 1, 0.0, 0, 0, 0.0, 0);
-StateSignal USER_driverMessageChar4(8, false, 1, 0.0, 0, 0, 0.0, 0);
-StateSignal USER_driverMessageChar5(8, false, 1, 0.0, 0, 0, 0.0, 0);
-StateSignal USER_driverMessageChar6(8, false, 1, 0.0, 0, 0, 0.0, 0);
-StateSignal USER_driverMessageChar7(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_driverMessageChar0(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_driverMessageChar1(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_driverMessageChar2(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_driverMessageChar3(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_driverMessageChar4(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_driverMessageChar5(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_driverMessageChar6(8, false, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal PDM_driverMessageChar7(8, false, 1, 0.0, 0, 0, 0.0, 0);
 
 // Message: PDM_23 [0x111]
 StateSignal PDM_counterMsg273(4, false, 1, 0.0, 0, 15, 0.0, 0);
@@ -236,14 +254,46 @@ StateSignal ATCCF_suspensionTravelFR(16, true, 1000, 0.0, -32, 32, 0.0, 0);
 
 
 /*
+ * Decode a CAN frame for the message TEST_2
+ * \param imsg A reference to the incoming CAN message frame
+ */
+void read_TEST_2(CAN_message_t &imsg) {
+
+	TEST_10bit2.set_can_value((imsg.buf[0]) | ((imsg.buf[1] & 0b00000011) << 8));
+	TEST_10bit1.set_can_value((((imsg.buf[2] & 0b11111000)) | ((imsg.buf[3] & 0b00011111) << 8) >> 3));
+	TEST_24bit1.set_can_value((imsg.buf[5]) | (imsg.buf[6] << 8) | (imsg.buf[7] << 16));
+
+}
+
+/*
+ * Decode a CAN frame for the message TEST_1
+ * \param imsg A reference to the incoming CAN message frame
+ */
+void read_TEST_1(CAN_message_t &imsg) {
+
+	TEST_bool5.set_can_value(((imsg.buf[0] & 0b00000001)));
+	TEST_bool4.set_can_value((((imsg.buf[0] & 0b00000010)) >> 1));
+	TEST_bool3.set_can_value((((imsg.buf[0] & 0b00000100)) >> 2));
+	TEST_bool2.set_can_value((((imsg.buf[0] & 0b00100000)) >> 5));
+	TEST_bool1.set_can_value((((imsg.buf[0] & 0b10000000)) >> 7));
+	TEST_4bit1.set_can_value((((imsg.buf[1] & 0b11000000)) | ((imsg.buf[2] & 0b00000011) << 8) >> 6));
+	TEST_4bit2.set_can_value((((imsg.buf[2] & 0b11110000)) >> 4));
+	TEST_4bit3.set_can_value(((imsg.buf[3] & 0b00001111)));
+	TEST_7bit1.set_can_value((((imsg.buf[4] & 0b11111110)) >> 1));
+	TEST_7bit2.set_can_value(((imsg.buf[5] & 0b01111111)));
+	TEST_7bit3.set_can_value((((imsg.buf[6] & 0b11110000)) | ((imsg.buf[7] & 0b00000111) << 8) >> 4));
+
+}
+
+/*
  * Decode a CAN frame for the message PDM_09
  * \param imsg A reference to the incoming CAN message frame
  */
 void read_PDM_09(CAN_message_t &imsg) {
 
-	PDM_OBD_oilPressure.set_can_value(((imsg.buf[0] && 0b10000000) >> 7));
-	PDM_OBD_oilTemp.set_can_value(((imsg.buf[1] && 0b10000000) >> 7));
-	PDM_OBD_fuelPressure.set_can_value(((imsg.buf[2] && 0b10000000) >> 7));
+	PDM_OBD_oilPressure.set_can_value(((imsg.buf[0] & 0b00000001)));
+	PDM_OBD_oilTemp.set_can_value(((imsg.buf[1] & 0b00000001)));
+	PDM_OBD_fuelPressure.set_can_value(((imsg.buf[2] & 0b00000001)));
 	PDM_engineState.set_can_value((imsg.buf[7]));
 
 }
@@ -254,7 +304,7 @@ void read_PDM_09(CAN_message_t &imsg) {
  */
 void read_PDM_25(CAN_message_t &imsg) {
 
-	PDM_counterMsg275.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg275.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_carMiles.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_engineHours.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_engineMinutes.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -277,7 +327,7 @@ void read_PDM_31(CAN_message_t &imsg) {
  */
 void read_PDM_24(CAN_message_t &imsg) {
 
-	PDM_counterMsg274.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg274.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_fanLeftPWM.set_can_value((imsg.buf[2]));
 	PDM_fanRightPWM.set_can_value((imsg.buf[3]));
 	PDM_wpPWM.set_can_value((imsg.buf[4]));
@@ -291,7 +341,7 @@ void read_PDM_24(CAN_message_t &imsg) {
  */
 void read_TCGPS_10(CAN_message_t &imsg) {
 
-	TCGPS_counterMsg160.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	TCGPS_counterMsg160.set_can_value(((imsg.buf[0] & 0b00001111)));
 	TCGPS_boardTemp.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	TCGPS_teensyTemp.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 
@@ -303,7 +353,7 @@ void read_TCGPS_10(CAN_message_t &imsg) {
  */
 void read_DD_10(CAN_message_t &imsg) {
 
-	DD_counterMsg210.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	DD_counterMsg210.set_can_value(((imsg.buf[0] & 0b00001111)));
 	DD_boardTemp.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	DD_teensyTemp.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	DD_requestDRS.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -343,7 +393,7 @@ void read_USER_11(CAN_message_t &imsg) {
  */
 void read_ATCCF_15(CAN_message_t &imsg) {
 
-	ATCCF_counterMsg415.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCF_counterMsg415.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCF_boardTemp.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCF_teensyTemp.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 
@@ -368,14 +418,14 @@ void read_USER_10(CAN_message_t &imsg) {
  */
 void read_PDM_30(CAN_message_t &imsg) {
 
-	USER_driverMessageChar0.set_can_value((imsg.buf[0]));
-	USER_driverMessageChar1.set_can_value((imsg.buf[1]));
-	USER_driverMessageChar2.set_can_value((imsg.buf[2]));
-	USER_driverMessageChar3.set_can_value((imsg.buf[3]));
-	USER_driverMessageChar4.set_can_value((imsg.buf[4]));
-	USER_driverMessageChar5.set_can_value((imsg.buf[5]));
-	USER_driverMessageChar6.set_can_value((imsg.buf[6]));
-	USER_driverMessageChar7.set_can_value((imsg.buf[7]));
+	PDM_driverMessageChar0.set_can_value((imsg.buf[0]));
+	PDM_driverMessageChar1.set_can_value((imsg.buf[1]));
+	PDM_driverMessageChar2.set_can_value((imsg.buf[2]));
+	PDM_driverMessageChar3.set_can_value((imsg.buf[3]));
+	PDM_driverMessageChar4.set_can_value((imsg.buf[4]));
+	PDM_driverMessageChar5.set_can_value((imsg.buf[5]));
+	PDM_driverMessageChar6.set_can_value((imsg.buf[6]));
+	PDM_driverMessageChar7.set_can_value((imsg.buf[7]));
 
 }
 
@@ -385,7 +435,7 @@ void read_PDM_30(CAN_message_t &imsg) {
  */
 void read_PDM_23(CAN_message_t &imsg) {
 
-	PDM_counterMsg273.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg273.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_boardTemp.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_brakelightVoltAvg.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_starterRelayVoltAvg.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -398,7 +448,7 @@ void read_PDM_23(CAN_message_t &imsg) {
  */
 void read_PDM_22(CAN_message_t &imsg) {
 
-	PDM_counterMsg272.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg272.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_keepAliveVoltAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_keepAliveVoltMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_keepAliveVoltMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -411,7 +461,7 @@ void read_PDM_22(CAN_message_t &imsg) {
  */
 void read_PDM_21(CAN_message_t &imsg) {
 
-	PDM_counterMsg271.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg271.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_dataVoltAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_dataVoltMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_dataVoltMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -424,7 +474,7 @@ void read_PDM_21(CAN_message_t &imsg) {
  */
 void read_PDM_20(CAN_message_t &imsg) {
 
-	PDM_counterMsg270.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg270.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_mainVoltAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_mainVoltMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_mainVoltMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -437,7 +487,7 @@ void read_PDM_20(CAN_message_t &imsg) {
  */
 void read_PDM_19(CAN_message_t &imsg) {
 
-	PDM_counterMsg269.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg269.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_fuelVoltAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_fuelVoltMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_fuelVoltMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -450,7 +500,7 @@ void read_PDM_19(CAN_message_t &imsg) {
  */
 void read_PDM_18(CAN_message_t &imsg) {
 
-	PDM_counterMsg268.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg268.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_fuelCurrentAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_fuelCurrentMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_fuelCurrentMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -463,7 +513,7 @@ void read_PDM_18(CAN_message_t &imsg) {
  */
 void read_PDM_17(CAN_message_t &imsg) {
 
-	PDM_counterMsg267.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg267.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_wpVoltAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_wpVoltMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_wpVoltMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -476,7 +526,7 @@ void read_PDM_17(CAN_message_t &imsg) {
  */
 void read_PDM_16(CAN_message_t &imsg) {
 
-	PDM_counterMsg266.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg266.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_wpCurrentAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_wpCurrentMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_wpCurrentMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -489,7 +539,7 @@ void read_PDM_16(CAN_message_t &imsg) {
  */
 void read_PDM_15(CAN_message_t &imsg) {
 
-	PDM_counterMsg265.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg265.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_fanLeftVoltAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_fanLeftVoltMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_fanLeftVoltMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -502,7 +552,7 @@ void read_PDM_15(CAN_message_t &imsg) {
  */
 void read_PDM_14(CAN_message_t &imsg) {
 
-	PDM_counterMsg264.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg264.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_fanLeftCurrentAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_fanLeftCurrentMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_fanLeftCurrentMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -515,7 +565,7 @@ void read_PDM_14(CAN_message_t &imsg) {
  */
 void read_PDM_11(CAN_message_t &imsg) {
 
-	PDM_counterMsg261.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg261.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_pdmVoltAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_pdmVoltMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_pdmVoltMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -528,7 +578,7 @@ void read_PDM_11(CAN_message_t &imsg) {
  */
 void read_PDM_13(CAN_message_t &imsg) {
 
-	PDM_counterMsg263.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg263.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_fanRightVoltAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_fanRightVoltMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_fanRightVoltMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -541,7 +591,7 @@ void read_PDM_13(CAN_message_t &imsg) {
  */
 void read_PDM_12(CAN_message_t &imsg) {
 
-	PDM_counterMsg262.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	PDM_counterMsg262.set_can_value(((imsg.buf[0] & 0b00001111)));
 	PDM_fanRightCurrentAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_fanRightCurrentMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_fanRightCurrentMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -554,8 +604,8 @@ void read_PDM_12(CAN_message_t &imsg) {
  */
 void read_PDM_10(CAN_message_t &imsg) {
 
-	PDM_counterMsg260.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
-	PDM_dataLog.set_can_value((((imsg.buf[0] && 0b10000000) >> 7) << 7)) >> 7);
+	PDM_counterMsg260.set_can_value(((imsg.buf[0] & 0b00001111)));
+	PDM_dataLog.set_can_value((((imsg.buf[0] & 0b10000000)) >> 7));
 	PDM_pdmCurrentAvg.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	PDM_pdmCurrentMax.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	PDM_pdmCurrentMin.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -568,7 +618,7 @@ void read_PDM_10(CAN_message_t &imsg) {
  */
 void read_ATCCR_14(CAN_message_t &imsg) {
 
-	ATCCR_counterMsg464.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCR_counterMsg464.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCR_tireTempRRI.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCR_tireTempRRM.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCR_tireTempRRO.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -581,7 +631,7 @@ void read_ATCCR_14(CAN_message_t &imsg) {
  */
 void read_ATCCR_13(CAN_message_t &imsg) {
 
-	ATCCR_counterMsg463.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCR_counterMsg463.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCR_tireTempRLI.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCR_tireTempRLM.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCR_tireTempRLO.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -594,7 +644,7 @@ void read_ATCCR_13(CAN_message_t &imsg) {
  */
 void read_ATCCR_12(CAN_message_t &imsg) {
 
-	ATCCR_counterMsg462.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCR_counterMsg462.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCR_teensyTemp.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCR_coolantTempRadInlet.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCR_coolantTempRadOutlet.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -607,7 +657,7 @@ void read_ATCCR_12(CAN_message_t &imsg) {
  */
 void read_ATCCR_11(CAN_message_t &imsg) {
 
-	ATCCR_counterMsg461.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCR_counterMsg461.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCR_boardTemp.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCR_rotorTempRL.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCR_rotorTempRR.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -620,7 +670,7 @@ void read_ATCCR_11(CAN_message_t &imsg) {
  */
 void read_ATCCR_10(CAN_message_t &imsg) {
 
-	ATCCR_counterMsg460.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCR_counterMsg460.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCR_suspensionTravelRL.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCR_suspensionTravelRR.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
 
@@ -632,7 +682,7 @@ void read_ATCCR_10(CAN_message_t &imsg) {
  */
 void read_ATCCF_14(CAN_message_t &imsg) {
 
-	ATCCF_counterMsg414.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCF_counterMsg414.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCF_tireTempFRI.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCF_tireTempFRM.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCF_tireTempFRO.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -645,7 +695,7 @@ void read_ATCCF_14(CAN_message_t &imsg) {
  */
 void read_ATCCF_13(CAN_message_t &imsg) {
 
-	ATCCF_counterMsg413.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCF_counterMsg413.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCF_tireTempFLI.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCF_tireTempFLM.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCF_tireTempFLO.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -658,7 +708,7 @@ void read_ATCCF_13(CAN_message_t &imsg) {
  */
 void read_ATCCF_12(CAN_message_t &imsg) {
 
-	ATCCF_counterMsg412.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCF_counterMsg412.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCF_coolantTempRadMiddle.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCF_rotorTempFL.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCF_rotorTempFR.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -671,7 +721,7 @@ void read_ATCCF_12(CAN_message_t &imsg) {
  */
 void read_ATCCF_11(CAN_message_t &imsg) {
 
-	ATCCF_counterMsg411.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCF_counterMsg411.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCF_brakePressureF.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCF_brakePressureR.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCF_steeringWheelAngle.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
@@ -684,7 +734,7 @@ void read_ATCCF_11(CAN_message_t &imsg) {
  */
 void read_ATCCF_10(CAN_message_t &imsg) {
 
-	ATCCF_counterMsg410.set_can_value(((imsg.buf[0] && 0b11110000) >> 4));
+	ATCCF_counterMsg410.set_can_value(((imsg.buf[0] & 0b00001111)));
 	ATCCF_brakeBias.set_can_value((imsg.buf[2]) | (imsg.buf[3] << 8));
 	ATCCF_suspensionTravelFL.set_can_value((imsg.buf[4]) | (imsg.buf[5] << 8));
 	ATCCF_suspensionTravelFR.set_can_value((imsg.buf[6]) | (imsg.buf[7] << 8));
