@@ -116,14 +116,14 @@ BO_ 710 USER_10: 8 Vector__XXX
  SG_ USER_brakeLightOverride : 24|8@1- (1,0) [-128|127] "Duty %" Vector__XXX
 
 BO_ 280 PDM_30: 8 PDM
- SG_ USER_driverMessageChar7 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
- SG_ USER_driverMessageChar6 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
- SG_ USER_driverMessageChar5 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
- SG_ USER_driverMessageChar4 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
- SG_ USER_driverMessageChar3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
- SG_ USER_driverMessageChar2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
- SG_ USER_driverMessageChar1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
- SG_ USER_driverMessageChar0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar7 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar6 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar5 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar4 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 273 PDM_23: 8 PDM
  SG_ PDM_starterRelayVoltAvg : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
@@ -329,14 +329,14 @@ CM_ SG_ 710 USER_fanRightOverride "Manual override percentage";
 CM_ SG_ 710 USER_fanLeftOverride "Manual override percentage";
 CM_ SG_ 710 USER_brakeLightOverride "Manual Brakelight Override";
 CM_ BO_ 280 "String sent from OBD to driver display (8 chars)";
-CM_ SG_ 280 USER_driverMessageChar7 "The 8-char message that the driver display can read";
-CM_ SG_ 280 USER_driverMessageChar6 "The 8-char message that the driver display can read";
-CM_ SG_ 280 USER_driverMessageChar5 "The 8-char message that the driver display can read";
-CM_ SG_ 280 USER_driverMessageChar4 "The 8-char message that the driver display can read";
-CM_ SG_ 280 USER_driverMessageChar3 "The 8-char message that the driver display can read";
-CM_ SG_ 280 USER_driverMessageChar2 "The 8-char message that the driver display can read";
-CM_ SG_ 280 USER_driverMessageChar1 "The 8-char message that the driver display can read";
-CM_ SG_ 280 USER_driverMessageChar0 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar7 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar6 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar5 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar4 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar3 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar2 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar1 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar0 "The 8-char message that the driver display can read";
 CM_ SG_ 273 PDM_starterRelayVoltAvg "Starter Relay Voltage Average";
 CM_ SG_ 273 PDM_counterMsg273 "Counter for Message 273";
 CM_ SG_ 273 PDM_brakelightVoltAvg "Brakelight Voltage Average";
