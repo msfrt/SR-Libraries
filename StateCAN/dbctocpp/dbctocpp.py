@@ -33,18 +33,31 @@ class SignalMask:
 
         self._byte_array = [[0 for j in range(8)] for i in range(self._msg_bytes)]
 
-        for bit_i in range(self._start, self._start + self._bit_length):
+        if self._little_endian:
+            for bit_i in range(self._start, self._start + self._bit_length):
 
-            # calculate the current byte and the current bit index
-            byte = bit_i // 8
-            bit = bit_i % 8
+                # calculate the current byte and the current bit index
+                byte = bit_i // 8
+                bit = 7 - bit_i % 8
 
-            # byte indexing in reversed with little endian
-            if self._little_endian:
-                bit = 7 - bit
+                # set the bit
+                self._byte_array[byte][bit] = 1
 
-            # set the bit
-            self._byte_array[byte][bit] = 1
+        # big endian is pretty muffed up. Just look at the bit indices in DB++
+        else:
+
+            bit_i = (7 - self._start) % 8
+            byte_i = self._start // 8
+
+            for i in range(self._start, self._start + self._bit_length):
+
+                # set the bit
+                self._byte_array[byte_i][bit_i] = 1
+
+                bit_i += 1
+                if bit_i % 8 == 0:
+                    bit_i = 0
+                    byte_i += 1
 
 
     def __str__(self):
@@ -54,18 +67,21 @@ class SignalMask:
         """
 
         # this constructs a matrix representation of the entire message buffer. Use this to help with debugging
+        st = "byte order: "
+        if self._little_endian:
+            st += "little-endian\n"
+        else:
+            st += "big-endian\n"
 
-        # st = ""
-        # for byte_i in range(len(self._byte_array)):
-        #     st += "{}: ".format(byte_i)
-        #     byte = self._byte_array[byte_i]
-        #     for bit in byte:
-        #         st += "{} ".format(bit)
-        #     st += '\n'
-        # st += "\n"
+        for byte_i in range(len(self._byte_array)):
+            st += "{}: ".format(byte_i)
+            byte = self._byte_array[byte_i]
+            for bit in byte:
+                st += "{} ".format(bit)
+            st += '\n'
+        st += "\n"
 
         mask_str = ""
-
 
         if self._little_endian:
 
@@ -135,7 +151,16 @@ class SignalMask:
                 # add an extra parenthesis to the beginning and do the shifts
                 mask_str = "(" + mask_str + " >> {})".format(shift_right_bits)
 
-        return mask_str
+
+
+        # big endian, so above, but in reverse
+        else:
+
+
+
+            pass
+
+        return st + mask_str
 
 
 class StateSignal:
@@ -252,9 +277,9 @@ def dbctocpp(input_file, output_file):
 
         fp_out.write("\nvoid read_{}(CAN_message_t &imsg) {{\n\n".format(msg.name))
 
-        # # for testing
-        # if msg.name[0:4] != "TEST":
-        #     continue
+        # for testing
+        if msg.name[0:4] != "TEST":
+            continue
 
         # is this message multiplexed? (it will have a signal tree)
         try:
@@ -290,6 +315,12 @@ def dbctocpp(input_file, output_file):
 
                 signal_bit_mask = SignalMask(sig.start, sig.length, little_endian_bool)
 
+                print()
+                print()
+                print(msg.name)
+                print(sig.name)
+                print(signal_bit_mask)
+
                 fp_out.write("\t{}.set_can_value({});\n".format(sig.name, signal_bit_mask))
 
         fp_out.write("\n}\n\n")
@@ -299,22 +330,6 @@ def dbctocpp(input_file, output_file):
     fp_out.close()
 
 
-def construct_byte_mask(start_bit=0, num_bits=8):
-    """
-    Constructs a mask for end bytes that are not full bytes
-    :param start_bit: The starting bit to KEEP
-    :param num_bits: The number of bits to keep
-    :return: a string representing the 8-bit mask
-    """
-    mask = ''
-    for i in range(start_bit):
-        mask += '0'
-    for i in range(num_bits):
-        mask += '1'
-    for i in range(8 - (start_bit + num_bits)):
-        mask += '0'
-
-    return mask
 
 
 def main():
