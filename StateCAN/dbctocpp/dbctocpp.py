@@ -14,6 +14,130 @@ import cantools
 import argparse
 
 
+class SignalMask:
+
+    def __init__(self, start_bit, bit_length, little_endian=False, message_bytes=8):
+        """
+        Creates a signal mask object
+        :param start_bit: int - the starting bit of this signal
+        :param bit_length: int - the number of bits that this signal has'
+        :param little_endian: bool - if the signal is big endian (false) or little endian (true)
+        :param message_bytes: int - The total number of bytes in the message
+        """
+
+        self._start = start_bit
+        self._bit_length = bit_length
+        self._msg_bytes = message_bytes
+        self._little_endian = little_endian
+        self._byte_array_prefix = "imsg.buf"
+
+        self._byte_array = [[0 for j in range(8)] for i in range(self._msg_bytes)]
+
+        for bit_i in range(self._start, self._start + self._bit_length):
+
+            # calculate the current byte and the current bit index
+            byte = bit_i // 8
+            bit = bit_i % 8
+
+            # byte indexing in reversed with little endian
+            if self._little_endian:
+                bit = 7 - bit
+
+            # set the bit
+            self._byte_array[byte][bit] = 1
+
+
+    def __str__(self):
+        """
+        Represent this mask as a string
+        :return: the string C code mask
+        """
+
+        # this constructs a matrix representation of the entire message buffer. Use this to help with debugging
+
+        # st = ""
+        # for byte_i in range(len(self._byte_array)):
+        #     st += "{}: ".format(byte_i)
+        #     byte = self._byte_array[byte_i]
+        #     for bit in byte:
+        #         st += "{} ".format(bit)
+        #     st += '\n'
+        # st += "\n"
+
+        mask_str = ""
+
+
+        if self._little_endian:
+
+            byte_offset = 0  # used to shift each additional byte of the buffer
+            shift_right_bits = 0  # if the first byte in this number is not a full byte, the end will shift right
+            for byte_i in range(len(self._byte_array)):
+
+                mask_sum = sum(self._byte_array[byte_i])
+
+                # if the sum of the mask == 0, that means that the entire mask is 0b00000000.
+                # in other words, we omit this byte
+                if mask_sum == 0:
+                    continue
+
+                # if the mask sum is 8, the mask is 0b11111111, which means no masking is necessary
+                elif mask_sum == 8:
+                    mask_str += "({}[{}]".format(self._byte_array_prefix, byte_i)
+
+                    if byte_offset != 0:
+                        mask_str += " << {}".format(byte_offset * 8)
+
+                    # we've added a byte, so we must increase the byte offset by one for the next iteration
+                    byte_offset += 1
+                    mask_str += ")"
+
+                # if the mask sum was neither 0 nor 8, that means that there's some variable mask we need to do
+                else:
+
+                    # okay so this gets a little tricky. If this is the first byte, there's a possibility that it's
+                    # shifted to the left too much. This occurs when there's a mask like 0b00110000, where the actual
+                    # integer value needs to be 0b00000011. We would need to shift the entire thing by 4 bits at the
+                    # very end of all of the masking, otherwise it could be off my many factors of two
+                    if byte_offset == 0:
+                        for i in range(7, -1, -1):  # start from 7 and go to 0
+                            if self._byte_array[byte_i][i] == 0:
+                                shift_right_bits += 1
+                            else:
+                                break
+
+                    mask_str += "(({}[{}]".format(self._byte_array_prefix, byte_i)
+
+                    # construct the 0b???????? mask based off of the bits in the byte
+                    mask_bit_str = ""
+                    for bit in self._byte_array[byte_i]:
+                        mask_bit_str += str(bit)  # either is a 1 or a 0
+
+                    # add the mask
+                    mask_str += " & 0b{})".format(mask_bit_str)
+
+                    if byte_offset != 0:
+                        mask_str += " << {}".format(byte_offset * 8)
+
+                    # we've added a byte, so we must increase the byte offset by one for the next iteration
+                    byte_offset += 1
+                    mask_str += ")"
+
+                # look one iteration into the future to see if we need to add a bitwise OR to the mask
+                try:
+                    if (sum(self._byte_array[byte_i + 1])) != 0:
+                        mask_str += " | "
+                except IndexError:
+                    pass
+
+            # congrats! you've got a mask! (almost). If we need to shift the entire thing right some bits, we can
+            # do it now that that main mask construction is complete
+            if shift_right_bits > 0:
+                # add an extra parenthesis to the beginning and do the shifts
+                mask_str = "(" + mask_str + " >> {})".format(shift_right_bits)
+
+        return mask_str
+
+
 class StateSignal:
 
     def __init__(self, name, bit_length, signed, factor, offset, lower_bound, upper_bound,
@@ -69,7 +193,6 @@ class StateSignal:
         return self.__str__()
 
 
-
 def dbctocpp(input_file, output_file):
     """
     This function reads in regular DBC files, makes sense of them using the cantools library, then outputs them
@@ -113,106 +236,70 @@ def dbctocpp(input_file, output_file):
                 fp_out.write("{};\n".format(ssig))
         fp_out.write("\n")
 
-
     fp_out.write("""\n\n\n/************************************************************************************
     
     Incoming CAN frame decoding functions
 
 ************************************************************************************/\n\n\n""")
 
-
     # message definitions
     for msg in db.messages:
 
         # function header
-        fp_out.write("/*\n * Decode a CAN frame for the message {}\n * \\param imsg A reference to the incoming CAN message frame\n */".format(msg.name))
+        fp_out.write(
+            "/*\n * Decode a CAN frame for the message {}\n * \\param imsg A reference to the incoming CAN message frame\n */".format(
+                msg.name))
 
         fp_out.write("\nvoid read_{}(CAN_message_t &imsg) {{\n\n".format(msg.name))
+
+        # # for testing
+        # if msg.name[0:4] != "TEST":
+        #     continue
 
         # is this message multiplexed? (it will have a signal tree)
         try:
             for mult_sig_name, mult_msg in msg.signal_tree[0].items():
                 # multiplexed message processing here
+
                 pass
 
         # message is not multiplexed
         except AttributeError:
             for sig in msg.signals:
 
-                if sig.byte_order == 'little_endian':
+                little_endian_bool = sig.byte_order == 'little_endian'
 
-                    start_byte = sig.start // 8
-                    start_byte_offset = sig.start % 8
-                    num_bytes = sig.length // 8
-                    num_bytes_bit_extension = sig.length % 8
+                start_byte = sig.start // 8
+                num_bytes = sig.length // 8
 
-                    end_byte = start_byte + num_bytes
-                    if num_bytes_bit_extension > 0:
-                        end_byte += 1
+                first_byte_bit_offset = sig.start % 8
+                last_byte_bit_offset = 0
+                if (sig.start + sig.length) % 8 != 0:
+                    last_byte_bit_offset = 8 - ((sig.start + sig.length) % 8)
 
-                    fp_out.write("\t{}.set_can_value(".format(sig.name))
+                # print()
+                # print(sig.name)
+                # print("sig.start = {}".format(sig.start))
+                # print("sig.byte_order = {}".format(sig.byte_order))
+                # print("sig.length = {}".format(sig.length))
+                # print("start_byte = {}".format(start_byte))
+                # print("num_bytes = {}".format(num_bytes))
+                #
+                # print("first_byte_bit_offset = {}".format(first_byte_bit_offset))
+                # print("last_byte_bit_offset = {}".format(last_byte_bit_offset))
 
-                    # if we will have to shift everything at the end, we need another open parenthesis
-                    # start_byte_offset (part 1)
-                    if start_byte_offset > 0:
-                        fp_out.write("(")
+                signal_bit_mask = SignalMask(sig.start, sig.length, little_endian_bool)
 
-                    bit_shift = 0
-                    for byte_i in range(start_byte, end_byte):
-
-                        # if the last byte is not a complete byte (part 1)
-                        if (byte_i == (end_byte - 1)) and (num_bytes_bit_extension > 0):
-                            fp_out.write("(")
-
-                        fp_out.write("(imsg.buf[{}]".format(byte_i))
-
-                        # if the last byte is not a complete byte (part 2)
-                        if (byte_i == (end_byte - 1)) and (num_bytes_bit_extension > 0):
-                            mask = construct_byte_mask(0, num_bytes_bit_extension)
-                            fp_out.write(" && 0b{}) >> {}".format(mask, 8 - num_bytes_bit_extension))
-
-                        # if there was start_byte_offset, we need to shift everything temporarily (part 2)
-                        if (byte_i == start_byte) and (start_byte_offset > 0):
-                            fp_out.write(") << {}".format(start_byte_offset))
-
-                        # shift by the number of bits in the byte (for bytes after byte 0 only)
-                        if byte_i != start_byte:
-                            fp_out.write(" << {}".format(bit_shift))
-                        bit_shift += 8
-
-                        # done with the masking and shifting by this point
-                        fp_out.write(")")
-
-                        # there are more bytes to add, so bitwise OR
-                        if byte_i != (end_byte - 1):
-                            fp_out.write(" | ")
-
-                    # if there was start_byte_offset, we need to shift everything (part 3)
-                    if start_byte_offset > 0:
-                        fp_out.write(") >> {}".format(start_byte_offset))
-
-                    # okay, now we're done here :)
-                    fp_out.write(");\n")
-
-                    # print("sig.start: {}".format(sig.start))
-                    # print("sig.length: {}".format(sig.length))
-                    # print("start_byte = {}".format(sig.start // 8))
-                    # print("start_byte_offset = {}".format(sig.start % 8))
-                    # print("num_bytes = {}".format(sig.length // 8))
-                    # print("num_bytes_bit_extension = {}".format(sig.length % 8))
-
-
+                fp_out.write("\t{}.set_can_value({});\n".format(sig.name, signal_bit_mask))
 
         fp_out.write("\n}\n\n")
-
 
     # end of header guards and close the file
     fp_out.write("\n\n#endif\n")
     fp_out.close()
 
 
-
-def construct_byte_mask(start_bit = 0, num_bits = 8):
+def construct_byte_mask(start_bit=0, num_bits=8):
     """
     Constructs a mask for end bytes that are not full bytes
     :param start_bit: The starting bit to KEEP
@@ -228,7 +315,6 @@ def construct_byte_mask(start_bit = 0, num_bits = 8):
         mask += '0'
 
     return mask
-
 
 
 def main():
@@ -250,5 +336,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
