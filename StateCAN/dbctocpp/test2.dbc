@@ -40,6 +40,18 @@ BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
  SG_ PDM_driverDisplayMessage : 0|64@1+ (1,0) [0|1.84467440737096E+019] "char" Vector__XXX
  SG_ ATCCR_counterMsg465 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
 
+BO_ 422 TEST_1_BE: 8 Vector__XXX
+ SG_ TEST_bool5_BE : 17|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool4_BE : 26|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool3_BE : 37|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool2_BE : 8|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool1_BE : 9|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_7bit3_BE : 51|7@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_7bit2_BE : 32|7@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit3_BE : 31|4@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit2_BE : 22|4@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_10bit1_BE : 7|10@0- (1,0) [0|0] "" Vector__XXX
+
 BO_ 421 TEST_2: 8 Vector__XXX
  SG_ TEST_24bit1 : 40|24@1- (1,0) [0|0] "" Vector__XXX
  SG_ TEST_10bit2 : 0|10@1- (1,0) [0|0] "" Vector__XXX
