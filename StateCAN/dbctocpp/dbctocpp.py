@@ -13,32 +13,28 @@
 import cantools
 import argparse
 
-
-DEBUG = True
+DEBUG = False
 
 
 class SignalMask:
 
-    def __init__(self, start_bit, bit_length, little_endian=False, message_bytes=8):
+    def __init__(self, sig, message_bytes):
         """
         Creates a signal mask object
-        :param start_bit: int - the starting bit of this signal
-        :param bit_length: int - the number of bits that this signal has'
-        :param little_endian: bool - if the signal is big endian (false) or little endian (true)
-        :param message_bytes: int - The total number of bytes in the message
+        :param sig: the signal object to create a mask for
+        :param message_bytes: the number of bytes in the message that this signal belongs to
         """
 
-        self._start = start_bit
-        self._bit_length = bit_length
+        self._start = sig.start
+        self._bit_length = sig.length
         self._msg_bytes = message_bytes
-        self._little_endian = little_endian
+        self._little_endian = sig.byte_order == "little_endian"
         self._byte_array_prefix = "imsg.buf"
 
         self._byte_array = [[0 for j in range(8)] for i in range(self._msg_bytes)]
 
         if self._little_endian:
             for bit_i in range(self._start, self._start + self._bit_length):
-
                 # calculate the current byte and the current bit index
                 byte = bit_i // 8
                 bit = 7 - bit_i % 8
@@ -82,7 +78,6 @@ class SignalMask:
                 st += "{} ".format(bit)
             st += '\n'
         return st
-
 
     def __str__(self):
         """
@@ -160,14 +155,13 @@ class SignalMask:
                 # add an extra parenthesis to the beginning and do the shifts
                 mask_str = "(" + mask_str + " >> {})".format(shift_right_bits)
 
-
         # big endian, so above, but in reverse
         else:
 
             byte_offset = 0  # used to shift each additional byte of the buffer
             shift_right_bits = 0  # if the first byte in this number is not a full byte, the end will shift right
             for byte_i in range(len(self._byte_array) - 1, -1, -1):
-
+                
                 mask_sum = sum(self._byte_array[byte_i])
 
                 # if the sum of the mask == 0, that means that the entire mask is 0b00000000.
@@ -288,6 +282,19 @@ class StateSignal:
         return self.__str__()
 
 
+def find_signal_object(signals_list, signal_name_str):
+    """
+    Finds the signal object by signals name within a list of signal objects
+    :param signals_list: the list of signal objects
+    :param signal_name_str: the name of the signal
+    :return: The signal object
+    """
+
+    for sig in signals_list:
+        if sig.name == signal_name_str:
+            return sig
+
+
 def dbctocpp(input_file, output_file):
     """
     This function reads in regular DBC files, makes sense of them using the cantools library, then outputs them
@@ -342,7 +349,8 @@ def dbctocpp(input_file, output_file):
 
         # function header
         fp_out.write(
-            "/*\n * Decode a CAN frame for the message {}\n * \\param imsg A reference to the incoming CAN message frame\n */".format(
+            "/*\n * Decode a CAN frame for the message {}\n * \\param imsg A reference to the incoming CAN message "
+            "frame\n */".format(
                 msg.name))
 
         fp_out.write("\nvoid read_{}(CAN_message_t &imsg) {{\n\n".format(msg.name))
@@ -356,7 +364,29 @@ def dbctocpp(input_file, output_file):
             for mult_sig_name, mult_msg in msg.signal_tree[0].items():
                 # multiplexed message processing here
 
-                pass
+                fp_out.write("\t// multiplexer signal\n")
+                fp_out.write("\tint {} = imsg.buf[0];\n\n".format(mult_sig_name))
+
+                fp_out.write("\tswitch ({}) {{\n\n".format(mult_sig_name))
+
+                for mult_id, signal_list in mult_msg.items():
+                    fp_out.write("\t\tcase {}:\n".format(mult_id))
+
+                    for sig_name_str in signal_list:
+                        # this finds the actual signal object within the message's signals
+                        sig_obj = find_signal_object(msg.signals, sig_name_str)
+
+                        # create the mask
+                        signal_bit_mask = SignalMask(sig_obj, msg.length)
+
+                        # write to the file
+                        fp_out.write("\t\t\t{}.set_can_value({});\n".format(sig_obj.name, signal_bit_mask))
+
+                    # end switch
+                    fp_out.write("\t\t\tbreak;\n\n".format(mult_id))
+
+                # end switch statement
+                fp_out.write("\t}\n")
 
         # message is not multiplexed
         except AttributeError:
@@ -364,7 +394,7 @@ def dbctocpp(input_file, output_file):
 
                 little_endian_bool = sig.byte_order == 'little_endian'
 
-                signal_bit_mask = SignalMask(sig.start, sig.length, little_endian_bool)
+                signal_bit_mask = SignalMask(sig, msg.length)
 
                 if DEBUG:
                     print('\n')
@@ -377,11 +407,38 @@ def dbctocpp(input_file, output_file):
 
         fp_out.write("\n}\n\n")
 
+    fp_out.write("""\n\n\n/************************************************************************************
+
+    Distribute incoming messages to the correct decoding functions
+
+************************************************************************************/\n\n\n""")
+
+    # function header
+    fp_out.write("/*\n * Decode a CAN message for the bus captured in {}.\n * To more efficiently allocate "
+                 "microcontroller resources, simply comment\n * out unnecessary messages that do not need to be "
+                 "decoded.\n * \\param imsg A reference to the incoming CAN frame\n */\n".format(input_file))
+
+    # create a function that uses this filename as a bus name to distribute incoming frames to decode functions
+    fp_out.write("void decode_{}(CAN_message_t &imsg) {{\n\n".format(input_file[:-4]))
+
+    # switch based on message id
+    fp_out.write("\tswitch (imsg.id) {\n\n")
+
+    # map every message's read function (that was defined above) to the proper id
+    for msg in db.messages:
+        fp_out.write("\t\tcase {}:\n".format(msg.frame_id))
+        fp_out.write("\t\t\tread_{}(imsg);\n".format(msg.name))
+        fp_out.write("\t\t\tbreak;\n\n")
+
+    # end switch statement
+    fp_out.write("\t}\n")
+
+    # end decode incoming function
+    fp_out.write("}\n")
+
     # end of header guards and close the file
     fp_out.write("\n\n#endif\n")
     fp_out.close()
-
-
 
 
 def main():
