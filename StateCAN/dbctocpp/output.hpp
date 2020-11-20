@@ -14,6 +14,18 @@
 #include <FlexCAN_T4.h>
 #include <StateCAN.h>
 
+// Message: TEST_1_BE [0x1a6]
+StateSignal TEST_10bit1_BE(10, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_bool1_BE(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_bool2_BE(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_4bit2_BE(4, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_bool5_BE(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_4bit3_BE(4, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_bool4_BE(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_bool3_BE(1, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_7bit2_BE(7, true, 1, 0.0, 0, 0, 0.0, 0);
+StateSignal TEST_7bit3_BE(7, true, 1, 0.0, 0, 0, 0.0, 0);
+
 // Message: TEST_2 [0x1a5]
 StateSignal TEST_10bit2(10, true, 1, 0.0, 0, 0, 0.0, 0);
 StateSignal TEST_10bit1(10, true, 1, 0.0, 0, 0, 0.0, 0);
@@ -252,6 +264,25 @@ StateSignal ATCCF_suspensionTravelFR(16, true, 1000, 0.0, -32, 32, 0.0, 0);
 
 ************************************************************************************/
 
+
+/*
+ * Decode a CAN frame for the message TEST_1_BE
+ * \param imsg A reference to the incoming CAN message frame
+ */
+void read_TEST_1_BE(CAN_message_t &imsg) {
+
+	TEST_10bit1_BE.set_can_value((((imsg.buf[1] & 0b11000000)) | (imsg.buf[0] << 8) >> 6));
+	TEST_bool1_BE.set_can_value((((imsg.buf[1] & 0b00000010)) >> 1));
+	TEST_bool2_BE.set_can_value(((imsg.buf[1] & 0b00000001)));
+	TEST_4bit2_BE.set_can_value((((imsg.buf[2] & 0b01111000)) >> 3));
+	TEST_bool5_BE.set_can_value((((imsg.buf[2] & 0b00000010)) >> 1));
+	TEST_4bit3_BE.set_can_value((((imsg.buf[3] & 0b11110000)) >> 4));
+	TEST_bool4_BE.set_can_value((((imsg.buf[3] & 0b00000100)) >> 2));
+	TEST_bool3_BE.set_can_value((((imsg.buf[4] & 0b00100000)) >> 5));
+	TEST_7bit2_BE.set_can_value((((imsg.buf[5] & 0b11111100)) | ((imsg.buf[4] & 0b00000001) << 8) >> 2));
+	TEST_7bit3_BE.set_can_value((((imsg.buf[7] & 0b11100000)) | ((imsg.buf[6] & 0b00001111) << 8) >> 5));
+
+}
 
 /*
  * Decode a CAN frame for the message TEST_2
