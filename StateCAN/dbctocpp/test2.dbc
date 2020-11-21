@@ -1,0 +1,468 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PDM ATCCR ATCCF
+
+
+BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
+ SG_ PDM_driverDisplayMessage : 0|64@1+ (1,0) [0|1.84467440737096E+019] "char" Vector__XXX
+ SG_ ATCCR_counterMsg465 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 422 TEST_1_BE: 8 Vector__XXX
+ SG_ TEST_bool5_BE : 17|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool4_BE : 26|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool3_BE : 37|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool2_BE : 8|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool1_BE : 9|1@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_7bit3_BE : 51|7@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_7bit2_BE : 32|7@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit3_BE : 31|4@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit2_BE : 22|4@0- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_10bit1_BE : 7|10@0- (1,0) [0|0] "" Vector__XXX
+
+BO_ 421 TEST_2: 8 Vector__XXX
+ SG_ TEST_24bit1 : 40|24@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_10bit2 : 0|10@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_10bit1 : 19|10@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 420 TEST_1: 8 Vector__XXX
+ SG_ TEST_7bit3 : 52|7@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_7bit2 : 40|7@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_7bit1 : 33|7@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool5 : 0|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool4 : 1|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool3 : 2|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool2 : 5|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_bool1 : 7|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit3 : 24|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit2 : 20|4@1- (1,0) [0|0] "" Vector__XXX
+ SG_ TEST_4bit1 : 14|4@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 259 PDM_09: 8 Vector__XXX
+ SG_ PDM_engineState : 56|8@1- (1,0) [0|3] "int" Vector__XXX
+ SG_ PDM_OBD_oilTemp : 8|1@1+ (1,0) [0|0] "bool" Vector__XXX
+ SG_ PDM_OBD_oilPressure : 0|1@1+ (1,0) [0|0] "bool" Vector__XXX
+ SG_ PDM_OBD_fuelPressure : 16|1@1+ (1,0) [0|0] "bool" Vector__XXX
+
+BO_ 275 PDM_25: 8 Vector__XXX
+ SG_ PDM_engineMinutes : 48|16@1- (1,0) [-32768|32767] "Minutes" Vector__XXX
+ SG_ PDM_engineHours : 32|16@1- (1,0) [-32768|32767] "Hours" Vector__XXX
+ SG_ PDM_carMiles : 16|16@1- (0.1,0) [0|0] "Miles" Vector__XXX
+ SG_ PDM_counterMsg275 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 281 PDM_31: 8 Vector__XXX
+ SG_ PDM_driverDisplayLEDs : 0|8@1- (1,0) [-128|127] "int" Vector__XXX
+
+BO_ 274 PDM_24: 8 Vector__XXX
+ SG_ PDM_teensyTemp : 48|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ PDM_wpPWM : 32|8@1+ (1,0) [0|255] "Duty %" Vector__XXX
+ SG_ PDM_fanRightPWM : 24|8@1+ (1,0) [0|255] "Duty %" Vector__XXX
+ SG_ PDM_fanLeftPWM : 16|8@1+ (1,0) [0|255] "Duty %" Vector__XXX
+ SG_ PDM_counterMsg274 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 160 TCGPS_10: 8 Vector__XXX
+ SG_ TCGPS_counterMsg160 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ TCGPS_teensyTemp : 32|16@1- (0.1,0) [0|150] "C" Vector__XXX
+ SG_ TCGPS_boardTemp : 16|16@1- (0.1,0) [0|150] "C" Vector__XXX
+
+BO_ 210 DD_10: 8 Vector__XXX
+ SG_ DD_counterMsg210 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ DD_teensyTemp : 32|16@1- (0.1,0) [0|150] "C" Vector__XXX
+ SG_ DD_requestDRS : 48|16@1- (1,0) [0|5] "" Vector__XXX
+ SG_ DD_boardTemp : 16|16@1- (0.1,0) [0|150] "C" Vector__XXX
+
+BO_ 712 USER_12: 8 Vector__XXX
+ SG_ USER_driverMessageChar7 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ USER_driverMessageChar6 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ USER_driverMessageChar5 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ USER_driverMessageChar4 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ USER_driverMessageChar3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ USER_driverMessageChar2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ USER_driverMessageChar0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ USER_driverMessageChar1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 711 USER_11: 8 Vector__XXX
+ SG_ USER_driverSignal : 0|8@1- (1,0) [-128|127] "Duty %" Vector__XXX
+
+BO_ 415 ATCCF_15: 8 ATCCF
+ SG_ ATCCF_boardTemp : 16|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_teensyTemp : 32|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_counterMsg415 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 710 USER_10: 8 Vector__XXX
+ SG_ USER_wpOverride : 16|8@1- (1,0) [-128|127] "Duty %" Vector__XXX
+ SG_ USER_fanRightOverride : 8|8@1- (1,0) [-128|127] "Duty %" Vector__XXX
+ SG_ USER_fanLeftOverride : 0|8@1- (1,0) [-128|127] "Duty %" Vector__XXX
+ SG_ USER_brakeLightOverride : 24|8@1- (1,0) [-128|127] "Duty %" Vector__XXX
+
+BO_ 280 PDM_30: 8 PDM
+ SG_ PDM_driverMessageChar7 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar6 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar5 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar4 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PDM_driverMessageChar0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 273 PDM_23: 8 PDM
+ SG_ PDM_starterRelayVoltAvg : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_counterMsg273 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ PDM_brakelightVoltAvg : 32|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_boardTemp : 16|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+
+BO_ 272 PDM_22: 8 PDM
+ SG_ PDM_keepAliveVoltMin : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_keepAliveVoltMax : 32|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_keepAliveVoltAvg : 16|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_counterMsg272 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 271 PDM_21: 8 PDM
+ SG_ PDM_dataVoltMin : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_dataVoltMax : 32|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_dataVoltAvg : 16|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_counterMsg271 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 270 PDM_20: 8 PDM
+ SG_ PDM_mainVoltMin : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_mainVoltMax : 32|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_mainVoltAvg : 16|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_counterMsg270 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 269 PDM_19: 8 PDM
+ SG_ PDM_fuelVoltMin : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_fuelVoltMax : 32|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_fuelVoltAvg : 16|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_counterMsg269 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 268 PDM_18: 8 PDM
+ SG_ PDM_fuelCurrentMin : 48|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_fuelCurrentMax : 32|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_fuelCurrentAvg : 16|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_counterMsg268 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 267 PDM_17: 8 PDM
+ SG_ PDM_wpVoltMin : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_wpVoltMax : 32|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_wpVoltAvg : 16|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_counterMsg267 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 266 PDM_16: 8 PDM
+ SG_ PDM_wpCurrentMin : 48|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_wpCurrentMax : 32|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_wpCurrentAvg : 16|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_counterMsg266 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 265 PDM_15: 8 PDM
+ SG_ PDM_fanLeftVoltMin : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_fanLeftVoltMax : 32|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_fanLeftVoltAvg : 16|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_counterMsg265 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 264 PDM_14: 8 PDM
+ SG_ PDM_fanLeftCurrentMin : 48|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_fanLeftCurrentMax : 32|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_fanLeftCurrentAvg : 16|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_counterMsg264 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 261 PDM_11: 8 PDM
+ SG_ PDM_pdmVoltMin : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_pdmVoltMax : 32|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_pdmVoltAvg : 16|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_counterMsg261 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 263 PDM_13: 8 PDM
+ SG_ PDM_fanRightVoltMin : 48|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_fanRightVoltMax : 32|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_fanRightVoltAvg : 16|16@1- (0.001,0) [-32.768|32.767] "V" Vector__XXX
+ SG_ PDM_counterMsg263 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 262 PDM_12: 8 PDM
+ SG_ PDM_counterMsg262 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ PDM_fanRightCurrentMin : 48|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_fanRightCurrentMax : 32|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_fanRightCurrentAvg : 16|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+
+BO_ 260 PDM_10: 8 PDM
+ SG_ PDM_dataLog : 7|1@1+ (1,0) [0|1] "bool" Vector__XXX
+ SG_ PDM_pdmCurrentMin : 48|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_pdmCurrentMax : 32|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_pdmCurrentAvg : 16|16@1- (0.01,0) [-327.68|327.67] "A" Vector__XXX
+ SG_ PDM_counterMsg260 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 464 ATCCR_14: 8 ATCCR
+ SG_ ATCCR_tireTempRRO : 48|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_tireTempRRM : 32|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_tireTempRRI : 16|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_counterMsg464 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 463 ATCCR_13: 8 ATCCR
+ SG_ ATCCR_tireTempRLO : 48|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_tireTempRLM : 32|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_tireTempRLI : 16|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_counterMsg463 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 462 ATCCR_12: 8 ATCCR
+ SG_ ATCCR_teensyTemp : 16|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_counterMsg462 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ ATCCR_coolantTempRadOutlet : 48|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_coolantTempRadInlet : 32|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+
+BO_ 461 ATCCR_11: 8 ATCCR
+ SG_ ATCCR_rotorTempRR : 48|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_rotorTempRL : 32|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCR_counterMsg461 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ ATCCR_boardTemp : 16|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+
+BO_ 460 ATCCR_10: 8 ATCCR
+ SG_ ATCCR_suspensionTravelRR : 48|16@1- (0.001,0) [-32.768|32.767] "in" Vector__XXX
+ SG_ ATCCR_suspensionTravelRL : 32|16@1- (0.001,0) [-32.768|32.767] "in" Vector__XXX
+ SG_ ATCCR_counterMsg460 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 414 ATCCF_14: 8 ATCCF
+ SG_ ATCCF_tireTempFRO : 48|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_tireTempFRM : 32|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_tireTempFRI : 16|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_counterMsg414 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 413 ATCCF_13: 8 ATCCF
+ SG_ ATCCF_tireTempFLO : 48|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_tireTempFLM : 32|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_tireTempFLI : 16|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_counterMsg413 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 412 ATCCF_12: 8 ATCCF
+ SG_ ATCCF_rotorTempFR : 48|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_rotorTempFL : 32|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+ SG_ ATCCF_counterMsg412 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ ATCCF_coolantTempRadMiddle : 16|16@1- (0.1,0) [-3276.8|3276.7] "C" Vector__XXX
+
+BO_ 411 ATCCF_11: 8 ATCCF
+ SG_ ATCCF_steeringWheelAngle : 48|16@1- (0.1,0) [-3276.8|3276.7] "deg" Vector__XXX
+ SG_ ATCCF_brakePressureR : 32|16@1- (0.1,0) [-3276.8|3276.7] "PSI" Vector__XXX
+ SG_ ATCCF_brakePressureF : 16|16@1- (0.1,0) [-3276.8|3276.7] "PSI" Vector__XXX
+ SG_ ATCCF_counterMsg411 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 410 ATCCF_10: 8 ATCCF
+ SG_ ATCCF_brakeBias : 16|16@1- (0.1,0) [0|100] "%F" Vector__XXX
+ SG_ ATCCF_suspensionTravelFR : 48|16@1- (0.001,0) [-32.768|32.767] "in" Vector__XXX
+ SG_ ATCCF_suspensionTravelFL : 32|16@1- (0.001,0) [-32.768|32.767] "in" Vector__XXX
+ SG_ ATCCF_counterMsg410 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+
+
+
+CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+CM_ SG_ 3221225472 PDM_driverDisplayMessage "8 character message sent to the driver display and shown to the driver";
+CM_ SG_ 3221225472 ATCCR_counterMsg465 "Counter for Message 465";
+CM_ BO_ 259 "OBD flags";
+CM_ SG_ 259 PDM_engineState "0 = off
+1 = cranking
+2 = on
+3 = cooldown";
+CM_ SG_ 259 PDM_OBD_oilTemp "OBD";
+CM_ SG_ 259 PDM_OBD_oilPressure "OBD";
+CM_ SG_ 259 PDM_OBD_fuelPressure "OBD";
+CM_ SG_ 275 PDM_engineMinutes "Fuel Current Maximum";
+CM_ SG_ 275 PDM_engineHours "Fuel Current Maximum";
+CM_ SG_ 275 PDM_carMiles "Fuel Current Maximum";
+CM_ SG_ 275 PDM_counterMsg275 "Counter for Message 274";
+CM_ BO_ 281 "PDM -> DD";
+CM_ SG_ 281 PDM_driverDisplayLEDs "flashing LEDs on driver diplay
+
+0 - off
+1 - white
+2 - yellow
+3 - red";
+CM_ SG_ 274 PDM_teensyTemp "PDM Teensy ECU Temp";
+CM_ SG_ 274 PDM_wpPWM "Water Pump Duty Cycle";
+CM_ SG_ 274 PDM_fanRightPWM "Right Fan Duty Cycle";
+CM_ SG_ 274 PDM_fanLeftPWM "Left Fan Duty Cycle";
+CM_ SG_ 274 PDM_counterMsg274 "Counter for Message 274";
+CM_ SG_ 160 TCGPS_counterMsg160 "Counter for Message 410
+";
+CM_ SG_ 160 TCGPS_teensyTemp "Teensy chip temp";
+CM_ SG_ 160 TCGPS_boardTemp "board temp";
+CM_ SG_ 210 DD_counterMsg210 "Counter for Message 410
+";
+CM_ SG_ 210 DD_teensyTemp "Driver Display Teensy chip temp";
+CM_ SG_ 210 DD_requestDRS "Driver request for DRS";
+CM_ SG_ 210 DD_boardTemp "Driver display board temp";
+CM_ SG_ 712 USER_driverMessageChar7 "The 8-char message that the driver display can read";
+CM_ SG_ 712 USER_driverMessageChar6 "The 8-char message that the driver display can read";
+CM_ SG_ 712 USER_driverMessageChar5 "The 8-char message that the driver display can read";
+CM_ SG_ 712 USER_driverMessageChar4 "The 8-char message that the driver display can read";
+CM_ SG_ 712 USER_driverMessageChar3 "The 8-char message that the driver display can read";
+CM_ SG_ 712 USER_driverMessageChar2 "The 8-char message that the driver display can read";
+CM_ SG_ 712 USER_driverMessageChar0 "The 8-char message that the driver display can read";
+CM_ SG_ 712 USER_driverMessageChar1 "The 8-char message that the driver display can read";
+CM_ SG_ 711 USER_driverSignal "Signal to the driver display.
+
+0 = no signal.
+1 = come into pits
+2 = warning, stop the car
+3 = major warning, shut off the car";
+CM_ SG_ 415 ATCCF_boardTemp "Board Temp";
+CM_ SG_ 415 ATCCF_teensyTemp "PDM Teensy ECU Temp";
+CM_ SG_ 415 ATCCF_counterMsg415 "Counter for Message 415";
+CM_ SG_ 710 USER_wpOverride "Manual override percentage";
+CM_ SG_ 710 USER_fanRightOverride "Manual override percentage";
+CM_ SG_ 710 USER_fanLeftOverride "Manual override percentage";
+CM_ SG_ 710 USER_brakeLightOverride "Manual Brakelight Override";
+CM_ BO_ 280 "String sent from OBD to driver display (8 chars)";
+CM_ SG_ 280 PDM_driverMessageChar7 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar6 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar5 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar4 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar3 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar2 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar1 "The 8-char message that the driver display can read";
+CM_ SG_ 280 PDM_driverMessageChar0 "The 8-char message that the driver display can read";
+CM_ SG_ 273 PDM_starterRelayVoltAvg "Starter Relay Voltage Average";
+CM_ SG_ 273 PDM_counterMsg273 "Counter for Message 273";
+CM_ SG_ 273 PDM_brakelightVoltAvg "Brakelight Voltage Average";
+CM_ SG_ 273 PDM_boardTemp "PDM Board Temp
+";
+CM_ SG_ 272 PDM_keepAliveVoltMin "PDM Microcontroller Keep Alive Circuit Voltage Minimum";
+CM_ SG_ 272 PDM_keepAliveVoltMax "PDM Microcontroller Keep Alive Circuit Voltage Maximum";
+CM_ SG_ 272 PDM_keepAliveVoltAvg "PDM Microcontroller Keep Alive Circuit Voltage Average";
+CM_ SG_ 272 PDM_counterMsg272 "Counter for Message 272";
+CM_ SG_ 271 PDM_dataVoltMin "Data Voltage Minimum";
+CM_ SG_ 271 PDM_dataVoltMax "Data Voltage Maximum";
+CM_ SG_ 271 PDM_dataVoltAvg "Data Voltage Average
+";
+CM_ SG_ 271 PDM_counterMsg271 "Counter for Message 271";
+CM_ SG_ 270 PDM_mainVoltMin "Main Voltage Minimum
+";
+CM_ SG_ 270 PDM_mainVoltMax "Main Voltage Maximum
+";
+CM_ SG_ 270 PDM_mainVoltAvg "Main Voltage Average";
+CM_ SG_ 270 PDM_counterMsg270 "Counter for Message 270";
+CM_ SG_ 269 PDM_fuelVoltMin "Fuel Voltage Minimum";
+CM_ SG_ 269 PDM_fuelVoltMax "Fuel Voltage Maximum";
+CM_ SG_ 269 PDM_fuelVoltAvg "Fuel Voltage Average
+";
+CM_ SG_ 269 PDM_counterMsg269 "Counter for Message 269";
+CM_ SG_ 268 PDM_fuelCurrentMin "Fuel Current Minimum";
+CM_ SG_ 268 PDM_fuelCurrentMax "Fuel Current Maximum";
+CM_ SG_ 268 PDM_fuelCurrentAvg "Fuel Current Average";
+CM_ SG_ 268 PDM_counterMsg268 "Counter for Message 268";
+CM_ SG_ 267 PDM_wpVoltMin "Water Pump Voltage Minimum";
+CM_ SG_ 267 PDM_wpVoltMax "Water Pump Voltage Maximum";
+CM_ SG_ 267 PDM_wpVoltAvg "Water Pump Voltage Average";
+CM_ SG_ 267 PDM_counterMsg267 "Counter for Message 267
+";
+CM_ SG_ 266 PDM_wpCurrentMin "Water Pump Current Minimum";
+CM_ SG_ 266 PDM_wpCurrentMax "Water Pump Current Maximum";
+CM_ SG_ 266 PDM_wpCurrentAvg "Water Pump Current Average
+";
+CM_ SG_ 266 PDM_counterMsg266 "Counter for Message 266";
+CM_ SG_ 265 PDM_fanLeftVoltMin "Left Fan Voltage Minimum
+";
+CM_ SG_ 265 PDM_fanLeftVoltMax "Left Fan Voltage Maximum
+";
+CM_ SG_ 265 PDM_fanLeftVoltAvg "Left Fan Voltage Average
+";
+CM_ SG_ 265 PDM_counterMsg265 "Counter for Message 265";
+CM_ SG_ 264 PDM_fanLeftCurrentMin "Left Fan Current Minimum";
+CM_ SG_ 264 PDM_fanLeftCurrentMax "Left Fan Current Maximum
+";
+CM_ SG_ 264 PDM_fanLeftCurrentAvg "Left Fan Current Average
+";
+CM_ SG_ 264 PDM_counterMsg264 "Counter for Message 264";
+CM_ SG_ 261 PDM_pdmVoltMin "PDM Voltage Minimum";
+CM_ SG_ 261 PDM_pdmVoltMax "PDM Voltage Maximum";
+CM_ SG_ 261 PDM_pdmVoltAvg "PDM Voltage Average
+";
+CM_ SG_ 261 PDM_counterMsg261 "Counter for Message 261";
+CM_ SG_ 263 PDM_fanRightVoltMin "Right Fan Voltage Minimum";
+CM_ SG_ 263 PDM_fanRightVoltMax "Right Fan Voltage Maximum";
+CM_ SG_ 263 PDM_fanRightVoltAvg "Right Fan Voltage Average";
+CM_ SG_ 263 PDM_counterMsg263 "Counter for Message 263";
+CM_ SG_ 262 PDM_counterMsg262 "Counter for Message 262";
+CM_ SG_ 262 PDM_fanRightCurrentMin "Right Fan Current Minimum";
+CM_ SG_ 262 PDM_fanRightCurrentMax "Right Fan Current Maximum";
+CM_ SG_ 262 PDM_fanRightCurrentAvg "Right Fan Current Average
+";
+CM_ SG_ 260 PDM_pdmCurrentMin "PDM Current Minimum
+";
+CM_ SG_ 260 PDM_pdmCurrentMax "PDM Current Maximum
+";
+CM_ SG_ 260 PDM_pdmCurrentAvg "PDM Current Average
+";
+CM_ SG_ 260 PDM_counterMsg260 "Counter for Message 260";
+CM_ SG_ 464 ATCCR_tireTempRRO "Tire Temp RRO";
+CM_ SG_ 464 ATCCR_tireTempRRM "Tire Temp RRM";
+CM_ SG_ 464 ATCCR_tireTempRRI "Tire Temp RRI";
+CM_ SG_ 464 ATCCR_counterMsg464 "Counter for Message 464";
+CM_ SG_ 463 ATCCR_tireTempRLO "Tire Temp RLO";
+CM_ SG_ 463 ATCCR_tireTempRLM "Tire Temp RLM";
+CM_ SG_ 463 ATCCR_tireTempRLI "Tire Temp RLI";
+CM_ SG_ 463 ATCCR_counterMsg463 "Counter for Message 463";
+CM_ SG_ 462 ATCCR_teensyTemp "PDM Teensy ECU Temp";
+CM_ SG_ 462 ATCCR_counterMsg462 "Counter for Message 462
+";
+CM_ SG_ 462 ATCCR_coolantTempRadOutlet "Coolant Temp Radiator Outlet";
+CM_ SG_ 462 ATCCR_coolantTempRadInlet "Coolant Temp Radiator Inlet";
+CM_ SG_ 461 ATCCR_rotorTempRR "Brake Temp RR";
+CM_ SG_ 461 ATCCR_rotorTempRL "Brake Temp RL";
+CM_ SG_ 461 ATCCR_counterMsg461 "Counter for Message 461";
+CM_ SG_ 461 ATCCR_boardTemp "Board Temp";
+CM_ SG_ 460 ATCCR_suspensionTravelRR "Suspension Travel RR";
+CM_ SG_ 460 ATCCR_suspensionTravelRL "Suspension Travel RL";
+CM_ SG_ 460 ATCCR_counterMsg460 "Counter for Message 460";
+CM_ SG_ 414 ATCCF_tireTempFRO "Tire Temp FRO";
+CM_ SG_ 414 ATCCF_tireTempFRM "Tire Temp FRM";
+CM_ SG_ 414 ATCCF_tireTempFRI "Tire Temp FRI";
+CM_ SG_ 414 ATCCF_counterMsg414 "Counter for Message 414";
+CM_ SG_ 413 ATCCF_tireTempFLO "Tire Temp FLO";
+CM_ SG_ 413 ATCCF_tireTempFLM "Tire Temp FLM";
+CM_ SG_ 413 ATCCF_tireTempFLI "Tire Temp FLI";
+CM_ SG_ 413 ATCCF_counterMsg413 "Counter for Message 413";
+CM_ SG_ 412 ATCCF_rotorTempFR "Brake Temp FR";
+CM_ SG_ 412 ATCCF_rotorTempFL "Brake Temp FL";
+CM_ SG_ 412 ATCCF_counterMsg412 "Counter for Message 412";
+CM_ SG_ 412 ATCCF_coolantTempRadMiddle "Coolant Temp Radiator Middle";
+CM_ SG_ 411 ATCCF_steeringWheelAngle "Steering Wheel Angle";
+CM_ SG_ 411 ATCCF_brakePressureR "Brake Pressure R";
+CM_ SG_ 411 ATCCF_brakePressureF "Brake Pressure F";
+CM_ SG_ 411 ATCCF_counterMsg411 "Counter for Message 411";
+CM_ SG_ 410 ATCCF_brakeBias "BP_F / (BP_F + BP_R)";
+CM_ SG_ 410 ATCCF_suspensionTravelFR "Suspension Travel FR";
+CM_ SG_ 410 ATCCF_suspensionTravelFL "Suspension Travel FL";
+CM_ SG_ 410 ATCCF_counterMsg410 "Counter for Message 410
+";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "BusType" "CAN";
+
