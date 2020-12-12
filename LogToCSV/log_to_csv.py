@@ -10,8 +10,7 @@ import argparse
 
 def fwf_to_df(input_file):
     """
-    The fwf_to_csv function will first convert the fwf to a df, and then the df to
-    to a csv file through the df_to_csv function
+    The fwf_to_df function will convert the passed fwf to a pandas df
     """
     
     try:
@@ -24,7 +23,7 @@ def fwf_to_df(input_file):
 
 def df_to_csv(df, output_file):
     """
-    The df_to_csv function will convert a df into a csv file
+    The df_to_csv function will take a pandas df and create a csv file
     """
     
     try:
@@ -35,7 +34,7 @@ def df_to_csv(df, output_file):
 
 def main():
     """
-    The main function reads command line inputs and calls the fwf_to_csv function
+    The main function reads command line inputs and calls the  fwf_to_df and df_to_csv function
     """
     
     parser = argparse.ArgumentParser(description='Turn a fwf file to a csv file')
