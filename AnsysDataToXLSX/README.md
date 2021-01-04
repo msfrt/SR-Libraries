@@ -40,7 +40,7 @@ python3 ansys-data_to_xlsx.py path/to/my/data.txt
 
 If want to specify the output filename, use: _(This usage will output a .xlsx of name: "new_data.xlsx")_
 ```shell script
-python3 ansys-data_to_xlsx.py path/to/my/log.txt new_data.xlsx
+python3 ansys-data_to_xlsx.py path/to/my/data.txt new_data.xlsx
 ```
 
 
