@@ -1,0 +1,18 @@
+Probe: Reactions	X Magnitude	Y Magnitude	Z Magnitude	Total	Units	Time (s) 	
+UpAft_Force	-292.83	-3.9836e-002	4.5245e-004	292.83	lbf	1.	
+UpFor_Force	-30.46	3.8619e-002	2.9899e-003	30.46	lbf	1.	
+LowAft_Force	191.18	2.3269e-002	-2.2181e-003	191.18	lbf	1.	
+LowFor_Force	2.6711	-2.7679e-002	-3.9039e-005	2.6712	lbf	1.	
+TieRod_Force	322.16	-4.1051e-007	-1.852e-006	322.16	lbf	1.	
+UpAft_Force_GCS	81.607	280.7	17.224	292.83	lbf	1.	
+UpFor_Force_GCS	-20.444	22.546	1.2345	30.46	lbf	1.	
+LowAft_Force_GCS	-48.411	-183.31	-24.601	191.18	lbf	1.	
+LowFor_Force_GCS	0.97265	-2.4511	-0.42585	2.6712	lbf	1.	
+TieRod_Force_GCS	-51.964	-315.01	-43.063	322.16	lbf	1.	
+LCA_Joint	-47.439	-185.76	-25.027	193.34	lbf	1.	
+TieRod_Joint	-51.964	-315.01	-43.063	322.16	lbf	1.	
+UCA_Joint	61.164	303.25	18.458	309.91	lbf	1.	
+
+Probe: Springs	Elastic Force	Damping Force	Units	Elongation	Units	Time (s) 	
+Spring Probe	-516.39	0.	lbf	-0.46065	in	1.	
+
