@@ -47,6 +47,7 @@ class StateSignal{
     float value(); // returns value (takes validity into account)
     int can_value(); // returns an integer value ready to send over CAN
     float real_value(){return value_;} // always returns the normal value (don't use probably)
+    float secondary_value(){return secondary_value_;} // always returns the secondary value (useful for OBD debugging)
     float lower_bound() const {return lower_bound_;}
     float upper_bound() const {return upper_bound_;}
     bool is_valid() const {return valid_;}
