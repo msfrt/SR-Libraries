@@ -12,6 +12,7 @@
 
 import cantools
 import argparse
+import ntpath
 
 DEBUG = False
 
@@ -295,6 +296,14 @@ def find_signal_object(signals_list, signal_name_str):
             return sig
 
 
+def path_leaf(path):
+    """
+    Takes in a full filepath and returns just the filename
+    """
+    head, tail = ntpath.split(path)
+    return tail or ntpath.basename(head)
+
+
 def dbctocpp(input_file, output_file):
     """
     This function reads in regular DBC files, makes sense of them using the cantools library, then outputs them
@@ -413,13 +422,15 @@ def dbctocpp(input_file, output_file):
 
 ************************************************************************************/\n\n\n""")
 
+    input_filename_only = path_leaf(input_file)
+
     # function header
     fp_out.write("/*\n * Decode a CAN message for the bus captured in {}.\n * To more efficiently allocate "
                  "microcontroller resources, simply comment\n * out unnecessary messages that do not need to be "
-                 "decoded.\n * \\param imsg A reference to the incoming CAN frame\n */\n".format(input_file))
+                 "decoded.\n * \\param imsg A reference to the incoming CAN frame\n */\n".format(input_filename_only))
 
     # create a function that uses this filename as a bus name to distribute incoming frames to decode functions
-    fp_out.write("void decode_{}(CAN_message_t &imsg) {{\n\n".format(input_file[:-4]))
+    fp_out.write("void decode_{}(CAN_message_t &imsg) {{\n\n".format(input_filename_only[:-4]))
 
     # switch based on message id
     fp_out.write("\tswitch (imsg.id) {\n\n")
