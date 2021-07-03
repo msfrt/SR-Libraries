@@ -5,7 +5,7 @@
 
 class LookupTable{
   private:
-    int *table_;
+    int *table_ = 0;
     const int rows_;
     const int columns_;
 
@@ -16,11 +16,11 @@ class LookupTable{
     LookupTable() = delete;
     // this next constructor creates a 1d array that is much faster than a 2d array and uses less memory,
     // but it will require that the user indexes the table using an indexing function
-    LookupTable(int rows, int columns) : rows_(rows), columns_(columns) { table_ = new int[rows_ * columns_];}
+    LookupTable(int rows, int columns) : rows_(rows), columns_(columns) {}
 
     // RULE OF THREE:
     // destructor (remember to destroy dynamically allocated table array)
-    ~LookupTable() {delete [] table_;}
+    // ~LookupTable() {delete [] table_;}
     // copy and copy-assignment constructor
     LookupTable(const LookupTable &old_table) = delete; // don't EVER copy unless implementing this function.
     LookupTable& operator=(const LookupTable& old_table) = delete; // same here, DON'T COPY!
