@@ -6,7 +6,7 @@ int LookupTable::index(int row, int column){
   if (column < 0){column = 0;} // snap to column 0
   if (column > columns_ - 1){column = columns_ - 1;} // snap to maximum column
 
-  // so, columns_ is essentiall the width of the table. To skip however many rows desired, we multiply the
+  // so, columns_ is essentially the width of the table. To skip however many rows desired, we multiply the
   // rows variable by the width (columns_), and then add the desired column to get at
   return row * columns_ + column;
 }
@@ -25,15 +25,16 @@ void LookupTable::fill_table(int *row_zero_ptr){
   Serial.println(this->rows_);
   Serial.println(this->columns_);
   Serial.println("-----");
-  for (int row = 0; row < this->rows_; ++row){ // iterate through the rows of the lookup table
-    for (int column = 0; column < this->columns_; ++column){ // iterate through the columns of the lookup table
-      // this next line is a little fucked, but essentially we had to pass in a pointer to the first array of pointers,
-      // and now we're incrementing it by the width of previous rows (the number of columns_ times previous rows),
-      // and then adding the next column index that we want
-      Serial.println((row_zero_ptr)[row * columns_ + column]);
-      this->set_index(row, column, (row_zero_ptr)[row * columns_ + column]);
-    }
-  }
+  // for (int row = 0; row < this->rows_; ++row){ // iterate through the rows of the lookup table
+  //   for (int column = 0; column < this->columns_; ++column){ // iterate through the columns of the lookup table
+  //     // this next line is a little fucked, but essentially we had to pass in a pointer to the first array of pointers,
+  //     // and now we're incrementing it by the width of previous rows (the number of columns_ times previous rows),
+  //     // and then adding the next column index that we want
+  //     Serial.println((row_zero_ptr)[row * columns_ + column]);
+  //     this->set_index(row, column, (row_zero_ptr)[row * columns_ + column]);
+  //   }
+  // }
+  this->table_ = row_zero_ptr;
 }
 
 
