@@ -19,14 +19,16 @@ class EasyTimer{
     bool is_up(); // same as check()
     void set_frequency(int freq); // frequency in Hz.
     void set_delay_millis(int delay); // delay in milliseconds.
-    // void set_delay_micros(int delay); // delay in microseconds.
     void reset(); // resets a timer
+    void enable(){enabled_ = true;}
+    void disable(){enabled_ = false;}
+    bool isEnabled(){return enabled_;}
 
   private:
     unsigned long freq_; // Hz
     unsigned long last_time_; // for use by timer to hold last time
-    // unsigned long us_; // microseconds
     unsigned long ms_;  // milliseconds
+    bool enabled_ = true; // used to enable and disable the timer (default enabled)
 };
 
 class LEDBlink{

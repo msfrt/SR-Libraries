@@ -14,7 +14,7 @@ EasyTimer::EasyTimer(int freq){
 
 // this function returns true if it is time, false if time has not been reached yet
 bool EasyTimer::check(){
-  if (millis() - last_time_ >= ms_){
+  if (enabled_ && (millis() - last_time_ >= ms_)){
     last_time_ = millis(); // reset the timer
     return true;
   } else {
@@ -45,10 +45,6 @@ void EasyTimer::set_delay_millis(int ms){
   ms_ = ms;
 }
 
-// void EasyTimer::set_delay_micros(int us){
-//   freq_ = 1000000 / us;
-//   us_ = us; // microseconds delay
-// }
 
 void EasyTimer::reset(){
   last_time_ = millis(); // sets the last time to the current time
