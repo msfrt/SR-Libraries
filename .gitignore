@@ -5,3 +5,5 @@
 StateCAN/dbctocpp/venv/
 
 StateCAN/dbctocpp/.idea/
+
+StateCAN/dbctocpp/testing.hpp

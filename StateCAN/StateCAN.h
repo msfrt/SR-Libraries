@@ -34,14 +34,16 @@ class StateSignal{
     bool valid_ = true; // if the signal is considered valid
     float secondary_value_ = 0.00; // secondary_value_ replaces value_ when this signal is not considered valid
     int timeout_delay_ = -1; // milliseconds delay before signal should become invalid. -1 means disabled
+    unsigned int msg_id_ = 0;  // the id of the message that this signal belongs to (useful for CAN filtering purposes)
+    bool updated_ = false;
 
 
   public:
     //constructors
     StateSignal() = delete;
-    StateSignal(int bl, bool s, int f, int o, int lb, int ub, float sv, int td = -1) : bit_length_(bl), signed_(s),
+    StateSignal(int bl, bool s, int f, int o, int lb, int ub, float sv, int td = -1, unsigned int msg_id = 0) : bit_length_(bl), signed_(s),
                 inverse_factor_(f), offset_(o), lower_bound_(lb), upper_bound_(ub),
-                secondary_value_(sv), timeout_delay_(td) {};
+                secondary_value_(sv), timeout_delay_(td), msg_id_(msg_id) {};
 
     // getters
     float value(); // returns value (takes validity into account)
@@ -51,11 +53,14 @@ class StateSignal{
     float lower_bound() const {return lower_bound_;}
     float upper_bound() const {return upper_bound_;}
     bool is_valid() const {return valid_;}
+    unsigned int get_msg_id() const {return msg_id_;}  // returns the message id of this signal. Be aware that the default value is 0
+    bool is_updated() const {return updated_;}
 
     // setters
     void set_can_value(int incoming); // used when an incoming CAN value is read and you finna update the real value.
     void set_validity(bool valid); // update the sensor's validity
     void set_secondary_value(float new_val){secondary_value_ = new_val;} // set the secondary value
+    void set_msg_id(unsigned int id){msg_id_ = id;}
   
     // helper function to check for timeout-based validity;
     bool timeout_check();

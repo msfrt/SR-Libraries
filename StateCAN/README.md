@@ -12,9 +12,10 @@ int offset = 0; // offset like in the DBC (currently not enabled)
 int min = -5; // minimum value (used for external checks if applicable)
 int max = 100; // maximum value (used for external checks if applicable)
 int secondary = -1; // secondary value (returned from value() when signal is invalid))
-int timeout = 1000; // timeout delay in milliseconds (used for checks if applicable) (optional parameter)
+int timeout = 1000; // timeout delay in milliseconds (used for checks if applicable) (optional parameter, default is -1 for no timeout)
+unsigned int message_id = 0x49; // the id of the message that contains this signal (useful for CAN filtering purposes) (optional parameter, default is 0)
 
-StateSignal USER_fanOverride(bitl, signed, fact, offset, min, max, secondary, timeout);
+StateSignal USER_fanOverride(bitl, signed, fact, offset, min, max, secondary, timeout, message_id);
 ```
 
 ## How to assign a value to the signal
@@ -35,6 +36,10 @@ Returns an integer that is scaled and ready to send over can (if > 1 byte, you m
 
 Always returns the real value. Disregards the secondary value. You probably shouldn't use this, but it's here if you need to.
 
+### get_msg_id()
+
+Returns the id of the message that contains this signal. Be aware that the default value for the msg ID is 0.
+
 ### timeout_check()
 
 If you would like to check for time-based validity, call this function. It will update the validity parameter to false if the timeout period has been expired, or keep it true otherwise. Furthermore, the validity boolean is returned. IF YOU PERFORM OTHER OBD FUNCTIONS THAT MODIFY VALIDITY, DO NOT USE THIS FUNCTION IN CONJUNCTION.
@@ -50,6 +55,10 @@ Manually set the validity with the `new_validity` parameter.
 ### set_secondary_value(float new_value)
 
 Updates the secondary value.
+
+### set_msg_id(unsigned int id)
+
+Set the id of the message that contains this signal.
 
 ### is_valid()
 

@@ -231,7 +231,7 @@ class SignalMask:
 class StateSignal:
 
     def __init__(self, name, bit_length, signed, factor, offset, lower_bound, upper_bound,
-                 secondary_value=0, timeout_delay=0):
+                 secondary_value=0, timeout_delay=0, frame_id=0):
         """
         Contructor
         :param name: the name of the signal
@@ -241,6 +241,7 @@ class StateSignal:
         :param offset: the offset of the signal (int)
         :param lower_bound: The lower bound of the signal (int)
         :param upper_bound: The upper bound of the signal (int)
+        :param frame_id: The ID of the message that this signal belongs to
         :param secondary_value: The secondary value when the signal is invalid
         :param timeout_delay: The timeout delay for the signal in milliseconds
         """
@@ -271,13 +272,18 @@ class StateSignal:
         except TypeError:
             self._timeout_delay = 0
 
+        try:
+            self._frame_id = int(frame_id)
+        except TypeError:
+            self._frame_id = 0
+
     def __str__(self):
-        return "StateSignal {}({}, {}, {}, {}, {}, {}, {}, {})".format(self._name, self._bit_length,
+        return "StateSignal {}({}, {}, {}, {}, {}, {}, {}, {}, {})".format(self._name, self._bit_length,
                                                                        str(self._signed).lower(),
                                                                        int(1.0 / self._factor),
                                                                        self._offset, self._lower_bound,
                                                                        self._upper_bound, self._secondary_value,
-                                                                       self._timeout_delay)
+                                                                       self._timeout_delay, self._frame_id)
 
     def __repr__(self):
         return self.__str__()
@@ -317,7 +323,7 @@ def dbctocpp(input_file, output_file):
 
     # open the output file and write a few basic lines
     fp_out = open(output_file, "w")
-    header_guard = output_file.upper().replace(".", "_").replace(" ", "_")
+    header_guard = output_file.upper().replace(".", "_").replace(" ", "_").replace("\\", "_").replace("/", "_")
     header = """/******************************************************************************
     
     This file was generated automatically from a DBC file by the dbctocpp 
@@ -343,7 +349,8 @@ def dbctocpp(input_file, output_file):
         fp_out.write("// Message: {} [0x{:x}]\n".format(msg.name, msg.frame_id))
         for sig in msg.signals:
             if not sig.is_multiplexer:
-                ssig = StateSignal(sig.name, sig.length, sig.is_signed, sig.scale, sig.offset, sig.minimum, sig.maximum)
+                ssig = StateSignal(sig.name, sig.length, sig.is_signed, sig.scale, sig.offset, sig.minimum, sig.maximum,
+                                   frame_id=msg.frame_id)
                 fp_out.write("{};\n".format(ssig))
         fp_out.write("\n")
 
@@ -362,7 +369,7 @@ def dbctocpp(input_file, output_file):
             "frame\n */".format(
                 msg.name))
 
-        fp_out.write("\nvoid read_{}(CAN_message_t &imsg) {{\n\n".format(msg.name))
+        fp_out.write("\nvoid read_{}(const CAN_message_t &imsg) {{\n\n".format(msg.name))
 
         # for testing
         # if msg.name[0:4] != "TEST":
@@ -430,7 +437,7 @@ def dbctocpp(input_file, output_file):
                  "decoded.\n * \\param imsg A reference to the incoming CAN frame\n */\n".format(input_filename_only))
 
     # create a function that uses this filename as a bus name to distribute incoming frames to decode functions
-    fp_out.write("void decode_{}(CAN_message_t &imsg) {{\n\n".format(input_filename_only[:-4]))
+    fp_out.write("void decode_{}(const CAN_message_t &imsg) {{\n\n".format(input_filename_only[:-4]))
 
     # switch based on message id
     fp_out.write("\tswitch (imsg.id) {\n\n")

@@ -25,18 +25,21 @@ bool StateSignal::timeout_check(){
 }
 
 const int StateSignal::operator=(int new_value){
+  updated_ = true;
   this->value_ = new_value;
   this->last_recieve_ = millis();
   return value_;
 }
 
 const int StateSignal::operator=(float new_value){
+  updated_ = true;
   this->value_ = new_value;
   this->last_recieve_ = millis();
   return value_;
 }
 
 const int StateSignal::operator=(double new_value){
+  updated_ = true;
   this->value_ = new_value;
   this->last_recieve_ = millis();
   return value_;
@@ -45,7 +48,7 @@ const int StateSignal::operator=(double new_value){
 
 // getters that take into account faults
 float StateSignal::value(){
-
+  updated_ = false;
   if (this->valid_) {
     return this->value_;
   } else {
@@ -55,6 +58,7 @@ float StateSignal::value(){
 
 // returns an int value, but the casting in here takes care of what we need it to do
 int StateSignal::can_value(){
+  updated_ = false;
   if (this->valid_) {
     if (this->signed_){
 
@@ -172,6 +176,8 @@ int StateSignal::can_value(){
 
 // setters
 void StateSignal::set_can_value(int incoming_value){
+  updated_ = true;
+
   // we need to cast to floats here so integer math doesn't remove precision.
   // also, if the value is signed, we need to do some funky stuff to fill the rest of the value
   if (this->signed_){
@@ -201,5 +207,7 @@ void StateSignal::set_can_value(int incoming_value){
 
 
 void StateSignal::set_validity(bool valid){
+  updated_ = true;
+
   this->valid_ = valid;
 }
