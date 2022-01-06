@@ -404,6 +404,10 @@ def dbctocpp(input_file, output_file):
                 # end switch statement
                 fp_out.write("\t}\n")
 
+        # the message exists, but has no signals
+        except IndexError:
+            pass
+
         # message is not multiplexed
         except AttributeError:
             for sig in msg.signals:
