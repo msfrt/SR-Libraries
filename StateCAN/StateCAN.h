@@ -59,6 +59,7 @@ class StateSignal{
     // setters
     void set_can_value(int incoming); // used when an incoming CAN value is read and you finna update the real value.
     void set_validity(bool valid); // update the sensor's validity
+    void set_timeout_delay(int timeout) {timeout_delay_ = timeout;} // used to set the timeout delay for secondary values
     void set_secondary_value(float new_val){secondary_value_ = new_val;} // set the secondary value
     void set_msg_id(unsigned int id){msg_id_ = id;}
   
