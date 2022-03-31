@@ -64,6 +64,10 @@ Set the id of the message that contains this signal.
 
 Returns true if the signal is currently valid, false otherwise.
 
+### is_updated()
+
+Returns true if the signal is has been updated since the last read, false otherwise. Essentially, when a message is recieved, the `updated` boolean is set to true as a result of the incoming value. When any of the value-getting methods, such as `value()` are called, this flag is flipped to false. Using the `is_updated()` method is a good way to debounce CAN messages/signals, especially if you only want to perform an action upon the reciept of a new CAN message.
+
 ## Define a `StateCounter`
 
 When sending can messages, a simple counter can help nodes on the network understand if they are receiving all intended messages. Or, perhaps, there could be a bug on the sending-end. Either way, you can define a counter by using `StateCounter my_counter(256)`. In this instance, `my_counter` is incrementally counts within 8 bits. A counter is initialized by default to have 16 positions and return the values 0-15.
