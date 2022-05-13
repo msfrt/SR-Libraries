@@ -231,7 +231,7 @@ class SignalMask:
 class StateSignal:
 
     def __init__(self, name, bit_length, signed, factor, offset, lower_bound, upper_bound,
-                 secondary_value=0, timeout_delay=0, frame_id=0):
+                 secondary_value=0, timeout_delay=-1, frame_id=0):
         """
         Contructor
         :param name: the name of the signal
@@ -243,7 +243,7 @@ class StateSignal:
         :param upper_bound: The upper bound of the signal (int)
         :param frame_id: The ID of the message that this signal belongs to
         :param secondary_value: The secondary value when the signal is invalid
-        :param timeout_delay: The timeout delay for the signal in milliseconds
+        :param timeout_delay: The timeout delay for the signal in milliseconds (-1 is disabled) 313
         """
 
         self._name = str(name)
@@ -323,7 +323,7 @@ def dbctocpp(input_file, output_file):
 
     # open the output file and write a few basic lines
     fp_out = open(output_file, "w")
-    header_guard = output_file.upper().replace(".", "_").replace(" ", "_").replace("\\", "_").replace("/", "_")
+    header_guard = output_file.upper().replace(".", "_").replace(" ", "_").replace("\\", "_").replace("/", "_").replace("-", "_").strip("_")
     header = """/******************************************************************************
     
     This file was generated automatically from a DBC file by the dbctocpp 
