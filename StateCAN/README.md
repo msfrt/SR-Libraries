@@ -20,7 +20,7 @@ StateSignal USER_fanOverride(bitl, signed, fact, offset, min, max, secondary, ti
 
 ## How to assign a value to the signal
 
-This is really simple. For real values, you can simply use the `=` operator. Like, if I had a signal named `my_cignal`, and I wanted the new value to be 420.69, I would write `my_signal = 420.69`. However, this is not how you should assign values to the signals that are read off of the CAN bus. For that, you should use the `set_can_value` member function, which is listed below
+This is really simple. For real values, you can simply use the `=` operator. Like, if I had a signal named `my_signal`, and I wanted the new value to be 420.69, I would write `my_signal = 420.69`. However, this is not how you should assign values to the signals that are read off of the CAN bus. For that, you should use the `set_can_value` member function, which is listed below
 
 ## Member Functions
 
