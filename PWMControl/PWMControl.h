@@ -6,21 +6,14 @@
 #include "LookupTable.h"
 #include "StateCAN.h"
 
-class PWMDevice{
+class PWMDevice {
 
   private:
 
       const int pwm_pin_; // pin on the teensy which the device is connected to
 
-      LookupTable table_; // this is the lookup table that holds D.C. information
-
-      int table_row_scale_fact_; // from the table, what is the scale factor for rows? for example, if the table says
-      int table_col_scale_fact_; // 950 for 95.0, put 10 here
-
-      StateSignal &row_signal_;
-      StateSignal &col_signal_;
-      StateSignal &override_signal_;
-
+      //StateSignal &temperature_signal_;
+      int &temperature_signal_;
       int pwm_min_dc_; // minimum duty cycle that the device should be pwmed
       int pwm_max_dc_; // maximum duty cycle that the device should be pwmed
 
@@ -57,24 +50,19 @@ class PWMDevice{
 
   public:
     PWMDevice() = delete;
-    PWMDevice(int output_pin, int table_rows, int table_columns, int table_row_scale_fact, int table_col_scale_fact,
-              StateSignal &row_signal, StateSignal &col_signal, StateSignal &override_sig, int pwm_min, int pwm_max,
-              int soft_start_dur, int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq);
+    PWMDevice(int output_pin, int &temperature_signal,
+              int pwm_min, int pwm_max, int soft_start_dur, int pwm_control_freq, 
+              int pwm_normal_freq, int pwm_soft_start_freq);
 
     // getters
     int target(){return pwm_percent_target_;}
     int actual(){return pwm_percent_actual_;}
     int freq(){return pwm_actual_freq_;}
     bool device_on(){return device_on_;}
-    LookupTable &table(){return table_;}
 
     // setters
     // set the pwm of the device. for override percent, -1 means no override;
-    bool set_pwm(const int &engine_state);
-
-    // this simply just passes the table information through to the LookupTable object.
-    // Look at LookupTable README for documentation if needed
-    void fill_table(int *first_element);
+    bool set_pwm();
 
 };
 
