@@ -6,6 +6,7 @@
 class StateCounter{
   private:
     unsigned int num_positions_ = 16; // the maximum number of positions to be sent, including 0, excluding the max.
+    unsigned int num_positions_8_bit_ = 256;
     unsigned int current_position_ = 4294967294; // max value of unsigned int
   public:
     StateCounter() = default;
@@ -14,6 +15,7 @@ class StateCounter{
     // getter
     unsigned int value(); // returns the current value of the counter and increments
     unsigned int value_ghost(){return current_position_;} // returns the current value but does not increment
+    unsigned int value_8_bit(); 
 
     // setter
     void set_max(unsigned int new_max){num_positions_ = new_max;}

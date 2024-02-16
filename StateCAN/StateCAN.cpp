@@ -11,6 +11,15 @@ unsigned int StateCounter::value(){
   return this->current_position_;
 }
 
+unsigned int StateCounter::value_8_bit() {
+  if (this->current_position_ < (this->num_positions_8_bit_ - 1)){
+    this->current_position_++;
+  } else {
+    this->current_position_ = 0;
+  }
+  return this->current_position_;
+}
+
 
 // check for timeout validity (utilizes short-circuting)
 bool StateSignal::timeout_check(){
