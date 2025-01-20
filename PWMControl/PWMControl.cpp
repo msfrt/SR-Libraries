@@ -28,7 +28,7 @@ bool PWMDevice::set_pwm(const int &engine_state){
 
       // the engine is off (fall-through behavior & redundancy. Cranking mode isn't really needed here)
       case 0:
-      // the engine is cranking
+      // the engine is cranking (this function is no longer necessary)
       case 1:
         // immediately set the output value to 0
         this->pwm_percent_target_ = 0;
@@ -85,7 +85,7 @@ void PWMDevice::determine_dynamic_pwm(){
   int col_val = col_signal_.value() * table_col_scale_fact_;
 
   // well, what does the fan table say?
-  this->pwm_percent_target_ = this->table_.find(row_val, col_val);
+  this->pwm_percent_target_ = this->table_.find(row_val, col_val); // update here for can value instead of using table row format
 
   // check if we need to turn the device on and enable soft start
   if (this->device_on_ == false && this->pwm_percent_target_ > 0){
