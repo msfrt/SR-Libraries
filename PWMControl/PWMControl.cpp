@@ -1,7 +1,7 @@
 #include "PWMControl.h"
 #include "StateCAN.h"
 
-// constructor : uses initializer list
+// Constructor : uses initializer list
 PWMDevice::PWMDevice(int output_pin, int table_rows, int table_columns, int table_row_sf, int table_col_sf,
                      StateSignal &row_signal, StateSignal &col_signal, StateSignal &override_sig, int pwm_min, int pwm_max,
                      int soft_start_dur, int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq) :
@@ -12,63 +12,49 @@ PWMDevice::PWMDevice(int output_pin, int table_rows, int table_columns, int tabl
                      pwm_soft_start_freq_(pwm_soft_start_freq),
                      pwm_control_timer_(pwm_control_freq), soft_start_duration_(soft_start_dur) {};
 
+// **New set_pwm function to support manual override**
+bool PWMDevice::set_pwm(int row_value, int column_value, int engine_mode, int pwm_override) {
+    if (pwm_control_timer_.isup() || (this->engine_state_ != engine_mode)) {
 
-bool PWMDevice::set_pwm(const int &engine_state){
+        this->engine_state_ = engine_mode;
 
+        if (pwm_override >= 0 && pwm_override <= 100) {
+            // **Override mode: set PWM directly to given percentage**
+            this->pwm_percent_target_ = pwm_override;
+            this->pwm_percent_actual_ = pwm_override;
+        } else {
+            // **Use normal lookup table logic**
+            switch (this->engine_state_) {
+                case 0: // OFF
+                case 1: // CRANKING
+                    this->pwm_percent_target_ = 0;
+                    this->pwm_percent_actual_ = 0;
+                    this->device_on_ = false;
+                    break;
+                case 2: // RUNNING
+                    determine_dynamic_pwm();
+                    break;
+                case 3: // COOLDOWN
+                    determine_cooldown_pwm();
+                    break;
+            }
+        }
 
-  // encapsulate other calculations and writing in the PWM update timer. The PWM updates are only ran from within
-  // this function. The function is also ran when the engine state changes
-  if (pwm_control_timer_.isup() || (this->engine_state_ != engine_state)){
+        // Set PWM frequency
+        write_pwm_frequency();
 
-    // update the engine state variable
-    this->engine_state_ = engine_state;
+        // Write PWM duty cycle
+        write_pwm_duty_cycle();
 
-    // first, based upon the engine state, we need to determine what exactly can and needs to be done
-    switch (this->engine_state_) {
-
-      // the engine is off (fall-through behavior & redundancy. Cranking mode isn't really needed here)
-      case 0:
-      // the engine is cranking (this function is no longer necessary)
-      case 1:
-        // immediately set the output value to 0
-        this->pwm_percent_target_ = 0;
-        this->pwm_percent_actual_ = 0;
-        this->device_on_ = false;
-        break;
-
-      // the engine is running
-      case 2:
-        // this function has all of the conditions for dynamic control under normal operation
-        determine_dynamic_pwm();
-        break;
-
-      // the engine is in a cool-down cycle
-      case 3:
-        determine_cooldown_pwm();
-        break;
-
-    } // end switch statement
-
-    // one last thing before writing the PWM... if there is an active override present, and the engine is NOT cranking,
-    // forget all of the calculations done above and set the pwm_percent_actual_ to the override_percent
-    if (override_signal_.value() >= 0 && override_signal_.value() <= 100 && engine_state_ != 1){
-      this->pwm_percent_target_ = override_signal_.value();
-      this->pwm_percent_actual_ = override_signal_.value();
+        return true;
     }
 
-    // before setting the PWM, set the appropriate frequency if necessary
-    write_pwm_frequency();
-
-    // fucking send it
-    write_pwm_duty_cycle();
-
-    return true;
-
-  } // end timer
-
-  return false;
+    return false;
 }
 
+bool PWMDevice::set_pwm(const int &engine_state) {
+    return set_pwm(0, 0, engine_state, -1); // Call new function with no override
+}
 
 // sauce it into the table's function
 void PWMDevice::fill_table(int *first_element){
