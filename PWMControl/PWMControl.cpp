@@ -1,7 +1,7 @@
 #include "PWMControl.h"
 #include "StateCAN.h"
 
-// Constructor : uses initializer list
+// constructor : uses initializer list
 PWMDevice::PWMDevice(int output_pin, int table_rows, int table_columns, int table_row_sf, int table_col_sf,
                      StateSignal &row_signal, StateSignal &col_signal, StateSignal &override_sig, int pwm_min, int pwm_max,
                      int soft_start_dur, int pwm_control_freq, int pwm_normal_freq, int pwm_soft_start_freq) :
@@ -22,6 +22,15 @@ bool PWMDevice::set_pwm(int row_value, int column_value, int engine_mode, int pw
             // **Override mode: set PWM directly to given percentage**
             this->pwm_percent_target_ = pwm_override;
             this->pwm_percent_actual_ = pwm_override;
+
+            // 🔹 Debug Print (Check if Serial is available)
+            if (Serial) {
+              Serial.println("\n🔹 set_pwm() Called:");
+              Serial.print("   → Engine Mode: "); Serial.println(engine_mode);
+              Serial.print("   → pwm percent: "); Serial.println(this->pwm_percent_actual_);
+              Serial.print("   → pwm freq: "); Serial.println(this->pwm_actual_freq_);
+            }
+
         } else {
             // **Use normal lookup table logic**
             switch (this->engine_state_) {
@@ -52,8 +61,64 @@ bool PWMDevice::set_pwm(int row_value, int column_value, int engine_mode, int pw
     return false;
 }
 
-bool PWMDevice::set_pwm(const int &engine_state) {
-    return set_pwm(0, 0, engine_state, -1); // Call new function with no override
+bool PWMDevice::set_pwm(const int &engine_state){
+
+
+  // encapsulate other calculations and writing in the PWM update timer. The PWM updates are only ran from within
+  // this function. The function is also ran when the engine state changes
+  if (pwm_control_timer_.isup() || (this->engine_state_ != engine_state)){
+
+    // update the engine state variable
+    this->engine_state_ = engine_state;
+
+    if (50 >= 0 && 50 <= 100) {
+      // **Override mode: set PWM directly to given percentage**
+      this->pwm_percent_target_ = 50;
+      this->pwm_percent_actual_ = 50;
+
+      // 🔹 Debug Print (Check if Serial is available)
+      if (Serial) {
+        Serial.println("\n🔹 set_pwm() Called:");
+        Serial.print("   → pwm percent: "); Serial.println(this->pwm_percent_actual_);
+        Serial.print("   → pwm freq: "); Serial.println(this->pwm_actual_freq_);
+      }
+
+    } else {
+        // **Use normal lookup table logic**
+        switch (this->engine_state_) {
+            case 0: // OFF
+            case 1: // CRANKING
+                this->pwm_percent_target_ = 0;
+                this->pwm_percent_actual_ = 0;
+                this->device_on_ = false;
+                break;
+            case 2: // RUNNING
+                determine_dynamic_pwm();
+                break;
+            case 3: // COOLDOWN
+                determine_cooldown_pwm();
+                break;
+        }
+    }
+
+    // one last thing before writing the PWM... if there is an active override present, and the engine is NOT cranking,
+    // forget all of the calculations done above and set the pwm_percent_actual_ to the override_percent
+    if (override_signal_.value() >= 0 && override_signal_.value() <= 100 && engine_state_ != 1){
+      this->pwm_percent_target_ = override_signal_.value();
+      this->pwm_percent_actual_ = override_signal_.value();
+    }
+
+    // before setting the PWM, set the appropriate frequency if necessary
+    write_pwm_frequency();
+
+    // fucking send it
+    write_pwm_duty_cycle();
+
+    return true;
+
+  } // end timer
+
+  return false;
 }
 
 // sauce it into the table's function
@@ -107,16 +172,19 @@ void PWMDevice::determine_cooldown_pwm(){
 
 }
 
-
-
 // maps duty cycle percentage to min and max PWM duty cycle values, and then writes it to the pin
 void PWMDevice::write_pwm_duty_cycle(){
+
   this->pwm_output_ = map(this->pwm_percent_actual_, 0, 100, this->pwm_min_dc_, this->pwm_max_dc_);
   analogWrite(this->pwm_pin_, this->pwm_output_);
+
+  // 🔹 Debug Print (Check if Serial is available)
+  if (Serial) {
+    Serial.println("\n🔹 write_pwm_duty_cycle() Called:");
+    Serial.print("   → pwm percent: "); Serial.println(this->pwm_percent_actual_);
+    Serial.print("   → pwm freq: "); Serial.println(this->pwm_actual_freq_);
+  }
 }
-
-
-
 
 void PWMDevice::write_pwm_frequency(){
 
@@ -125,6 +193,13 @@ void PWMDevice::write_pwm_frequency(){
     this->pwm_actual_freq_ = this->pwm_soft_start_freq_;
   } else { // normal frequency
     this->pwm_actual_freq_ = this->pwm_normal_freq_;
+  }
+
+  // 🔹 Debug Print (Check if Serial is available)
+  if (Serial) {
+    Serial.println("\n🔹 write_pwm_frequency() Called:");
+    Serial.print("   → pwm percent: "); Serial.println(this->pwm_percent_actual_);
+    Serial.print("   → pwm freq: "); Serial.println(this->pwm_actual_freq_);
   }
 
   // write the frequency

@@ -50,7 +50,7 @@ void setup()
 
   test_row_sig = 95.0;
   test_col_sig = 13.5;
-  test_override = -1;
+  test_override = 50;
 
   pinMode(23, INPUT); //pot1
   pinMode(22, INPUT); //pot2
@@ -75,25 +75,7 @@ void loop()
 
   test_device.set_pwm(engine_mode);
 
-  if (millis() < 5000) {
-    engine_mode = 0;
-  } else if (millis() < 10000) {
-    engine_mode = 1;
-  } else if (millis() < 15000) {
-    engine_mode = 2;
-  } else if (millis() < 20000) {
-    engine_mode = 3;
-  } else if (millis() < 25000) {
-    engine_mode = 0;
-  } else if (millis() < 30000) {
-    engine_mode = 1;
-  } else if (millis() < 35000) {
-    engine_mode = 2;
-  } else if (millis() < 36000) {
-    engine_mode = 3;
-  } else if (millis() < 40000) {
-    engine_mode = 1;
-  }
+  engine_mode = 1;
 
   test_override.timeout_check();
 
